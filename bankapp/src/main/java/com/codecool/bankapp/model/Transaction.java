@@ -1,33 +1,28 @@
 package com.codecool.bankapp.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Component
 public class Transaction {
-    private LocalDateTime transactionTime = LocalDateTime.now();
+    private final LocalDateTime transactionTime = LocalDateTime.now();
     private BigDecimal amount;
-    private Account accountFrom;
-    private Account recipient;
+    private String sender;
+    private String recipient;
     private String message;
+    private TransactionStatus status = TransactionStatus.PROCESSING;
 
-    @Autowired
-    public Transaction() {
-    }
+    public Transaction(){}
 
-    public Transaction(BigDecimal amount, Account accountFrom, Account recipient, String message) {
+    public Transaction(BigDecimal amount, String sender, String recipient, String message) {
         this.amount = amount;
-        this.accountFrom = accountFrom;
+        this.sender = sender;
         this.recipient = recipient;
         this.message = message;
     }
 
-    public Transaction(BigDecimal amount, Account accountFrom, Account recipient) {
+    public Transaction(BigDecimal amount, String sender, String recipient) {
         this.amount = amount;
-        this.accountFrom = accountFrom;
+        this.sender = sender;
         this.recipient = recipient;
         this.message = "";
     }
@@ -40,11 +35,11 @@ public class Transaction {
         return amount;
     }
 
-    public Account getAccountFrom() {
-        return accountFrom;
+    public String getSender() {
+        return sender;
     }
 
-    public Account getRecipient() {
+    public String getRecipient() {
         return recipient;
     }
 
@@ -52,19 +47,19 @@ public class Transaction {
         return message;
     }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
+    public TransactionStatus getStatus() {
+        return status;
     }
 
-    public void setAccountFrom(Account accountFrom) {
-        this.accountFrom = accountFrom;
-    }
-
-    public void setRecipient(Account recipient) {
-        this.recipient = recipient;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public void setStatus(TransactionStatus status) {
+        this.status = status;
     }
 }
