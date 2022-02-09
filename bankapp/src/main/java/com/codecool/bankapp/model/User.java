@@ -1,12 +1,11 @@
 package com.codecool.bankapp.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class User {
@@ -22,7 +21,6 @@ public class User {
     public User(String name, String password) {
         this.name = name;
         this.password = password;
-        accountList.add(createAccount());
     }
 
     public String getName() {
@@ -57,8 +55,16 @@ public class User {
         accountList.add(account);
     }
 
-    public Account createAccount() {
-        // TODO: 2022. 02. 08. factory pattern for which type of account should be made
-        return new CheckingAccount();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(name, user.name) && Objects.equals(address, user.address) && Objects.equals(password, user.password) && Objects.equals(accountList, user.accountList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, address, password, accountList);
     }
 }
