@@ -38,7 +38,7 @@ public class AccountDaoMem implements AccountDao {
     }
 
     @Override
-    public void AddToHistory(Account account, Transaction transaction) {
+    public void addToHistory(Account account, Transaction transaction) {
         for (Account result : accountList) {
             if(result.equals(account)) {
                 result.addToHistory(transaction);

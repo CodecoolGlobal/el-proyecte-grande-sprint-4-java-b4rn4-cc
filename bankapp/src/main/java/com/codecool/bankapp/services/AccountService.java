@@ -30,8 +30,8 @@ public class AccountService {
         } else {
             transaction.setStatus(TransactionStatus.REJECTED);
         }
-        accountDao.AddToHistory(from, transaction);
-        accountDao.AddToHistory(to, transaction);
+        accountDao.addToHistory(from, transaction);
+        accountDao.addToHistory(to, transaction);
         return transaction;
     }
 

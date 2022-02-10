@@ -9,6 +9,6 @@ public interface AccountDao {
     List<Account> getAccountsByUser(User user);
     void addSavingsAccount(User user);
     List<Transaction> getHistory(Account account);
-    void AddToHistory(Account account, Transaction transaction);
+    void addToHistory(Account account, Transaction transaction);
     void addCheckingAccount(CheckingAccount account);
 }
