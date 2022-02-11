@@ -19,8 +19,8 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @GetMapping("/history")
-    public List<Transaction> getHistory(@RequestParam(name = "accountNumber") String accountNumber) {
+    @GetMapping("/history")     // TODO: maybe add to url
+    public List<Transaction> getHistory(@RequestParam String accountNumber) {
         return accountService.getHistoryByAccount(accountNumber);
     }
 

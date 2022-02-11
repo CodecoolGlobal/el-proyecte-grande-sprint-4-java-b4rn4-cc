@@ -31,7 +31,7 @@ public class UserDaoMem implements UserDao {
     }
 
     @Override
-    public void addAccount(User user, Account account) {
+    public void addAccount(User user, Account account) {    // TODO: avoid searching (findUser)
         for (User userResult : users) {
             if (user.equals(userResult)) {
                 userResult.addAccountToList(account);

@@ -11,10 +11,9 @@ import java.util.Objects;
 public class User {
     private String name;
     private String address;
-    private String password;
+    private String password;       // TODO: move login credentials to separate object
     private final List<Account> accountList = new ArrayList<>();
 
-    @Autowired
     public User() {
     }
 
