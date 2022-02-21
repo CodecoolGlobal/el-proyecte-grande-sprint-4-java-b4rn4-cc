@@ -10,7 +10,7 @@ function App() {
         </div>
         <div className="navLinks">
           <div>Account Details</div>
-          <div>
+          <div className="services">
             Services
             <div>Deposit</div>
             <div>Withdraw</div>
