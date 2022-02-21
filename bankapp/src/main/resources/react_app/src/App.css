@@ -18,3 +18,19 @@
   padding: 50px;
   width: 100%;
 }
+
+.line {
+  display: flex;
+  justify-content: space-between;
+}
+
+.line :first-child {
+  font-weight: bold;
+}
+
+.CoDetails {
+  width: 65%;
+  padding-left: 30px;
+  margin-bottom: 30px;
+}
+
