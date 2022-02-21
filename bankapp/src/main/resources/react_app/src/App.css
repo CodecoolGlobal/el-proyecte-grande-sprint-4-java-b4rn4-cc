@@ -34,3 +34,16 @@
   margin-bottom: 30px;
 }
 
+.bankName {
+  font-size: larger;
+  font-weight: bolder;
+  padding: 15px;
+}
+
+.navLinks div {
+  margin-top: 15px;
+}
+
+#about {
+  padding-top: 30px;
+}
