@@ -4,9 +4,9 @@ const Header = () => {
     return (
         <ul className={"header"}>
             <li className={"noHover"}><a>4:59</a></li>
-            <li><a href="#log">Log out</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#home">Home</a></li>
+            <li><a href="">Log out</a></li>
+            <li><a href="">About</a></li>
+            <li><a href="">Home</a></li>
         </ul>
     );
 };
