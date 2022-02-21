@@ -42,12 +42,29 @@
 
 .navLinks div {
   margin-top: 15px;
+  cursor: pointer;
+}
+
+.serviceLinks div:hover {
+  opacity: 0.5;
+}
+
+#accDetails:hover {
+  opacity: 0.5;
 }
 
 #about {
   padding-top: 30px;
 }
 
-.services div {
+#about:hover {
+  opacity: 0.5;
+}
+
+.serviceLinks div {
   padding-left: 15px;
+}
+
+#service {
+  cursor: default;
 }
