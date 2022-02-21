@@ -1,5 +1,6 @@
 .main {
   display: flex;
+  height: 100vh;
 }
 
 .nav {
@@ -66,4 +67,22 @@
 
 .noHover{
   pointer-events: none;
+}
+
+.bankName {
+  font-size: larger;
+  font-weight: bolder;
+  padding: 15px;
+}
+
+.navLinks div {
+  margin-top: 15px;
+}
+
+#about {
+  padding-top: 30px;
+}
+
+.services div {
+  padding-left: 15px;
 }
