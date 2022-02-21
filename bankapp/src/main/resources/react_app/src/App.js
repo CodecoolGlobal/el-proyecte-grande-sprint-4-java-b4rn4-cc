@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import About from "./components/About";
+import Header from "./components/Header";
 import Accountdetails from "./components/Accountdetails";
 import Deposit from "./components/Deposit";
 import Loan from "./components/Loan";
@@ -10,53 +11,56 @@ import Transfermoney from "./components/Transfermoney";
 import Withdraw from "./components/Withdraw";
 
 function App() {
-  const [renderThis, setRenderThis] = useState();
+    const [renderThis, setRenderThis] = useState();
 
-  const handleClick = (e) => {
-    const element = e.target;
-    setRenderThis(element.innerText);
-  };
+    const handleClick = (e) => {
+        const element = e.target;
+        setRenderThis(element.innerText);
+    };
 
-  return (
-    <div className="main">
-      <div className="nav">
-        <div className="bankName">
-          <strong>El Grande Banco</strong>
-        </div>
-        <div className="navLinks">
-          <div onClick={(event) => handleClick(event)} id="accDetails">
-            Account Details
-          </div>
-          <div className="service" id="service">
-            Services
-          </div>
-          <div className="serviceLinks">
-            <div onClick={(event) => handleClick(event)}>Deposit</div>
-            <div onClick={(event) => handleClick(event)}>Withdraw</div>
-            <div onClick={(event) => handleClick(event)}>
-              Transaction History
+    return (
+        <div>
+            <Header/>
+            <div className="main">
+                <div className="nav">
+                    <div className="bankName">
+                        <strong>El Grande Banco</strong>
+                    </div>
+                    <div className="navLinks">
+                        <div onClick={(event) => handleClick(event)} id="accDetails">
+                            Account Details
+                        </div>
+                        <div className="service" id="service">
+                            Services
+                        </div>
+                        <div className="serviceLinks">
+                            <div onClick={(event) => handleClick(event)}>Deposit</div>
+                            <div onClick={(event) => handleClick(event)}>Withdraw</div>
+                            <div onClick={(event) => handleClick(event)}>
+                                Transaction History
+                            </div>
+                            <div onClick={(event) => handleClick(event)}>Transer Money</div>
+                            <div onClick={(event) => handleClick(event)}>Pay Bills</div>
+                            <div onClick={(event) => handleClick(event)}>Loan</div>
+                        </div>
+                        <div id="about" onClick={(event) => handleClick(event)}>
+                            About
+                        </div>
+                    </div>
+                </div>
+                <div className="content">
+                    {renderThis === "About" && <About/>}
+                    {renderThis === "Deposit" && <Deposit/>}
+                    {renderThis === "Withdraw" && <Withdraw/>}
+                    {renderThis === "Transer Money" && <Transfermoney/>}
+                    {renderThis === "Pay Bills" && <Paybills/>}
+                    {renderThis === "Loan" && <Loan/>}
+                    {renderThis === "Transaction History" && <Transactionhistory/>}
+                    {renderThis === "Account Details" && <Accountdetails/>}
+                </div>
             </div>
-            <div onClick={(event) => handleClick(event)}>Transer Money</div>
-            <div onClick={(event) => handleClick(event)}>Pay Bills</div>
-            <div onClick={(event) => handleClick(event)}>Loan</div>
-          </div>
-          <div id="about" onClick={(event) => handleClick(event)}>
-            About
-          </div>
         </div>
-      </div>
-      <div className="content">
-        {renderThis === "About" && <About />}
-        {renderThis === "Deposit" && <Deposit />}
-        {renderThis === "Withdraw" && <Withdraw />}
-        {renderThis === "Transer Money" && <Transfermoney />}
-        {renderThis === "Pay Bills" && <Paybills />}
-        {renderThis === "Loan" && <Loan />}
-        {renderThis === "Transaction History" && <Transactionhistory />}
-        {renderThis === "Account Details" && <Accountdetails />}
-      </div>
-    </div>
-  );
+    );
 }
 
 export default App;
