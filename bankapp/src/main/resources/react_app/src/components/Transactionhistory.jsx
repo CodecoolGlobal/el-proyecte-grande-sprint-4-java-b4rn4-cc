@@ -1,13 +1,27 @@
 import React from "react";
 import Transaction from "./Transaction";
+import { apiGet } from "../FetchApis";
+import { useEffect, useState } from "react";
 
-const Transactionhistory = ({ transactions }) => {
+const Transactionhistory = () => {
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    const getTransactions = async () => {
+      const data = await apiGet(
+        "http://localhost:8080/account/history?accountNumber=1"
+      );
+      setTransactions(data);
+    };
+    getTransactions();
+  }, []);
+
   return (
     <div className="transaction">
       <h2>Account History</h2>
       <div className="accountNumberHistory">
         <div>Account number: </div>
-        <div>{transactions[0].sender}</div>
+        <div>1</div>
       </div>
       <table className="historyTable">
         <thead>

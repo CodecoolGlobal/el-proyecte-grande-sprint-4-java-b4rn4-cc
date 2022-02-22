@@ -7,3 +7,17 @@ export async function apiGet(url) {
     return data;
   }
 }
+
+export async function apiPost(url, payload) {
+  let response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+  if (response.status === 200) {
+    return await response.json();
+  }
+}
