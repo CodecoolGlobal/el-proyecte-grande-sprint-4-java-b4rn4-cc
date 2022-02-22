@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class UserDaoMem implements UserDao {
@@ -17,9 +18,9 @@ public class UserDaoMem implements UserDao {
     }
 
     @Override
-    public User findUser(User user) {
+    public User findUser(UUID userID) {
         for (User userResult : users) {
-            if (user.equals(userResult)) {
+            if (userResult.getUserID().equals(userID)) {
                 return userResult;
             }
         }
@@ -31,11 +32,10 @@ public class UserDaoMem implements UserDao {
     }
 
     @Override
-    public void addAccount(User user, Account account) {    // TODO: avoid searching (findUser)
-        for (User userResult : users) {
-            if (user.equals(userResult)) {
-                userResult.addAccountToList(account);
-            }
+    public void addAccount(UUID userID, Account account) {
+        User userResult = findUser(userID);
+        if(userResult != null) {
+            userResult.addAccountToList(account);
         }
     }
 }

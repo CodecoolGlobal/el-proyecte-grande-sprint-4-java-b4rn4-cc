@@ -18,20 +18,25 @@ public class AccountService {
     }
 
     public Transaction makeTransaction(Transaction transaction) {
-        Account sender = accountDao.findAccount(transaction.getSender()); //TODO: validate sender type first & avoid casting
-        Account destination = accountDao.findAccount(transaction.getRecipient());;
-        BigDecimal amount = transaction.getAmount();
-        BigDecimal zero = BigDecimal.ZERO;
+        Account unvalidatedAccount = accountDao.findAccount(transaction.getSender());
 
-        if (amount.compareTo(zero) > 0 && sender instanceof CheckingAccount && amount.compareTo(sender.getBalance()) < 1) {
-            ((CheckingAccount) sender).withdrawMoney(amount);
-            destination.depositMoney(amount);
-            transaction.setStatus(TransactionStatus.SUCCESSFUL);
-        } else {
-            transaction.setStatus(TransactionStatus.REJECTED);
+        if(unvalidatedAccount instanceof CheckingAccount) {
+            CheckingAccount sender = (CheckingAccount) accountDao.findAccount(transaction.getSender());
+            Account destination = accountDao.findAccount(transaction.getRecipient());
+            BigDecimal amount = transaction.getAmount();
+            BigDecimal zero = BigDecimal.ZERO;
+
+            if (amount.compareTo(zero) > 0 && amount.compareTo(sender.getBalance()) < 1) {
+                transaction.setStatus(TransactionStatus.SUCCESSFUL);
+                sender.withdrawMoney(amount);
+                destination.depositMoney(amount);
+            } else {
+                transaction.setStatus(TransactionStatus.REJECTED);
+            }
+
+            accountDao.addToHistory(sender, transaction);
+            accountDao.addToHistory(destination, transaction);
         }
-        accountDao.addToHistory(sender, transaction);
-        accountDao.addToHistory(destination, transaction);
         return transaction;
     }
 

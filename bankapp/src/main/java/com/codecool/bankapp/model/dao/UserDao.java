@@ -4,10 +4,11 @@ import com.codecool.bankapp.model.Account;
 import com.codecool.bankapp.model.User;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserDao {
     List<User> getAllUsers();
-    User findUser(User user);   //TODO: change user parameter to unique ID
+    User findUser(UUID userID);   //TODO: change user parameter to unique ID
     void addUser(User newUser);
-    void addAccount(User user, Account account);
+    void addAccount(UUID userID, Account account);
 }
