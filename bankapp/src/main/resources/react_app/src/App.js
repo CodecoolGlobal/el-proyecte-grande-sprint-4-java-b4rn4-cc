@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import About from "./components/About";
 import Header from "./components/Header";
@@ -9,13 +9,25 @@ import Paybills from "./components/Paybills";
 import Transactionhistory from "./components/Transactionhistory";
 import Transfermoney from "./components/Transfermoney";
 import Withdraw from "./components/Withdraw";
+import {apiGet} from "./FetchApis";
 
 function App() {
     const [renderThis, setRenderThis] = useState();
+    const [transactions, setTransactions] = useState([]);
+
     const [renderEvent, setRenderEvent] = useState(false)
+    useEffect(() => {
+        const getData = async () => {
+            const data = await apiGet(
+                "http://localhost:8080/account/history?accountNumber=1"
+            );
+            setTransactions(data);
+        };
+        getData();
+    }, []);
 
     useEffect(() => {
-        if(renderEvent) {
+        if (renderEvent) {
             setRenderEvent(false)
         } else {
             setRenderEvent(true);
@@ -64,7 +76,7 @@ function App() {
                     {renderThis === "Transer Money" && <Transfermoney/>}
                     {renderThis === "Pay Bills" && <Paybills/>}
                     {renderThis === "Loan" && <Loan/>}
-                    {renderThis === "Transaction History" && <Transactionhistory/>}
+                    {renderThis === "Transaction History" && <Transactionhistory transactions={transactions}/>}
                     {renderThis === "Account Details" && <Accountdetails/>}
                 </div>
             </div>

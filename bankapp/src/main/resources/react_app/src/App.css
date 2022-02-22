@@ -62,10 +62,10 @@
 }
 
 .active {
-  background-color: #04AA6D;
+  background-color: #04aa6d;
 }
 
-.noHover{
+.noHover {
   pointer-events: none;
 }
 
@@ -102,4 +102,55 @@
 
 #service {
   cursor: default;
+}
+
+.transaction {
+  margin: 20px;
+}
+
+.transaction h2 {
+  font-size: 50px;
+}
+
+.historyTable {
+  width: 100%;
+}
+
+.historyTable thead {
+  text-align: center;
+}
+
+.historyTable tbody td {
+  font-size: 22px;
+  text-align: center;
+  padding-bottom: 8px;
+}
+
+.historyTable thead td {
+  padding: 15px;
+  font-weight: bolder;
+  font-size: 24px;
+  text-decoration: underline;
+}
+
+.transferOK {
+  text-decoration: underline;
+  color: green;
+}
+
+.transferFail {
+  text-decoration: underline;
+  color: red;
+}
+
+.accountNumberHistory {
+  display: flex;
+  margin: 30px;
+  align-items: center;
+  font-size: 28px;
+}
+
+.accountNumberHistory :first-child {
+  padding-right: 40px;
+  font-weight: bolder;
 }
