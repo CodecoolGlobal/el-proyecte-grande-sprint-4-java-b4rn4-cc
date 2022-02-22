@@ -5,7 +5,7 @@ const Transaction = ({ transaction }) => {
     <>
       <tbody>
         <tr>
-          <td>{new Date(transaction.transactionTime).toDateString()}</td>
+          <td>{new Date(transaction.transactionTime).toUTCString()}</td>
           <td>{transaction.recipient}</td>
           <td>{transaction.amount}</td>
           <td

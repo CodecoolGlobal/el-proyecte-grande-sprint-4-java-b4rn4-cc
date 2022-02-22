@@ -154,3 +154,8 @@
   padding-right: 40px;
   font-weight: bolder;
 }
+
+.transfer-form {
+  display: flex;
+  flex-direction: column;
+}
