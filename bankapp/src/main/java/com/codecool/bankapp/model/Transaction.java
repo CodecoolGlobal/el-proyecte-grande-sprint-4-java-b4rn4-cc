@@ -1,8 +1,13 @@
 package com.codecool.bankapp.model;
 
+import lombok.Builder;
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Data
+@Builder
 public class Transaction {
     private final LocalDateTime transactionTime = LocalDateTime.now();
     private BigDecimal amount;
@@ -11,7 +16,6 @@ public class Transaction {
     private String message;
     private TransactionStatus status = TransactionStatus.PROCESSING;
 
-    public Transaction(){}
 
     public Transaction(BigDecimal amount, String sender, String recipient, String message) {
         this.amount = amount;
@@ -25,41 +29,5 @@ public class Transaction {
         this.sender = sender;
         this.recipient = recipient;
         this.message = "";
-    }
-
-    public LocalDateTime getTransactionTime() {
-        return transactionTime;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public String getRecipient() {
-        return recipient;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public TransactionStatus getStatus() {
-        return status;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void setStatus(TransactionStatus status) {
-        this.status = status;
     }
 }

@@ -22,8 +22,8 @@ public class Initializer {
     }
 
     private void init() {
-        User user1 = new User("bandi", "12");
-        User user2 = new User("adam", "123");
+        User user1 = User.builder().name("bandi").password("12").build();
+        User user2 = User.builder().name("adam").password("123").build();
         BigDecimal money = new BigDecimal(100000);
         userService.addUser(user1);
         userService.addUser(user2);
@@ -31,8 +31,8 @@ public class Initializer {
         user2.getAccountList().get(0).depositMoney(money);
         user1.getAccountList().get(0).setAccountNumber("1");
         user2.getAccountList().get(0).setAccountNumber("2");
-        Transaction transaction1 = new Transaction(new BigDecimal(100), "1", "2");
-        Transaction transaction2 = new Transaction(new BigDecimal(9999999), "1", "2");
+        Transaction transaction1 = Transaction.builder().amount(new BigDecimal(100)).sender("1").recipient("2").build();
+        Transaction transaction2 = Transaction.builder().amount(new BigDecimal(9999999)).sender("1").recipient("2").build();
         accountService.makeTransaction(transaction1);
         accountService.makeTransaction(transaction2);
     }
