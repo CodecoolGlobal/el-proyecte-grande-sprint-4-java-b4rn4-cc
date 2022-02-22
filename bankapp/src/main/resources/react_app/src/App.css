@@ -156,6 +156,29 @@
 }
 
 .transfer-form {
+  width: 40%;
+  margin: auto;
+}
+
+.transfer-form div {
+  padding: 25px 15px;
   display: flex;
-  flex-direction: column;
+  justify-content: space-around;
+}
+
+.transfer-form label {
+  width: 70px;
+  align-self: center;
+}
+
+.transfer-form input {
+  border-radius: 15px;
+  padding: 8px;
+}
+
+.transfer-form button {
+  background-color: #b4c7dc;
+  padding: 15px 5px;
+  width: 150px;
+  margin-left: 50px;
 }
