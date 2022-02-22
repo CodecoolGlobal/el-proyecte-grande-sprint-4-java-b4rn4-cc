@@ -22,7 +22,7 @@ public class UserService {
 
     public void addUser(User newUser){
         userDao.addUser(newUser);
-        CheckingAccount checkingAccount = new CheckingAccount();
+        CheckingAccount checkingAccount = CheckingAccount.builder().build();
         userDao.addAccount(newUser.getUserID(), checkingAccount);
         accountDao.addCheckingAccount(checkingAccount);
     }
