@@ -45,7 +45,7 @@ public class AccountService {
         return accountDao.getHistory(account);
     }
 
-    public List<Account> getAccountsByUser(User user) {
-        return accountDao.getAccountsByUser(user);
+    public List<Account> getAccountsByUserID(String userID) {
+        return accountDao.getAccountsByUserID(userID);
     }
 }

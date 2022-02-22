@@ -22,8 +22,10 @@ public class AccountDaoMem implements AccountDao {
     }
 
     @Override
-    public List<Account> getAccountsByUser(User user) {
-        return user.getAccountList();
+    public List<Account> getAccountsByUserID(String userID) {
+        return accountList.stream()
+                .filter(acc -> acc.getUserID().equals(userID))
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -24,9 +24,9 @@ public class AccountController {
         return accountService.getHistoryByAccount(accountNumber);
     }
 
-    @PostMapping
-    public List<Account> getAccounts(@RequestBody User user) {
-        return accountService.getAccountsByUser(user);
+    @GetMapping("/list")
+    public List<Account> getAccounts(@RequestParam String userID) {
+        return accountService.getAccountsByUserID(userID);
     }
 
     @PostMapping("/transaction")
