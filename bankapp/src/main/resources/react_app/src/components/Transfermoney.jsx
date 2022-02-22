@@ -17,11 +17,11 @@ const Transfermoney = ({ transferMoney }) => {
   };
 
   return (
-    <div>
+    <div className="transfer-container">
       <h1>Transfer Money</h1>
       <form className="transfer-form" onSubmit={submit}>
         <div>
-          <label htmlFor="recipientAccNumber">Recipient</label>
+          <label htmlFor="recipientAccNumber">Recipient:</label>
           <input
             type="text"
             id="recipientAccNumber"
@@ -32,7 +32,7 @@ const Transfermoney = ({ transferMoney }) => {
           />
         </div>
         <div>
-          <label htmlFor="amount">Amount</label>
+          <label htmlFor="amount">Amount:</label>
           <input
             type="text"
             id="amount"
@@ -43,7 +43,7 @@ const Transfermoney = ({ transferMoney }) => {
           />
         </div>
         <div>
-          <label htmlFor="message">Message</label>
+          <label htmlFor="message">Message:</label>
           <input
             type="text"
             id="message"
@@ -53,7 +53,7 @@ const Transfermoney = ({ transferMoney }) => {
             onChange={(e) => setMessage(e.target.value)}
           />
         </div>
-        <input type="submit" value="Transfer" />
+        <button type="submit">Transfer</button>
       </form>
     </div>
   );
