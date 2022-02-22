@@ -27,7 +27,7 @@ public class AccountDaoMem implements AccountDao {
 
     @Override
     public void addSavingsAccount(User user) {
-        SavingsAccount savingsAccount = new SavingsAccount();
+        SavingsAccount savingsAccount = SavingsAccount.builder().build();
         accountList.add(savingsAccount);
         user.addAccountToList(savingsAccount);
     }
