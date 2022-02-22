@@ -1,7 +1,6 @@
 package com.codecool.bankapp.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.Builder;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,7 +12,6 @@ import java.util.UUID;
 
 @Component
 @Data
-@Builder
 public abstract class Account {
     private String accountNumber;
     protected BigDecimal balance = new BigDecimal("0");
