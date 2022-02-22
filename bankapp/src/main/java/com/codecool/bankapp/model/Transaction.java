@@ -1,5 +1,6 @@
 package com.codecool.bankapp.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -7,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
 @Builder
 public class Transaction {
     private final LocalDateTime transactionTime = LocalDateTime.now();
