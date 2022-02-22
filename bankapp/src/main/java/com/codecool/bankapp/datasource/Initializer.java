@@ -22,8 +22,10 @@ public class Initializer {
     }
 
     private void init() {
-        User user1 = User.builder().name("bandi").password("12").build();
-        User user2 = User.builder().name("adam").password("123").build();
+        User user1 = User.builder().name("Bandi").password("12")
+                .userID("111-222-333").address("City of Westminster, Downing Street 10.").build();
+        User user2 = User.builder().name("Adam").password("123")
+                .address("1111 Budapest, Csirke utca 7.").userID("222-333-444").build();
         BigDecimal money = new BigDecimal(100000);
         userService.addUser(user1);
         userService.addUser(user2);
