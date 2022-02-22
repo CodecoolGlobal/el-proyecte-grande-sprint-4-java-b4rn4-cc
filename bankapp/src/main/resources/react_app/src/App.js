@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import "./App.css";
 import About from "./components/About";
 import Header from "./components/Header";
@@ -12,6 +12,15 @@ import Withdraw from "./components/Withdraw";
 
 function App() {
     const [renderThis, setRenderThis] = useState();
+    const [renderEvent, setRenderEvent] = useState(false)
+
+    useEffect(() => {
+        if(renderEvent) {
+            setRenderEvent(false)
+        } else {
+            setRenderEvent(true);
+        }
+    }, []);
 
     const handleClick = (e) => {
         const element = e.target;
@@ -20,7 +29,7 @@ function App() {
 
     return (
         <div>
-            <Header/>
+            <Header renderEvent={renderEvent}/>
             <div className="main">
                 <div className="nav">
                     <div className="bankName">
