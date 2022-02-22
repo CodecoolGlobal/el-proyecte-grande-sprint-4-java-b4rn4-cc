@@ -20,9 +20,13 @@ public class UserService {
         this.accountDao = accountDao;
     }
 
+    public User getUser(String userID) {
+        return userDao.findUser(userID);
+    }
+
     public void addUser(User newUser){
         userDao.addUser(newUser);
-        CheckingAccount checkingAccount = CheckingAccount.builder().build();
+        CheckingAccount checkingAccount = CheckingAccount.builder().userID(newUser.getUserID()).build();
         userDao.addAccount(newUser.getUserID(), checkingAccount);
         accountDao.addCheckingAccount(checkingAccount);
     }

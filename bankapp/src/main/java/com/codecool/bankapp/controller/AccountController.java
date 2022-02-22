@@ -2,7 +2,6 @@ package com.codecool.bankapp.controller;
 
 import com.codecool.bankapp.model.Account;
 import com.codecool.bankapp.model.Transaction;
-import com.codecool.bankapp.model.User;
 import com.codecool.bankapp.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,9 +24,9 @@ public class AccountController {
         return accountService.getHistoryByAccount(accountNumber);
     }
 
-    @PostMapping
-    public List<Account> getAccounts(@RequestBody User user) {
-        return accountService.getAccountsByUser(user);
+    @GetMapping("/list")
+    public List<Account> getAccounts(@RequestParam String userID) {
+        return accountService.getAccountsByUserID(userID);
     }
 
     @PostMapping("/transaction")
