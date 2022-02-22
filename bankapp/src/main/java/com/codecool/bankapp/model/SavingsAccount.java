@@ -1,7 +1,11 @@
 package com.codecool.bankapp.model;
 
-import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 
-@Builder
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
+@Data
 public class SavingsAccount extends Account{
 }

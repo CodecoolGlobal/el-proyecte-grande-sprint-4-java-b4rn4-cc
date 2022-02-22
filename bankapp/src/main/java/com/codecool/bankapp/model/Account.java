@@ -1,7 +1,9 @@
 package com.codecool.bankapp.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,8 +14,11 @@ import java.util.UUID;
 
 @Component
 @Data
+@SuperBuilder
 public abstract class Account {
-    private String accountNumber;
+    protected String accountNumber;
+    protected String userID;
+    @Builder.Default
     protected BigDecimal balance = new BigDecimal("0");
     @JsonBackReference
     protected final List<Transaction> history = new ArrayList<>();
