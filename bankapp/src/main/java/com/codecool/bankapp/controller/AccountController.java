@@ -2,7 +2,6 @@ package com.codecool.bankapp.controller;
 
 import com.codecool.bankapp.model.Account;
 import com.codecool.bankapp.model.Transaction;
-import com.codecool.bankapp.model.User;
 import com.codecool.bankapp.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
