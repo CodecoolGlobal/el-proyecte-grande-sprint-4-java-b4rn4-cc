@@ -18,9 +18,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public @ResponseBody User getUser() {
-        return User.builder().name("bandi").password("test").build();
+    @GetMapping("/user")
+    public @ResponseBody User getUser(@RequestParam String userID) {
+        return userService.getUser(userID);
     }
 
     @PostMapping("/register")
