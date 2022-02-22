@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import About from "./components/About";
 import Header from "./components/Header";
-import Accountdetails from "./components/Accountdetails";
+import AccountDetails from "./components/AccountDetails";
 import Deposit from "./components/Deposit";
 import Loan from "./components/Loan";
 import Paybills from "./components/Paybills";
@@ -75,7 +75,7 @@ function App() {
           {renderThis === "Pay Bills" && <Paybills />}
           {renderThis === "Loan" && <Loan />}
           {renderThis === "Transaction History" && <Transactionhistory />}
-          {renderThis === "Account Details" && <Accountdetails />}
+          {renderThis === "Account Details" && <AccountDetails />}
         </div>
       </div>
     </div>
