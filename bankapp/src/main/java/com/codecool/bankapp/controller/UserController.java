@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping
     public @ResponseBody User getUser() {
-        return new User("bandi", "test");
+        return User.builder().name("bandi").password("test").build();
     }
 
     @PostMapping("/register")
