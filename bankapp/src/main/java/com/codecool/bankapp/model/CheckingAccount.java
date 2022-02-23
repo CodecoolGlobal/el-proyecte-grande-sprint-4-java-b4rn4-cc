@@ -1,5 +1,6 @@
 package com.codecool.bankapp.model;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
@@ -10,8 +11,8 @@ import java.math.BigDecimal;
 @SuperBuilder
 @Data
 public class CheckingAccount extends Account {
-
-    public void withdrawMoney(BigDecimal amount) {
-        this.balance = this.balance.subtract(amount);
-    }
+    @Builder.Default
+    private final String type = CheckingAccount.class.getSimpleName();
+    @Builder.Default
+    private final boolean canWidhdraw = true;
 }

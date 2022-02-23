@@ -20,6 +20,7 @@ public abstract class Account {
     protected String userID;
     @Builder.Default
     protected BigDecimal balance = new BigDecimal("0");
+    protected boolean canWithdraw;
     @JsonBackReference
     protected final List<Transaction> history = new ArrayList<>();
 
@@ -30,6 +31,13 @@ public abstract class Account {
 
     public void depositMoney(BigDecimal amount) {
         this.balance = this.balance.add(amount);
+    }
+
+    public boolean withdrawMoney(BigDecimal amount) {
+        if(canWithdraw) {
+            this.balance = this.balance.subtract(amount);
+        }
+        return canWithdraw;
     }
 
     public void addToHistory(Transaction transaction) {

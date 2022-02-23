@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class Transaction {
     private final LocalDateTime transactionTime = LocalDateTime.now();
     private BigDecimal amount;
-    private String sender;  //TODO: CheckingAccount only!
+    private String sender;
     private String recipient;
     private String message;
     private TransactionStatus status = TransactionStatus.PROCESSING;
