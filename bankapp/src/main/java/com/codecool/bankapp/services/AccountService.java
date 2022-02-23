@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class AccountService {
@@ -36,12 +37,12 @@ public class AccountService {
         return transaction;
     }
 
-    public List<Transaction> getHistoryByAccount(String accountNumber) {
+    public List<Transaction> getHistoryByAccount(UUID accountNumber) {
         Account account = accountDao.findAccount(accountNumber);
         return accountDao.getHistory(account);
     }
 
-    public List<Account> getAccountsByUserID(String userID) {
+    public List<Account> getAccountsByUserID(UUID userID) {
         return accountDao.getAccountsByUserID(userID);
     }
 }

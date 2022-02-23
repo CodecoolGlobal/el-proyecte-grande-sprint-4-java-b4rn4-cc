@@ -6,6 +6,7 @@ import com.codecool.bankapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/")
@@ -18,8 +19,8 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user")
-    public @ResponseBody User getUser(@RequestParam String userID) {
+    @GetMapping("/user/{userID}")
+    public @ResponseBody User getUser(@PathVariable UUID userID) {
         return userService.getUser(userID);
     }
 

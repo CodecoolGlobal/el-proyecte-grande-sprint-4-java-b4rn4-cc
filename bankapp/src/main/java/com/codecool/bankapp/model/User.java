@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class User {
     @Builder.Default
-    private String userID = UUID.randomUUID().toString();
+    private UUID userID = UUID.randomUUID();
     private String name;
     private String address;
     private String password;       // TODO: move login credentials to separate object

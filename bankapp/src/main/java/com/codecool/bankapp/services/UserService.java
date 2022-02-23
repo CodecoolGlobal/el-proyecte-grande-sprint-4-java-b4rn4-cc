@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -20,7 +21,7 @@ public class UserService {
         this.accountDao = accountDao;
     }
 
-    public User getUser(String userID) {
+    public User getUser(UUID userID) {
         return userDao.findUser(userID).orElse(null);
     }
 
