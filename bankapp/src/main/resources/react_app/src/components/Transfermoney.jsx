@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const Transfermoney = ({ transferMoney, accounts }) => {
   const [amount, setAmount] = useState(0);
-  const [sender, setSender] = useState("");
+  const [sender, setSender] = useState(accounts[0].accountNumber);
   const [recipient, setRecipient] = useState("");
   const [message, setMessage] = useState("");
 
