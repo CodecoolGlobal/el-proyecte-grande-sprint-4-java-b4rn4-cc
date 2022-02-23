@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/")
@@ -26,9 +27,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public @ResponseBody User getUser() {
-        return User.builder().name("bandi").password("test").build();
+    @GetMapping("/user/{userID}")
+    public @ResponseBody User getUser(@PathVariable UUID userID) {
+        return userService.getUser(userID);
     }
 
     @PostMapping("/register")
