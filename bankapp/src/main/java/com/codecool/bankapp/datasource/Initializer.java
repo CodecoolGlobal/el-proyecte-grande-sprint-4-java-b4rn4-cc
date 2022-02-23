@@ -30,12 +30,13 @@ public class Initializer {
                 .address("1111 Budapest, Csirke utca 7.")
                 .userID(UUID.fromString("99999999-2222-3333-4444-555555555555")).build();
         User bank = User.builder().name("Banco Grande Incorporated").password("12")
-                .userID(UUID.fromString("11111111-2222-3333-4444-555555555555"))
+                .userID(UUID.fromString("99999999-9999-9999-9999-999999999999"))
                 .address("1234 Budapest, Hungary, Hal Street 99.").build();
 
         BigDecimal money = new BigDecimal(100000);
         userService.addUser(user1);
         userService.addUser(user2);
+        userService.addUser(bank);
         user1.getAccountList().get(0).depositMoney(money);
         user2.getAccountList().get(0).depositMoney(money);
         bank.getAccountList().get(0).depositMoney(new BigDecimal(900000000));
