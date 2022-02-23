@@ -25,7 +25,7 @@ public class AccountController {
         return accountService.getHistoryByAccount(accountNumber);
     }
 
-    @GetMapping("{userID}/list")
+    @GetMapping("/user/{userID}")
     public List<Account> getAccounts(@PathVariable UUID userID) {
         return accountService.getAccountsByUserID(userID);
     }
