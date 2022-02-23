@@ -23,6 +23,8 @@ function App() {
   const [renderEvent, setRenderEvent] = useState(false);
   const [details, setDetails] = useState(initialUserState);
 
+  window.addEventListener("click", () => setRenderEvent(!renderEvent));
+
   useEffect(() => {
     const getDetails = async () => {
       const data = await apiGet(
@@ -84,8 +86,12 @@ function App() {
         </div>
         <div className="content">
           {renderThis === "About" && <About />}
-          {renderThis === "Deposit" && <Deposit transferMoney={transferMoney}/>}
-          {renderThis === "Withdraw" && <Withdraw transferMoney={transferMoney}/>}
+          {renderThis === "Deposit" && (
+            <Deposit transferMoney={transferMoney} />
+          )}
+          {renderThis === "Withdraw" && (
+            <Withdraw transferMoney={transferMoney} />
+          )}
           {renderThis === "Transer Money" && (
             <Transfermoney
               transferMoney={transferMoney}
