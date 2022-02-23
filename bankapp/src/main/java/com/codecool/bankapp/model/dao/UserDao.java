@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface UserDao {
     List<User> getAllUsers();
-    Optional<User> findUser(UUID userID);   //TODO: change user parameter to unique ID
+    Optional<User> findUser(UUID userID);
     void addUser(User newUser);
     boolean addAccount(UUID userID, Account account);
 }
