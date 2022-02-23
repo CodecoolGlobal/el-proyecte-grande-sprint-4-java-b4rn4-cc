@@ -3,25 +3,36 @@ import Transaction from "./Transaction";
 import { apiGet } from "../FetchApis";
 import { useEffect, useState } from "react";
 
-const Transactionhistory = () => {
+const Transactionhistory = ({ accounts }) => {
   const [transactions, setTransactions] = useState([]);
+  const [accToView, setAccToView] = useState(accounts[0].accountNumber);
 
   useEffect(() => {
     const getTransactions = async () => {
       const data = await apiGet(
-        "http://localhost:8080/account/history?accountNumber=1"
+        "http://localhost:8080/account/" + accToView + "/history"
       );
       setTransactions(data);
     };
     getTransactions();
-  }, []);
+  }, [accToView]);
 
   return (
     <div className="transaction">
       <h2>Account History</h2>
       <div className="accountNumberHistory">
         <div>Account number: </div>
-        <div>1</div>
+        <select
+          name="accNumber"
+          id="accNumber"
+          onChange={(event) => setAccToView(event.target.value)}
+        >
+          {accounts.map((acc) => (
+            <option key={acc.accountNumber} value={acc.accountNumber}>
+              {acc.accountNumber}
+            </option>
+          ))}
+        </select>
       </div>
       <table className="historyTable">
         <thead>

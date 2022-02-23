@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-const Transfermoney = ({ transferMoney }) => {
+const Transfermoney = ({ transferMoney, accounts }) => {
   const [amount, setAmount] = useState(0);
-  const [sender, setSender] = useState("1");
+  const [sender, setSender] = useState("");
   const [recipient, setRecipient] = useState("");
   const [message, setMessage] = useState("");
 
@@ -19,6 +19,17 @@ const Transfermoney = ({ transferMoney }) => {
   return (
     <div className="transfer-container">
       <h1>Transfer Money</h1>
+      <select
+        name="accNumber"
+        id="accNumber"
+        onChange={(event) => setSender(event.target.value)}
+      >
+        {accounts.map((acc) => (
+          <option key={acc.accountNumber} value={acc.accountNumber}>
+            {acc.accountNumber}
+          </option>
+        ))}
+      </select>
       <form className="transfer-form" onSubmit={submit}>
         <div>
           <label htmlFor="recipientAccNumber">Recipient:</label>
