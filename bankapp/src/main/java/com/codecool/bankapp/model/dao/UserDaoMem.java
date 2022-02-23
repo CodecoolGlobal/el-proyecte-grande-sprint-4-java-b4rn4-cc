@@ -29,7 +29,12 @@ public class UserDaoMem implements UserDao {
     }
 
     @Override
-    public void addAccount(String userID, Account account) {
-        findUser(userID).ifPresent(userResult -> userResult.addAccountToList(account));
+    public boolean addAccount(String userID, Account account) {
+        Optional<User> userResult = findUser(userID);
+        if(userResult.isPresent()) {
+            userResult.get().addAccountToList(account);
+            return true;
+        }
+        return false;
     }
 }

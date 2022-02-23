@@ -10,5 +10,5 @@ public interface UserDao {
     List<User> getAllUsers();
     Optional<User> findUser(String userID);   //TODO: change user parameter to unique ID
     void addUser(User newUser);
-    void addAccount(String userID, Account account);
+    boolean addAccount(String userID, Account account);
 }
