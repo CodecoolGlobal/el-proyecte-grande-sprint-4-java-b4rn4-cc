@@ -21,7 +21,7 @@ public class UserService {
     }
 
     public User getUser(String userID) {
-        return userDao.findUser(userID);
+        return userDao.findUser(userID).orElse(null);
     }
 
     public void addUser(User newUser){
