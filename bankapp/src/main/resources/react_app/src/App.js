@@ -9,12 +9,29 @@ import Paybills from "./components/Paybills";
 import Transactionhistory from "./components/Transactionhistory";
 import Transfermoney from "./components/Transfermoney";
 import Withdraw from "./components/Withdraw";
-import { apiPost } from "./FetchApis";
+import { apiPost, apiGet } from "./FetchApis";
+import Landing from "./components/Landing";
+
+const initialUserState = {
+  name: "",
+  address: "",
+  accountList: [],
+};
 
 function App() {
-  const [renderThis, setRenderThis] = useState();
-
+  const [renderThis, setRenderThis] = useState("");
   const [renderEvent, setRenderEvent] = useState(false);
+  const [details, setDetails] = useState(initialUserState);
+
+  useEffect(() => {
+    const getDetails = async () => {
+      const data = await apiGet(
+        "http://localhost:8080/user/11111111-2222-3333-4444-555555555555"
+      );
+      setDetails(data);
+    };
+    getDetails();
+  }, []);
 
   useEffect(() => {
     if (renderEvent) {
@@ -36,7 +53,7 @@ function App() {
       <Header renderEvent={renderEvent} />
       <div className="main">
         <div className="nav">
-          <div className="bankName">
+          <div className="bankName" onClick={(event) => handleClick(event)}>
             <strong>El Grande Banco</strong>
           </div>
           <div className="navLinks">
@@ -70,12 +87,22 @@ function App() {
           {renderThis === "Deposit" && <Deposit />}
           {renderThis === "Withdraw" && <Withdraw />}
           {renderThis === "Transer Money" && (
-            <Transfermoney transferMoney={transferMoney} />
+            <Transfermoney
+              transferMoney={transferMoney}
+              accounts={details.accountList}
+            />
           )}
           {renderThis === "Pay Bills" && <Paybills />}
           {renderThis === "Loan" && <Loan />}
-          {renderThis === "Transaction History" && <Transactionhistory />}
-          {renderThis === "Account Details" && <AccountDetails />}
+          {renderThis === "Transaction History" && (
+            <Transactionhistory accounts={details.accountList} />
+          )}
+          {renderThis === "Account Details" && (
+            <AccountDetails details={details} />
+          )}
+          {(renderThis === "El Grande Banco" || renderThis === "") && (
+            <Landing />
+          )}
         </div>
       </div>
     </div>

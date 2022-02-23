@@ -20,6 +20,7 @@ public class Initializer {
         this.userService = userService;
         this.accountService = accountService;
         init();
+        Configuration.setupApp();
     }
 
     private void init() {
