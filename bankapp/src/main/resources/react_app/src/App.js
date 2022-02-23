@@ -35,12 +35,6 @@ function App() {
     getDetails();
   }, []);
 
-  useEffect(() => {
-    if (renderEvent) {
-      setRenderEvent(!renderEvent);
-    }
-  }, []);
-
   const transferMoney = async (transaction) => {
     await apiPost("http://localhost:8080/account/transaction", transaction);
   };
