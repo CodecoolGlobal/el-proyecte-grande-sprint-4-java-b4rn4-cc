@@ -9,7 +9,7 @@ const AccountDetails = () => {
     useEffect(() => {
         const getDetails = async () => {
             const data = await apiGet(
-                "http://localhost:8080/user?userID=111-222-333"
+                "http://localhost:8080/user/11111111-2222-3333-4444-555555555555"
             );
             setDetails(data);
         };
