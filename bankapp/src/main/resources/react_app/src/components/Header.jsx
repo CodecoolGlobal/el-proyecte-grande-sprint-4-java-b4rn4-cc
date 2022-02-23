@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-const Header = (renderEvent) => {
+const Header = ({renderEvent}) => {
     const [time, setTimeLeft] = useState(300)
 
     useEffect(() => {
