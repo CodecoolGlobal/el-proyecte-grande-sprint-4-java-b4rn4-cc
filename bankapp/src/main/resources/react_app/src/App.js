@@ -10,9 +10,10 @@ import Transactionhistory from "./components/Transactionhistory";
 import Transfermoney from "./components/Transfermoney";
 import Withdraw from "./components/Withdraw";
 import { apiPost } from "./FetchApis";
+import Landing from "./components/Landing";
 
 function App() {
-  const [renderThis, setRenderThis] = useState();
+  const [renderThis, setRenderThis] = useState("");
 
   const [renderEvent, setRenderEvent] = useState(false);
 
@@ -36,7 +37,7 @@ function App() {
       <Header renderEvent={renderEvent} />
       <div className="main">
         <div className="nav">
-          <div className="bankName">
+          <div className="bankName" onClick={(event) => handleClick(event)}>
             <strong>El Grande Banco</strong>
           </div>
           <div className="navLinks">
@@ -76,6 +77,9 @@ function App() {
           {renderThis === "Loan" && <Loan />}
           {renderThis === "Transaction History" && <Transactionhistory />}
           {renderThis === "Account Details" && <Accountdetails />}
+          {(renderThis === "El Grande Banco" || renderThis === "") && (
+            <Landing />
+          )}
         </div>
       </div>
     </div>
