@@ -23,7 +23,6 @@ function App() {
   const [renderEvent, setRenderEvent] = useState(false);
   const [details, setDetails] = useState(initialUserState);
 
-  window.addEventListener("click", () => setRenderEvent(!renderEvent));
 
   useEffect(() => {
     const getDetails = async () => {
@@ -42,6 +41,7 @@ function App() {
   const handleClick = (e) => {
     const element = e.target;
     setRenderThis(element.innerText);
+    setRenderEvent(!renderEvent);
   };
 
   return (

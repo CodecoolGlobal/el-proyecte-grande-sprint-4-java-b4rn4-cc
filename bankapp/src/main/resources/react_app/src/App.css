@@ -124,7 +124,6 @@
   padding: 10px;
   border-radius: 15px;
   background-color: aliceblue;
-  margin: 50px auto 15px auto;
 }
 
 .historyTable {
@@ -160,7 +159,7 @@
 
 .accountNumberHistory {
   display: flex;
-  margin: 30px;
+  margin: 50px auto 30px auto;
   align-items: center;
   font-size: 28px;
 }
@@ -180,10 +179,10 @@
   padding: 25px 15px;
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
 }
 
 .transfer-form label {
-  width: 70px;
   align-self: center;
 }
 
