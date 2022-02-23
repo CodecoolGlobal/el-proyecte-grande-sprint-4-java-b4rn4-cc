@@ -25,9 +25,10 @@ public class AccountService {
         BigDecimal zero = BigDecimal.ZERO;
 
         if (amount.compareTo(zero) > 0 && amount.compareTo(sender.getBalance()) < 1) {
-            transaction.setStatus(TransactionStatus.SUCCESSFUL);
-            if(sender.withdrawMoney(amount))
+            if(sender.withdrawMoney(amount)) {
                 destination.depositMoney(amount);
+                transaction.setStatus(TransactionStatus.SUCCESSFUL);
+            }
         } else {
             transaction.setStatus(TransactionStatus.REJECTED);
         }

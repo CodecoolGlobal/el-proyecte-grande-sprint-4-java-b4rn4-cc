@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/account")
@@ -20,12 +21,12 @@ public class AccountController {
     }
 
     @GetMapping("/history")     // TODO: maybe add to url
-    public List<Transaction> getHistory(@RequestParam String accountNumber) {
+    public List<Transaction> getHistory(@RequestParam UUID accountNumber) {
         return accountService.getHistoryByAccount(accountNumber);
     }
 
     @GetMapping("/list")
-    public List<Account> getAccounts(@RequestParam String userID) {
+    public List<Account> getAccounts(@RequestParam UUID userID) {
         return accountService.getAccountsByUserID(userID);
     }
 
