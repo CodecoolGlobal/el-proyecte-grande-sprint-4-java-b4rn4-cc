@@ -20,13 +20,13 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @GetMapping("/history")     // TODO: maybe add to url
-    public List<Transaction> getHistory(@RequestParam UUID accountNumber) {
+    @GetMapping("/{accountNumber}/history")
+    public List<Transaction> getHistory(@PathVariable UUID accountNumber) {
         return accountService.getHistoryByAccount(accountNumber);
     }
 
-    @GetMapping("/list")
-    public List<Account> getAccounts(@RequestParam UUID userID) {
+    @GetMapping("{userID}/list")
+    public List<Account> getAccounts(@PathVariable UUID userID) {
         return accountService.getAccountsByUserID(userID);
     }
 
