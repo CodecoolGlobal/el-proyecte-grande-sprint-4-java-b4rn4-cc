@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -12,7 +13,7 @@ public class AccountDaoMem implements AccountDao {
     private final List<Account> accountList = new ArrayList<>();
 
     @Override
-    public Account findAccount(String accountNumber) {
+    public Account findAccount(UUID accountNumber) {
         for (Account account : accountList) {
             if(account.getAccountNumber().equals(accountNumber)) {
                 return account;
@@ -22,7 +23,7 @@ public class AccountDaoMem implements AccountDao {
     }
 
     @Override
-    public List<Account> getAccountsByUserID(String userID) {
+    public List<Account> getAccountsByUserID(UUID userID) {
         return accountList.stream()
                 .filter(acc -> acc.getUserID().equals(userID))
                 .collect(Collectors.toList());
