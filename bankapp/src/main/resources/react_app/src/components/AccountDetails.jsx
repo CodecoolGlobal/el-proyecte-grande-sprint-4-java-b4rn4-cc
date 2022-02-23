@@ -32,7 +32,7 @@ const AccountDetails = () => {
                     <p>{details.address}</p>
                 </div>
             </div>
-            <div className={"CoDetails"}>
+            <div className={"CoDetails"} style={{width: "80%"}}>
                 <AccountsTable accounts={details.accountList}/>
             </div>
         </div>
