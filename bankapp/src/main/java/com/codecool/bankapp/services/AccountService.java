@@ -28,6 +28,8 @@ public class AccountService {
             if(sender.withdrawMoney(amount)) {
                 destination.depositMoney(amount);
                 transaction.setStatus(TransactionStatus.SUCCESSFUL);
+            } else {
+                transaction.setStatus(TransactionStatus.REJECTED);
             }
         } else {
             transaction.setStatus(TransactionStatus.REJECTED);
