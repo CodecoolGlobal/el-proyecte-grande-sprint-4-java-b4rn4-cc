@@ -84,8 +84,8 @@ function App() {
         </div>
         <div className="content">
           {renderThis === "About" && <About />}
-          {renderThis === "Deposit" && <Deposit />}
-          {renderThis === "Withdraw" && <Withdraw />}
+          {renderThis === "Deposit" && <Deposit transferMoney={transferMoney}/>}
+          {renderThis === "Withdraw" && <Withdraw transferMoney={transferMoney}/>}
           {renderThis === "Transer Money" && (
             <Transfermoney
               transferMoney={transferMoney}

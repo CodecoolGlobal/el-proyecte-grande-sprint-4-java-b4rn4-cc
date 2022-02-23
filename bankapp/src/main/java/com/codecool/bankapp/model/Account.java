@@ -1,8 +1,7 @@
 package com.codecool.bankapp.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
@@ -28,7 +27,7 @@ public abstract class Account {
 
     public boolean withdrawMoney(BigDecimal amount) {
         if(canWithdraw) {
-            this.balance = this.balance.subtract(amount);
+            this.balance = balance.subtract(amount);
         }
         return canWithdraw;
     }

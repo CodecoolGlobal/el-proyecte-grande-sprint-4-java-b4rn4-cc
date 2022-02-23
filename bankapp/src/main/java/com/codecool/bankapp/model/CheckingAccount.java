@@ -1,16 +1,15 @@
 package com.codecool.bankapp.model;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
-@Data
+@Getter
 public class CheckingAccount extends Account {
+    {
+        super.canWithdraw = true;
+    }
     @Builder.Default
-    private final String type = CheckingAccount.class.getSimpleName();
-    @Builder.Default
-    private final boolean canWithdraw = true;
+    private final String type = CheckingAccount.class.getSimpleName();;
 }

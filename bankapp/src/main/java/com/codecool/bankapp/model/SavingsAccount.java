@@ -1,16 +1,17 @@
 package com.codecool.bankapp.model;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
-@Data
+@Getter
 public class SavingsAccount extends Account{
+    {
+        super.canWithdraw = false;
+    }
     @Builder.Default
     private final String type = SavingsAccount.class.getSimpleName();
-    @Builder.Default
-    private final boolean canWithdraw = false;
 }
