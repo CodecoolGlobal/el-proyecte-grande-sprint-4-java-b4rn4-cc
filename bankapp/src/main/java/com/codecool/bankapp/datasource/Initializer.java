@@ -54,7 +54,8 @@ public class Initializer {
         user1.addAccountToList(secondAccount);
         Transaction transaction1 = Transaction.builder().amount(new BigDecimal(100)).sender(account1).currency(CurrencyType.EUR).recipient(account2).build();
         Transaction transaction2 = Transaction.builder().amount(new BigDecimal(9999999)).sender(account1).currency(CurrencyType.EUR).recipient(account2).build();
-        accountService.makeTransaction(transaction1, null);
-        accountService.makeTransaction(transaction2, null);
+        CurrencyRates dummyCurrencyRates = new CurrencyRates();
+        accountService.makeTransaction(transaction1, dummyCurrencyRates);
+        accountService.makeTransaction(transaction2, dummyCurrencyRates);
     }
 }

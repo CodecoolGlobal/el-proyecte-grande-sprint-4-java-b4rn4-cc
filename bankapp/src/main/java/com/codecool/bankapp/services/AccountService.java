@@ -50,9 +50,6 @@ public class AccountService {
     }
 
     private BigDecimal exchangeCurrency(BigDecimal amount, CurrencyType baseCurrency, CurrencyType targetCurrency, CurrencyRates currencyRates) {
-        if(currencyRates == null) {
-            return amount;
-        }
         BigDecimal rate = currencyRates.getRates().get(targetCurrency);
         if(!baseCurrency.equals(CurrencyType.EUR)) {
             rate = rate.divide(currencyRates.getRates().get(baseCurrency), 2, RoundingMode.HALF_UP);
