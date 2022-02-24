@@ -1,7 +1,6 @@
 package com.codecool.bankapp.datasource;
 
-import com.codecool.bankapp.model.Transaction;
-import com.codecool.bankapp.model.User;
+import com.codecool.bankapp.model.*;
 import com.codecool.bankapp.services.AccountService;
 import com.codecool.bankapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +42,18 @@ public class Initializer {
         bank.getAccountList().get(0).depositMoney(new BigDecimal(900000000));
         UUID account1 = UUID.fromString("cd601a0a-ff98-47fc-90a9-d5fe1b5fa26c");
         UUID account2 = UUID.fromString("ba1ca0c3-3090-4daf-b684-0fb9a0564c71");
+        UUID account3 = UUID.fromString("00000000-2222-1111-0000-444444444444");
         UUID bankFundAccount = UUID.fromString("00000000-0000-0000-0000-000000000000");
         user1.getAccountList().get(0).setAccountNumber(account1);
         user2.getAccountList().get(0).setAccountNumber(account2);
+        user2.getAccountList().get(0).setCurrency(CurrencyType.HUF);
         bank.getAccountList().get(0).setAccountNumber(bankFundAccount);
+        CheckingAccount secondAccount = CheckingAccount.builder().accountNumber(account3).currency(CurrencyType.GBP).build();
+        secondAccount.setBalance(money);
+        user1.addAccountToList(secondAccount);
         Transaction transaction1 = Transaction.builder().amount(new BigDecimal(100)).sender(account1).recipient(account2).build();
         Transaction transaction2 = Transaction.builder().amount(new BigDecimal(9999999)).sender(account1).recipient(account2).build();
-        accountService.makeTransaction(transaction1);
-        accountService.makeTransaction(transaction2);
+        accountService.makeTransaction(transaction1, null);
+        accountService.makeTransaction(transaction2, null);
     }
 }
