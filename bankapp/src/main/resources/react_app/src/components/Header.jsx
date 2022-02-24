@@ -34,7 +34,6 @@ const Header = ({renderEvent}) => {
         <ul className={"header"}>
             <li className={"noHover"}><a>{secondsToTime(time)}</a></li>
             <li><a href="">Log out</a></li>
-            <li><a href="">About</a></li>
             <li><a href="">Home</a></li>
         </ul>
     );
