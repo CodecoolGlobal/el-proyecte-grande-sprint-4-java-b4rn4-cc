@@ -40,9 +40,9 @@ const Deposit = ({ transferMoney }) => {
             onChange={(e) => setAmount(e.target.value)}
         />
       </div>
-      <div style={{display: "flex", justifyContent: "spaceBetween"}}>
+      <div style={{display: "flex", justifyContent: "spaceBetween", padding: "0 0 25px"}}>
         <p>Currency:</p>
-        <p>EUR</p>
+        <p><strong>{currency}</strong></p>
       </div>
       <div>
         <label htmlFor="message">Message:</label>

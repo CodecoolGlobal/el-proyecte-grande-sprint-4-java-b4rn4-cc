@@ -26,7 +26,7 @@ const Withdraw = ({ transferMoney, accounts }) => {
     <h1>Withdraw</h1>
     <form className="transfer-form" onSubmit={submit}>
       <div>
-        <label for="accNumber">Sender:</label>
+        <label>Sender:</label>
         <select
             name="accNumber"
             id="accNumber"
@@ -50,9 +50,9 @@ const Withdraw = ({ transferMoney, accounts }) => {
             onChange={(e) => setAmount(e.target.value)}
         />
       </div>
-      <div style={{display: "flex", justifyContent: "spaceBetween"}}>
+      <div style={{display: "flex", justifyContent: "spaceBetween", padding: "0 0 25px"}}>
         <p>Currency:</p>
-        <p>{currency}</p>
+        <p><strong>{currency}</strong></p>
       </div>
       <div>
         <label htmlFor="message">Message:</label>
