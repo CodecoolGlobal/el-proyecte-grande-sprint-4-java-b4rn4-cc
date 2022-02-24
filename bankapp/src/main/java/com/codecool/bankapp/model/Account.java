@@ -17,6 +17,8 @@ public abstract class Account {
     protected UUID userID;
     @Builder.Default
     protected BigDecimal balance = new BigDecimal("0");
+    @Builder.Default
+    protected CurrencyType currency = CurrencyType.EUR;
     protected boolean canWithdraw;
     @JsonBackReference
     protected final List<Transaction> history = new ArrayList<>();

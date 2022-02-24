@@ -90,7 +90,7 @@ function App() {
             <Deposit transferMoney={transferMoney} />
           )}
           {renderThis === "Withdraw" && (
-            <Withdraw transferMoney={transferMoney} />
+            <Withdraw transferMoney={transferMoney} accounts={details.accountList} />
           )}
           {renderThis === "Transer Money" && (
             <Transfermoney

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,12 +14,13 @@ import java.util.UUID;
 public class AccountService {
     AccountDao accountDao;
 
+
     @Autowired
     public AccountService(AccountDao accountDao) {
         this.accountDao = accountDao;
     }
 
-    public Transaction makeTransaction(Transaction transaction) {
+    public Transaction makeTransaction(Transaction transaction, CurrencyRates currency) {
         Account sender = accountDao.findAccount(transaction.getSender());
         Account destination = accountDao.findAccount(transaction.getRecipient());
         BigDecimal amount = transaction.getAmount();
@@ -26,7 +28,9 @@ public class AccountService {
 
         if (amount.compareTo(zero) > 0 && amount.compareTo(sender.getBalance()) < 1) {
             if(sender.withdrawMoney(amount)) {
-                destination.depositMoney(amount);
+                CurrencyType targetCurrency = destination.getCurrency();
+                BigDecimal depositedMoney = exchangeCurrency(amount, transaction.getCurrency(), targetCurrency, currency);
+                destination.depositMoney(depositedMoney);
                 transaction.setStatus(TransactionStatus.SUCCESSFUL);
             } else {
                 transaction.setStatus(TransactionStatus.REJECTED);
@@ -45,7 +49,22 @@ public class AccountService {
         return accountDao.getHistory(account);
     }
 
+    private BigDecimal exchangeCurrency(BigDecimal amount, CurrencyType baseCurrency, CurrencyType targetCurrency, CurrencyRates currencies) {
+        if(currencies == null) {
+            return amount;
+        }
+        BigDecimal rate = currencies.getRates().get(targetCurrency);
+        if(!baseCurrency.equals(CurrencyType.EUR)) {
+            rate = rate.divide(currencies.getRates().get(baseCurrency), 2, RoundingMode.HALF_UP);
+        }
+        return amount.multiply(rate);
+    }
+
     public List<Account> getAccountsByUserID(UUID userID) {
         return accountDao.getAccountsByUserID(userID);
+    }
+
+    public void addCheckingAccount(CheckingAccount account) {
+        accountDao.addCheckingAccount(account);
     }
 }

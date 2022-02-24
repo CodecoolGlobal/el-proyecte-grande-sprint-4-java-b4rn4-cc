@@ -1,7 +1,7 @@
 import React from "react";
 
 const Paybills = () => {
-  return <div>Paybills</div>;
+  return <div>Under development</div>;
 };
 
 export default Paybills;
