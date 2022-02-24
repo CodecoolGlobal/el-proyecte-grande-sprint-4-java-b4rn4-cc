@@ -55,34 +55,37 @@ const Landing = () => {
       {isLoading ? (
         <div id="loading" className="display"></div>
       ) : (
-        <div className="news-container">
-          {news.results.map((result, index) => (
-            <News key={index} result={result} />
-          ))}
+        <div>
+          <div className="news-container">
+            {news.results.map((result, index) => (
+              <News key={index} result={result} />
+            ))}
+          </div>
+
+          <div className="cur-container">
+            <div className="currency">
+              <div>1 {currencies.base}</div>
+              <div className="national-cur">GBP</div>
+              <div>{currencies.rates.GBP.toFixed(2)}</div>
+            </div>
+            <div className="currency">
+              <div>1 {currencies.base}</div>
+              <div className="national-cur">JPY</div>
+              <div>{currencies.rates.JPY.toFixed(2)}</div>
+            </div>
+            <div className="currency">
+              <div>1 {currencies.base}</div>
+              <div className="national-cur">USD</div>
+              <div>{currencies.rates.USD.toFixed(2)}</div>
+            </div>
+            <div className="currency">
+              <div>1 {currencies.base}</div>
+              <div className="national-cur">HUF</div>
+              <div>{currencies.rates.HUF.toFixed(2)}</div>
+            </div>
+          </div>
         </div>
       )}
-      <div className="cur-container">
-        <div className="currency">
-          <div>1 {currencies.base}</div>
-          <div className="national-cur">GBP</div>
-          <div>{currencies.rates.GBP.toFixed(2)}</div>
-        </div>
-        <div className="currency">
-          <div>1 {currencies.base}</div>
-          <div className="national-cur">JPY</div>
-          <div>{currencies.rates.JPY.toFixed(2)}</div>
-        </div>
-        <div className="currency">
-          <div>1 {currencies.base}</div>
-          <div className="national-cur">USD</div>
-          <div>{currencies.rates.USD.toFixed(2)}</div>
-        </div>
-        <div className="currency">
-          <div>1 {currencies.base}</div>
-          <div className="national-cur">HUF</div>
-          <div>{currencies.rates.HUF.toFixed(2)}</div>
-        </div>
-      </div>
     </>
   );
 };
