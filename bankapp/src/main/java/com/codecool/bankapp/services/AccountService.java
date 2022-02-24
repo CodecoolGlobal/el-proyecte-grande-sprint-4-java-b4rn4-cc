@@ -20,7 +20,7 @@ public class AccountService {
         this.accountDao = accountDao;
     }
 
-    public Transaction makeTransaction(Transaction transaction, CurrencyRates currency) {
+    public Transaction makeTransaction(Transaction transaction, CurrencyRates currencyRates) {
         Account sender = accountDao.findAccount(transaction.getSender());
         Account destination = accountDao.findAccount(transaction.getRecipient());
         BigDecimal amount = transaction.getAmount();
@@ -29,7 +29,7 @@ public class AccountService {
         if (amount.compareTo(zero) > 0 && amount.compareTo(sender.getBalance()) < 1) {
             if(sender.withdrawMoney(amount)) {
                 CurrencyType targetCurrency = destination.getCurrency();
-                BigDecimal depositedMoney = exchangeCurrency(amount, transaction.getCurrency(), targetCurrency, currency);
+                BigDecimal depositedMoney = exchangeCurrency(amount, transaction.getCurrency(), targetCurrency, currencyRates);
                 destination.depositMoney(depositedMoney);
                 transaction.setStatus(TransactionStatus.SUCCESSFUL);
             } else {
@@ -49,13 +49,13 @@ public class AccountService {
         return accountDao.getHistory(account);
     }
 
-    private BigDecimal exchangeCurrency(BigDecimal amount, CurrencyType baseCurrency, CurrencyType targetCurrency, CurrencyRates currencies) {
-        if(currencies == null) {
+    private BigDecimal exchangeCurrency(BigDecimal amount, CurrencyType baseCurrency, CurrencyType targetCurrency, CurrencyRates currencyRates) {
+        if(currencyRates == null) {
             return amount;
         }
-        BigDecimal rate = currencies.getRates().get(targetCurrency);
+        BigDecimal rate = currencyRates.getRates().get(targetCurrency);
         if(!baseCurrency.equals(CurrencyType.EUR)) {
-            rate = rate.divide(currencies.getRates().get(baseCurrency), 2, RoundingMode.HALF_UP);
+            rate = rate.divide(currencyRates.getRates().get(baseCurrency), 2, RoundingMode.HALF_UP);
         }
         return amount.multiply(rate).setScale(2, RoundingMode.HALF_UP);
     }
