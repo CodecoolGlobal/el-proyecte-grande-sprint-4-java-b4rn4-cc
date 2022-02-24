@@ -4,11 +4,12 @@ const Deposit = ({ transferMoney }) => {
   const [amount, setAmount] = useState(0);
   const [recipient, setRecipient] = useState("");
   const [message, setMessage] = useState("");
-  const sender = "00000000-0000-0000-0000-000000000000"
+  const sender = "00000000-0000-0000-0000-000000000000";
+  const currency = "EUR";
 
   const submit = (e) => {
     e.preventDefault();
-    transferMoney({ amount, sender, recipient, message });
+    transferMoney({ amount, currency, sender, recipient, message });
     setAmount(0);
     setMessage("");
     setRecipient("");
@@ -38,6 +39,10 @@ const Deposit = ({ transferMoney }) => {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
         />
+      </div>
+      <div style={{display: "flex", justifyContent: "spaceBetween"}}>
+        <p>Currency:</p>
+        <p>EUR</p>
       </div>
       <div>
         <label htmlFor="message">Message:</label>
