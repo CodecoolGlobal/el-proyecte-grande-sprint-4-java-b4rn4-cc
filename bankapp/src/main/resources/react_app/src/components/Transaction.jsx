@@ -7,7 +7,7 @@ const Transaction = ({ transaction }) => {
         <tr>
           <td>{new Date(transaction.transactionTime).toUTCString()}</td>
           <td>{transaction.recipient}</td>
-          <td>{transaction.amount}</td>
+          <td>{transaction.amount} {transaction.currency}</td>
           <td
             className={
               transaction.status === "SUCCESSFUL"
