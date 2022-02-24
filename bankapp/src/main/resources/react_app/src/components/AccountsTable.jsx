@@ -8,6 +8,7 @@ const AccountsTable = ({accounts}) => {
                 <td>Account Number</td>
                 <td>Account Type</td>
                 <td>Balance</td>
+                <td>Currency</td>
             </tr>
             </thead>
             <tbody>
@@ -16,6 +17,7 @@ const AccountsTable = ({accounts}) => {
                     <td>{account.accountNumber}</td>
                     <td>{account.type}</td>
                     <td>{account.balance}</td>
+                    <td>{account.currency}</td>
                 </tr>
             ))}
             </tbody>
