@@ -48,11 +48,12 @@ public class Initializer {
         user2.getAccountList().get(0).setAccountNumber(account2);
         user2.getAccountList().get(0).setCurrency(CurrencyType.HUF);
         bank.getAccountList().get(0).setAccountNumber(bankFundAccount);
-        CheckingAccount secondAccount = CheckingAccount.builder().accountNumber(account3).currency(CurrencyType.GBP).build();
+        CheckingAccount secondAccount = CheckingAccount.builder().userID(user1.getUserID()).accountNumber(account3).currency(CurrencyType.GBP).build();
+        accountService.addCheckingAccount(secondAccount);
         secondAccount.setBalance(money);
         user1.addAccountToList(secondAccount);
-        Transaction transaction1 = Transaction.builder().amount(new BigDecimal(100)).sender(account1).recipient(account2).build();
-        Transaction transaction2 = Transaction.builder().amount(new BigDecimal(9999999)).sender(account1).recipient(account2).build();
+        Transaction transaction1 = Transaction.builder().amount(new BigDecimal(100)).sender(account1).currency(CurrencyType.EUR).recipient(account2).build();
+        Transaction transaction2 = Transaction.builder().amount(new BigDecimal(9999999)).sender(account1).currency(CurrencyType.EUR).recipient(account2).build();
         accountService.makeTransaction(transaction1, null);
         accountService.makeTransaction(transaction2, null);
     }

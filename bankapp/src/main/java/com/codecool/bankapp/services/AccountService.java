@@ -63,4 +63,8 @@ public class AccountService {
     public List<Account> getAccountsByUserID(UUID userID) {
         return accountDao.getAccountsByUserID(userID);
     }
+
+    public void addCheckingAccount(CheckingAccount account) {
+        accountDao.addCheckingAccount(account);
+    }
 }
