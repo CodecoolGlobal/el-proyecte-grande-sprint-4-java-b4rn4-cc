@@ -56,7 +56,6 @@ public class AccountController {
             String url = "http://data.fixer.io/api/latest?access_key=" + apiKey + "&symbols=GBP,JPY,USD,HUF";
             currency = template.getForObject(url, CurrencyRates.class);
             currencyFetched = true;
-            return currency;
         }
         return currency;
     }
