@@ -2,19 +2,29 @@ import React, { useState } from "react";
 
 const Transfermoney = ({ transferMoney, accounts }) => {
   const [amount, setAmount] = useState(0);
+  const [currency, setCurrency] = useState(accounts[0].currency)
   const [sender, setSender] = useState(accounts[0].accountNumber);
   const [recipient, setRecipient] = useState("");
   const [message, setMessage] = useState("");
 
   const submit = (e) => {
     e.preventDefault();
-    transferMoney({ amount, sender, recipient, message });
+    transferMoney({ amount, currency, sender, recipient, message });
 
     setAmount(0);
     setMessage("");
     setRecipient("");
     setSender("");
+    setCurrency("");
   };
+
+  function getCurrency(accNumber) {
+    for(let acc of accounts) {
+      if(acc.accountNumber === accNumber) {
+        setCurrency(acc.currency)
+      }
+    }
+  }
 
   return (
     <div className="transfer-container">
@@ -22,7 +32,7 @@ const Transfermoney = ({ transferMoney, accounts }) => {
       <select
         name="accNumber"
         id="accNumber"
-        onChange={(event) => setSender(event.target.value)}
+        onChange={(event) => {setSender(event.target.value); getCurrency(event.target.value)}}
       >
         {accounts.map((acc) => (
           <option key={acc.accountNumber} value={acc.accountNumber}>
@@ -52,6 +62,7 @@ const Transfermoney = ({ transferMoney, accounts }) => {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
+          <p>{currency}</p>
         </div>
         <div>
           <label htmlFor="message">Message:</label>
