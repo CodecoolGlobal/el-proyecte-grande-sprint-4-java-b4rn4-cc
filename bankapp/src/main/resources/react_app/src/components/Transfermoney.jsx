@@ -62,6 +62,9 @@ const Transfermoney = ({ transferMoney, accounts }) => {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
+        </div>
+        <div style={{display: "flex", justifyContent: "spaceBetween"}}>
+          <p>Currency:</p>
           <p>{currency}</p>
         </div>
         <div>
