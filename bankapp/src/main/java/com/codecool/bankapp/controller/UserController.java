@@ -16,9 +16,7 @@ import java.util.UUID;
 @RequestMapping("/")
 @CrossOrigin
 public class UserController {
-    private boolean currencyFetched = false;
     private boolean newsFetched = false;
-    private Object currency;
     private Object news;
     UserService userService;
 
@@ -46,20 +44,6 @@ public class UserController {
     @GetMapping("/test")
     public List<Transaction> test() {
         return null;
-    }
-
-    @GetMapping("/main")
-    public Object getCurrencies() {
-        Properties props = Configuration.getProps();
-        String apiKey = props.getProperty("apikey");
-        RestTemplate template = new RestTemplate();
-        if (!currencyFetched) {
-            String url = "http://data.fixer.io/api/latest?access_key=" + apiKey + "&symbols=GBP,JPY,USD,HUF";
-            currency = template.getForObject(url, Object.class);
-            currencyFetched = true;
-            return currency;
-        }
-        return currency;
     }
 
     @GetMapping("/news")

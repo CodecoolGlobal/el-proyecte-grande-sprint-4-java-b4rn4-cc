@@ -30,7 +30,7 @@ const Landing = () => {
 
   useEffect(() => {
     const getCurrencies = async () => {
-      const data = await apiGet("http://localhost:8080/main");
+      const data = await apiGet("http://localhost:8080/account/main");
 
       setCurrencies(data);
     };
