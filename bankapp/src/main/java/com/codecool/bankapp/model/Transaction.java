@@ -14,6 +14,7 @@ import java.util.UUID;
 public class Transaction {
     private final LocalDateTime transactionTime = LocalDateTime.now();
     private BigDecimal amount;
+    private CurrencyType currency;
     private UUID sender;
     private UUID recipient;
     @Builder.Default
