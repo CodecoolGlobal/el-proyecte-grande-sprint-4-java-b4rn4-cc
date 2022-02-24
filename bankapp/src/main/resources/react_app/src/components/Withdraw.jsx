@@ -1,8 +1,9 @@
 import React, {useState} from "react";
 
-const Withdraw = ({ transferMoney }) => {
+const Withdraw = ({ transferMoney, accounts }) => {
   const [amount, setAmount] = useState(0);
-  const [sender, setSender] = useState("cd601a0a-ff98-47fc-90a9-d5fe1b5fa26c");
+  const [sender, setSender] = useState(accounts[0]);
+  const [currency, setCurrency] = useState(accounts[0].currency)
   const [message, setMessage] = useState("");
   const recipient = "00000000-0000-0000-0000-000000000000"
 
@@ -13,19 +14,30 @@ const Withdraw = ({ transferMoney }) => {
     setMessage("");
   }
 
+  function getCurrency(accNumber) {
+    for(let acc of accounts) {
+      if(acc.accountNumber === accNumber) {
+        setCurrency(acc.currency)
+      }
+    }
+  }
+
   return <div className="transfer-container">
     <h1>Withdraw</h1>
     <form className="transfer-form" onSubmit={submit}>
       <div>
-        <label htmlFor="recipientAccNumber">Sender:</label>
-        <input
-            type="text"
-            id="recipientAccNumber"
-            name="recipient"
-            placeholder="Account Number"
-            value={sender}
-            onChange={(e) => setSender(e.target.value)}
-        />
+        <label for="accNumber">Sender:</label>
+        <select
+            name="accNumber"
+            id="accNumber"
+            onChange={(event) => {setSender(event.target.value); getCurrency(event.target.value)}}
+        >
+          {accounts.map((acc) => (
+              <option key={acc.accountNumber} value={acc.accountNumber}>
+                {acc.accountNumber}
+              </option>
+          ))}
+        </select>
       </div>
       <div>
         <label htmlFor="amount">Amount:</label>
@@ -37,6 +49,10 @@ const Withdraw = ({ transferMoney }) => {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
         />
+      </div>
+      <div style={{display: "flex", justifyContent: "spaceBetween"}}>
+        <p>Currency:</p>
+        <p>{currency}</p>
       </div>
       <div>
         <label htmlFor="message">Message:</label>
