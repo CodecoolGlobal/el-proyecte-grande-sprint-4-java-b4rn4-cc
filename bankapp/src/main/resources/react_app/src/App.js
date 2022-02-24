@@ -22,7 +22,7 @@ function App() {
   const [renderThis, setRenderThis] = useState("");
   const [renderEvent, setRenderEvent] = useState(false);
   const [details, setDetails] = useState(initialUserState);
-
+  const [clickedDetails, setClickedDetails] = useState(false);
 
   useEffect(() => {
     const getDetails = async () => {
@@ -32,7 +32,7 @@ function App() {
       setDetails(data);
     };
     getDetails();
-  }, []);
+  }, [clickedDetails]);
 
   const transferMoney = async (transaction) => {
     await apiPost("http://localhost:8080/account/transaction", transaction);
@@ -53,7 +53,13 @@ function App() {
             <strong>El Grande Banco</strong>
           </div>
           <div className="navLinks">
-            <div onClick={(event) => handleClick(event)} id="accDetails">
+            <div
+              onClick={(event) => {
+                handleClick(event);
+                setClickedDetails(!clickedDetails);
+              }}
+              id="accDetails"
+            >
               Account Details
             </div>
             <div className="service" id="service">

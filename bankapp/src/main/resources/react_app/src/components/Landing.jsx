@@ -27,6 +27,7 @@ const initialNewsState = {
 const Landing = () => {
   const [currencies, setCurrencies] = useState(initialCurrencyState);
   const [news, setNews] = useState(initialNewsState);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getCurrencies = async () => {
@@ -39,8 +40,11 @@ const Landing = () => {
 
   useEffect(() => {
     const getNews = async () => {
-      const news = await apiGet("http://localhost:8080/news");
+      let news;
+      setIsLoading(true);
+      news = await apiGet("http://localhost:8080/news");
       setNews(news);
+      setIsLoading(false);
     };
     getNews();
   }, []);
@@ -48,11 +52,15 @@ const Landing = () => {
   return (
     <>
       <h1>Welcome</h1>
-      <div className="news-container">
-        {news.results.map((result, index) => (
-          <News key={index} result={result} />
-        ))}
-      </div>
+      {isLoading ? (
+        <div id="loading" className="display"></div>
+      ) : (
+        <div className="news-container">
+          {news.results.map((result, index) => (
+            <News key={index} result={result} />
+          ))}
+        </div>
+      )}
       <div className="cur-container">
         <div className="currency">
           <div>1 {currencies.base}</div>
