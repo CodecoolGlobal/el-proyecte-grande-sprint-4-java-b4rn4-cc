@@ -57,7 +57,7 @@ public class AccountService {
         if(!baseCurrency.equals(CurrencyType.EUR)) {
             rate = rate.divide(currencies.getRates().get(baseCurrency), 2, RoundingMode.HALF_UP);
         }
-        return amount.multiply(rate);
+        return amount.multiply(rate).setScale(2, RoundingMode.HALF_UP);
     }
 
     public List<Account> getAccountsByUserID(UUID userID) {
