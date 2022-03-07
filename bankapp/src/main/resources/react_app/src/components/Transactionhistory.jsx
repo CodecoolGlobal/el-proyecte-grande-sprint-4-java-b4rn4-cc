@@ -9,9 +9,7 @@ const Transactionhistory = ({ accounts }) => {
 
   useEffect(() => {
     const getTransactions = async () => {
-      const data = await apiGet(
-        "http://localhost:8080/account/" + accToView + "/history"
-      );
+      const data = await apiGet("/account/" + accToView + "/history");
       setTransactions(data);
     };
     getTransactions();

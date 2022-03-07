@@ -26,16 +26,14 @@ function App() {
 
   useEffect(() => {
     const getDetails = async () => {
-      const data = await apiGet(
-        "http://localhost:8080/user/11111111-2222-3333-4444-555555555555"
-      );
+      const data = await apiGet("/user/11111111-2222-3333-4444-555555555555");
       setDetails(data);
     };
     getDetails();
   }, [clickedDetails]);
 
   const transferMoney = async (transaction) => {
-    await apiPost("http://localhost:8080/account/transaction", transaction);
+    await apiPost("/account/transaction", transaction);
   };
 
   const handleClick = (e) => {
@@ -90,7 +88,10 @@ function App() {
             <Deposit transferMoney={transferMoney} />
           )}
           {renderThis === "Withdraw" && (
-            <Withdraw transferMoney={transferMoney} accounts={details.accountList} />
+            <Withdraw
+              transferMoney={transferMoney}
+              accounts={details.accountList}
+            />
           )}
           {renderThis === "Transer Money" && (
             <Transfermoney
