@@ -1,0 +1,74 @@
+h1 {
+  font-size: 50px;
+}
+
+.cur-container {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+}
+
+.currency {
+  border: #0c0c0c 2px solid;
+  box-shadow: 5px 5px rgba(0, 0, 0, 0.356);
+  border-radius: 15px;
+  padding: 15px;
+  background-color: aliceblue;
+  font-size: x-large;
+  min-width: 100px;
+}
+
+.currency div {
+  padding: 8px;
+}
+
+.currency :first-child {
+  color: blue;
+}
+
+.currency :last-child {
+  color: #ef8300;
+  text-align: center;
+}
+
+.national-cur {
+  margin-left: 15px;
+}
+
+.news-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 75px;
+}
+
+.single-news {
+  margin-right: 15px;
+  border: #0d0e0d 2px solid;
+  box-shadow: 5px 5px rgba(0, 0, 0, 0.356);
+  border-radius: 15px;
+  background-color: #b4c7dc;
+  width: 250px;
+  margin-bottom: 20px;
+  display: grid;
+}
+
+.single-news:hover {
+  cursor: pointer;
+  opacity: 0.75;
+}
+
+.single-news div {
+  padding: 8px;
+}
+
+#news-title {
+  font-size: 20px;
+}
+
+#news-date {
+  font-style: italic;
+}
+
+#news-source {
+  font-style: italic;
+}
