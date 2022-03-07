@@ -3,14 +3,14 @@ package com.codecool.bankapp.services;
 import com.codecool.bankapp.model.*;
 import com.codecool.bankapp.model.dao.AccountDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.UUID;
 
-@Component
+@Service
 public class AccountService {
     AccountDao accountDao;
 
