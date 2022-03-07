@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -34,5 +35,11 @@ public class CurrencyRates {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    public BigDecimal getRateBysymbol(CurrencyType currencyType) {
+        return rates.stream()
+                .filter(r -> r.getSymbol().equals(currencyType))
+                .toList().get(0).getValue();
     }
 }
