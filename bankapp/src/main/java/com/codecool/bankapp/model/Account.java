@@ -3,17 +3,26 @@ package com.codecool.bankapp.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.Hibernate;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @SuperBuilder
-public abstract class Account {
+@Entity
+public class Account {
+    @Id
+    private Long id;
     @Builder.Default
-    protected UUID accountNumber = UUID.randomUUID();;
+    protected UUID accountNumber = UUID.randomUUID();
     protected UUID userID;
     @Builder.Default
     protected BigDecimal balance = new BigDecimal("0");
@@ -21,7 +30,13 @@ public abstract class Account {
     protected CurrencyType currency = CurrencyType.EUR;
     protected boolean canWithdraw;
     @JsonBackReference
-    protected final List<Transaction> history = new ArrayList<>();
+    @ManyToMany
+    @ToString.Exclude
+    protected List<Transaction> history = new ArrayList<>();
+
+    public void setHistory(List<Transaction> history) {
+        this.history = history;
+    }
 
     public void depositMoney(BigDecimal amount) {
         this.balance = this.balance.add(amount);
@@ -36,6 +51,19 @@ public abstract class Account {
 
     public void addToHistory(Transaction transaction) {
         history.add(transaction);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Account account = (Account) o;
+        return id != null && Objects.equals(id, account.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
 

@@ -15,7 +15,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/account")
-//@CrossOrigin
 public class AccountController {
     private boolean currencyFetched = false;
     private CurrencyRates currency;

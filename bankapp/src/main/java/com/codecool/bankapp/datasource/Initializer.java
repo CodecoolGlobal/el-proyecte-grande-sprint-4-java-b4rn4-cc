@@ -18,7 +18,7 @@ public class Initializer {
     public Initializer(UserService userService, AccountService accountService) {
         this.userService = userService;
         this.accountService = accountService;
-        init();
+//        init();
         Configuration.setupApp();
     }
 
@@ -52,8 +52,8 @@ public class Initializer {
         accountService.addCheckingAccount(secondAccount);
         secondAccount.setBalance(money);
         user1.addAccountToList(secondAccount);
-        Transaction transaction1 = Transaction.builder().amount(new BigDecimal(100)).sender(account1).currency(CurrencyType.EUR).recipient(account2).build();
-        Transaction transaction2 = Transaction.builder().amount(new BigDecimal(9999999)).sender(account1).currency(CurrencyType.EUR).recipient(account2).build();
+        Transaction transaction1 = Transaction.builder().amount(new BigDecimal(100)).sender(user1.getAccountList().get(0)).currency(CurrencyType.EUR).recipient(user2.getAccountList().get(0)).build();
+        Transaction transaction2 = Transaction.builder().amount(new BigDecimal(9999999)).sender(user1.getAccountList().get(0)).currency(CurrencyType.EUR).recipient(user2.getAccountList().get(0)).build();
         CurrencyRates dummyCurrencyRates = new CurrencyRates();
         accountService.makeTransaction(transaction1, dummyCurrencyRates);
         accountService.makeTransaction(transaction2, dummyCurrencyRates);

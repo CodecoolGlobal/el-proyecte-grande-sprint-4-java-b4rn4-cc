@@ -14,7 +14,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/")
-//@CrossOrigin
 public class UserController {
     private boolean newsFetched = false;
     private Object news;

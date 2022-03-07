@@ -21,8 +21,8 @@ public class AccountService {
     }
 
     public Transaction makeTransaction(Transaction transaction, CurrencyRates currencyRates) {
-        Account sender = accountDao.findAccount(transaction.getSender());
-        Account destination = accountDao.findAccount(transaction.getRecipient());
+        Account sender = transaction.getSender();
+        Account destination = transaction.getRecipient();
         BigDecimal amount = transaction.getAmount();
         BigDecimal zero = BigDecimal.ZERO;
 
@@ -50,9 +50,13 @@ public class AccountService {
     }
 
     private BigDecimal exchangeCurrency(BigDecimal amount, CurrencyType baseCurrency, CurrencyType targetCurrency, CurrencyRates currencyRates) {
-        BigDecimal rate = currencyRates.getRates().get(targetCurrency);
+        BigDecimal rate = currencyRates.getRates()
+                .stream().filter(r -> r.getSymbol().equals(targetCurrency))
+                .toList().get(0).getValue();
         if(!baseCurrency.equals(CurrencyType.EUR)) {
-            rate = rate.divide(currencyRates.getRates().get(baseCurrency), 2, RoundingMode.HALF_UP);
+            rate = rate.divide(currencyRates.getRates()
+                    .stream().filter(r -> r.getSymbol().equals(baseCurrency))
+                    .toList().get(0).getValue(), 2, RoundingMode.HALF_UP);
         }
         return amount.multiply(rate).setScale(2, RoundingMode.HALF_UP);
     }

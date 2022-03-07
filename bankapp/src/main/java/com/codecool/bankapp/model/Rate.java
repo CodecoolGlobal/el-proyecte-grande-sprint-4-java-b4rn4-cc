@@ -3,32 +3,28 @@ package com.codecool.bankapp.model;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.math.BigDecimal;
 import java.util.Objects;
 
+@AllArgsConstructor
+@Entity
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Entity
-public class CurrencyRates {
+public class Rate {
     @Id
-    private Long id;
-    private Date date;
-    @Enumerated(EnumType.STRING)
-    private CurrencyType base = CurrencyType.EUR;
-    @OneToMany
-    @ToString.Exclude
-    private List<Rate> rates;
+    private CurrencyType symbol;
+    private BigDecimal value;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        CurrencyRates that = (CurrencyRates) o;
-        return id != null && Objects.equals(id, that.id);
+        Rate rate = (Rate) o;
+        return symbol != null && Objects.equals(symbol, rate.symbol);
     }
 
     @Override
