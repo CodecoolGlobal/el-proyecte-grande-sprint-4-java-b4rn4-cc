@@ -1,6 +1,7 @@
 package com.codecool.bankapp.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
@@ -20,6 +21,8 @@ import java.util.UUID;
 @Entity
 public class Account {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
     @Builder.Default
     protected UUID accountNumber = UUID.randomUUID();
@@ -28,6 +31,8 @@ public class Account {
     protected BigDecimal balance = new BigDecimal("0");
     @Builder.Default
     protected CurrencyType currency = CurrencyType.EUR;
+    @Transient
+    @JsonIgnore
     protected boolean canWithdraw;
     @JsonBackReference
     @ManyToMany
