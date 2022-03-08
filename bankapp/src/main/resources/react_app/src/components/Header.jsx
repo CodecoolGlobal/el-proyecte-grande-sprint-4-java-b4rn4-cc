@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 const Header = ({renderEvent}) => {
-    const [time, setTimeLeft] = useState(300)
+    const [time, setTimeLeft] = useState(120);
 
     useEffect(() => {
         if (time > 0) {
