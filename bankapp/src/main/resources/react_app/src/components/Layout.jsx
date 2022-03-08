@@ -16,7 +16,7 @@ const Layout = ({setClickedDetails}) => {
 
     return (
         <>
-            <Header renderEvent={renderEvent}/>
+            <Header renderEvent={renderEvent} handleclick={handleclick}/>
             <div className="main">
                 <div className="nav">
                     <div className="bankName" onClick={() => handleclick('/')}>
