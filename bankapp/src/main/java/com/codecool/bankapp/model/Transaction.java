@@ -1,5 +1,6 @@
 package com.codecool.bankapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -18,6 +19,8 @@ import java.util.Objects;
 public class Transaction {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
     private LocalDateTime transactionTime = LocalDateTime.now();
     private BigDecimal amount;

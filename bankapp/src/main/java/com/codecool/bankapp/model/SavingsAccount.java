@@ -1,6 +1,5 @@
 package com.codecool.bankapp.model;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -17,8 +16,6 @@ public class SavingsAccount extends Account{
     {
         super.canWithdraw = false;
     }
-    @Builder.Default
-    private String type = SavingsAccount.class.getSimpleName();
 
     @Override
     public boolean equals(Object o) {

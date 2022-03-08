@@ -85,11 +85,11 @@ function App() {
         <div className="content">
           {renderThis === "About" && <About />}
           {renderThis === "Deposit" && (
-            <Deposit transferMoney={transferMoney} />
+            <Deposit apiPost={apiPost} />
           )}
           {renderThis === "Withdraw" && (
             <Withdraw
-              transferMoney={transferMoney}
+                apiPost={apiPost}
               accounts={details.accountList}
             />
           )}

@@ -1,15 +1,14 @@
 import React, {useState} from "react";
 
-const Deposit = ({ transferMoney }) => {
+const Deposit = ({ apiPost }) => {
   const [amount, setAmount] = useState(0);
   const [recipient, setRecipient] = useState("");
   const [message, setMessage] = useState("");
-  const sender = "00000000-0000-0000-0000-000000000000";
   const currency = "EUR";
 
   const submit = (e) => {
     e.preventDefault();
-    transferMoney({ amount, currency, sender, recipient, message });
+    apiPost("/account/ATM-deposit", { amount, currency, recipient, message });
     setAmount(0);
     setMessage("");
     setRecipient("");
