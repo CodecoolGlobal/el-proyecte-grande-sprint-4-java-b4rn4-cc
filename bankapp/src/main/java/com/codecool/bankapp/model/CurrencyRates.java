@@ -5,9 +5,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Getter
 @Setter
@@ -16,13 +14,26 @@ import java.util.Objects;
 @Entity
 public class CurrencyRates {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Date date;
     @Enumerated(EnumType.STRING)
     private CurrencyType base = CurrencyType.EUR;
     @OneToMany
     @ToString.Exclude
-    private List<Rate> rates;
+    private List<Rate> ratesList = new ArrayList<>();
+    @Transient
+    private Map<CurrencyType, BigDecimal> rates;
+
+
+    public void unpackRates(Map<CurrencyType, BigDecimal> rates) {
+        for (CurrencyType currencyType : rates.keySet()) {
+            Rate rate = new Rate();
+            rate.setSymbol(currencyType);
+            rate.setValue(rates.get(currencyType));
+            this.ratesList.add(rate);
+        }
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -38,7 +49,7 @@ public class CurrencyRates {
     }
 
     public BigDecimal getRateBysymbol(CurrencyType currencyType) {
-        return rates.stream()
+        return ratesList.stream()
                 .filter(r -> r.getSymbol().equals(currencyType))
                 .toList().get(0).getValue();
     }

@@ -13,11 +13,15 @@ import java.util.UUID;
 @Service
 public class AccountService {
     AccountDao accountDao;
+    private final CurrencyRatesRepository ratesRepository;
+    private final RateRepository rateRepository;
 
 
     @Autowired
-    public AccountService(AccountDao accountDao) {
+    public AccountService(AccountDao accountDao, CurrencyRatesRepository ratesRepository, RateRepository rateRepository) {
         this.accountDao = accountDao;
+        this.ratesRepository = ratesRepository;
+        this.rateRepository = rateRepository;
     }
 
     public Transaction makeTransaction(Transaction transaction, CurrencyRates currencyRates) {
@@ -63,5 +67,10 @@ public class AccountService {
 
     public void addCheckingAccount(CheckingAccount account) {
         accountDao.addCheckingAccount(account);
+    }
+
+    public void saveCurrencies(CurrencyRates rates) {
+        rateRepository.saveAll(rates.getRatesList());
+        ratesRepository.save(rates);
     }
 }
