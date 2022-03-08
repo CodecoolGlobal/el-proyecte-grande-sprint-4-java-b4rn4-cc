@@ -16,7 +16,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/account")
 public class AccountController {
-    private boolean currencyFetched = false;
     private CurrencyRates currency;
     AccountService accountService;
 
@@ -51,14 +50,7 @@ public class AccountController {
         Properties props = Configuration.getProps();
         String apiKey = props.getProperty("apikey");
         RestTemplate template = new RestTemplate();
-        if (!currencyFetched) {
-            String url = "http://data.fixer.io/api/latest?access_key=" + apiKey + "&symbols=GBP,JPY,USD,HUF";
-            currency = template.getForObject(url, CurrencyRates.class);
-            assert currency != null;
-            currency.unpackRates(currency.getRates());
-            currencyFetched = true;
-        }
-        accountService.saveCurrencies(currency);
+        currency = accountService.getCurrencyRates(apiKey, template);
         return currency;
     }
 }
