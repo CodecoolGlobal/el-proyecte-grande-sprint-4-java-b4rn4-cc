@@ -1,9 +1,11 @@
 package com.codecool.bankapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -17,6 +19,8 @@ import java.util.UUID;
 @Entity(name = "bank_user")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
     @Builder.Default
     private UUID userID = UUID.randomUUID();
@@ -24,8 +28,9 @@ public class User {
     private String address;
     private String password;
     @OneToMany
+    @Builder.Default
     @ToString.Exclude
-    private List<Account> accountList;
+    private List<Account> accountList = new ArrayList<>();
 
     public void addAccountToList(Account account) {
         accountList.add(account);
