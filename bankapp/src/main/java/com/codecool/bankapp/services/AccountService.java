@@ -12,12 +12,16 @@ import java.util.UUID;
 
 @Service
 public class AccountService {
-    AccountDao accountDao;
+    AccountRepository accountRepository;
+    TransactionRepository transactionRepository;
+    UserRepository userRepository;
 
 
     @Autowired
-    public AccountService(AccountDao accountDao) {
-        this.accountDao = accountDao;
+    public AccountService(AccountRepository accountRepository, TransactionRepository transactionRepository, UserRepository userRepository) {
+        this.accountRepository = accountRepository;
+        this.transactionRepository = transactionRepository;
+        this.userRepository = userRepository;
     }
 
     public Transaction makeTransaction(Transaction transaction, CurrencyRates currencyRates) {
