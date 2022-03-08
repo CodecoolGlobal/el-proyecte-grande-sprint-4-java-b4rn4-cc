@@ -25,6 +25,7 @@ public abstract class Account {
     @JsonIgnore
     private Long id;
     @Builder.Default
+    @Column(unique = true)
     protected UUID accountNumber = UUID.randomUUID();
     protected UUID userID;
     @Builder.Default

@@ -23,6 +23,7 @@ public class User {
     @JsonIgnore
     private Long id;
     @Builder.Default
+    @Column(unique = true)
     private UUID userID = UUID.randomUUID();
     private String name;
     private String address;
