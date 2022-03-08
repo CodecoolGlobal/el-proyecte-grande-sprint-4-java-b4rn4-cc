@@ -22,6 +22,7 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private Long id;
+    @Builder.Default
     private LocalDateTime transactionTime = LocalDateTime.now();
     private BigDecimal amount;
     private CurrencyType currency;
