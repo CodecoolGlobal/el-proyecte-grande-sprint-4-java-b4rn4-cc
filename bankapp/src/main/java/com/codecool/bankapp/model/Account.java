@@ -19,7 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @SuperBuilder
 @Entity
-public class Account {
+public abstract class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
