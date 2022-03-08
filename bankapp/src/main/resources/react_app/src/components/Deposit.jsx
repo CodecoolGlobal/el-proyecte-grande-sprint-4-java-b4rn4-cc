@@ -1,8 +1,11 @@
 import React, {useState} from "react";
+import { useLocation } from 'react-router-dom';
 
 const Deposit = ({ apiPost }) => {
+  const location = useLocation();
+  const data = location.state;
   const [amount, setAmount] = useState(0);
-  const [recipient, setRecipient] = useState("");
+  const [recipient, setRecipient] = useState(data.accNum);
   const [message, setMessage] = useState("");
   const currency = "EUR";
 
@@ -13,7 +16,6 @@ const Deposit = ({ apiPost }) => {
     setMessage("");
     setRecipient("");
   }
-
   return <div className="transfer-container">
     <h1>Deposit</h1>
     <form className="transfer-form" onSubmit={submit}>

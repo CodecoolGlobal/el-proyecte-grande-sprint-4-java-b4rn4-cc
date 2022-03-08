@@ -20,7 +20,7 @@ const AccountDetails = ({ details }) => {
         </div>
       </div>
       <div className={"CoDetails"}>
-        <AccountsTable accounts={details.accountList} />
+        <AccountsTable accounts={details.accountList}/>
       </div>
     </div>
   );
