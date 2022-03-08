@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import {apiPost} from "../FetchApis";
 
 const Withdraw = ({ apiPost, accounts }) => {
   const [amount, setAmount] = useState(0);
