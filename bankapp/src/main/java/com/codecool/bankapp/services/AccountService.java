@@ -1,7 +1,6 @@
 package com.codecool.bankapp.services;
 
 import com.codecool.bankapp.model.*;
-import com.codecool.bankapp.model.dao.AccountDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,8 +48,11 @@ public class AccountService {
     }
 
     public List<Transaction> getHistoryByAccount(UUID accountNumber) {
-        Account account = accountDao.findAccount(accountNumber);
-        return accountDao.getHistory(account);
+        Account account = accountRepository.findAccountByAccountNumberEquals(accountNumber).orElse(null);
+        if(account != null) {
+            return account.getHistory();
+        }
+        return null;
     }
 
     private BigDecimal exchangeCurrency(BigDecimal amount, CurrencyType baseCurrency, CurrencyType targetCurrency, CurrencyRates currencyRates) {
