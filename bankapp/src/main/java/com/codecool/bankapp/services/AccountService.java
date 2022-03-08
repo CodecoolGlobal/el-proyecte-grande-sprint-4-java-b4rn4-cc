@@ -4,6 +4,7 @@ import com.codecool.bankapp.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -67,7 +68,14 @@ public class AccountService {
         return accountDao.getAccountsByUserID(userID);
     }
 
-    public void addCheckingAccount(CheckingAccount account) {
-        accountDao.addCheckingAccount(account);
+    @Transactional
+    public void addCheckingAccount(UUID userID, CurrencyType currency) {
+        User user = userRepository.findUserByUserIDEquals(userID).orElse(null);
+        if(user != null) {
+            CheckingAccount newAccount = CheckingAccount.builder().userID(userID).currency(currency).build();
+            accountRepository.save(newAccount);
+            user.addAccountToList(newAccount);
+            userRepository.save(user);
+        }
     }
 }

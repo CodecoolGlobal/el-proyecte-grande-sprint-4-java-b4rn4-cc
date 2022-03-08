@@ -49,7 +49,7 @@ public class Initializer {
         user2.getAccountList().get(0).setCurrency(CurrencyType.HUF);
         bank.getAccountList().get(0).setAccountNumber(bankFundAccount);
         CheckingAccount secondAccount = CheckingAccount.builder().userID(user1.getUserID()).accountNumber(account3).currency(CurrencyType.GBP).build();
-        accountService.addCheckingAccount(secondAccount);
+//        accountService.addCheckingAccount(secondAccount);
         secondAccount.setBalance(money);
         user1.addAccountToList(secondAccount);
         Transaction transaction1 = Transaction.builder().amount(new BigDecimal(100)).sender(user1.getAccountList().get(0)).currency(CurrencyType.EUR).recipient(user2.getAccountList().get(0)).build();
