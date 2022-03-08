@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import {Routes, Route} from "react-router-dom";
 import About from "./components/About";
-import Header from "./components/Header";
 import AccountDetails from "./components/AccountDetails";
 import Deposit from "./components/Deposit";
 import Loan from "./components/Loan";
@@ -11,6 +11,7 @@ import Transfermoney from "./components/Transfermoney";
 import Withdraw from "./components/Withdraw";
 import { apiPost, apiGet } from "./FetchApis";
 import Landing from "./components/Landing";
+import Layout from "./components/Layout";
 
 const initialUserState = {
   name: "",
@@ -19,8 +20,6 @@ const initialUserState = {
 };
 
 function App() {
-  const [renderThis, setRenderThis] = useState("");
-  const [renderEvent, setRenderEvent] = useState(false);
   const [details, setDetails] = useState(initialUserState);
   const [clickedDetails, setClickedDetails] = useState(false);
 
@@ -36,84 +35,23 @@ function App() {
     await apiPost("/account/transaction", transaction);
   };
 
-  const handleClick = (e) => {
-    const element = e.target;
-    setRenderThis(element.innerText);
-    setRenderEvent(!renderEvent);
-  };
-
   return (
-    <div>
-      <Header renderEvent={renderEvent} />
-      <div className="main">
-        <div className="nav">
-          <div className="bankName" onClick={(event) => handleClick(event)}>
-            <strong>El Grande Banco</strong>
-          </div>
-          <div className="navLinks">
-            <div
-              onClick={(event) => {
-                handleClick(event);
-                setClickedDetails(!clickedDetails);
-              }}
-              id="accDetails"
-            >
-              Account Details
-            </div>
-            <div className="service" id="service">
-              Services
-            </div>
-            <div className="serviceLinks">
-              <div onClick={(event) => handleClick(event)}>Deposit</div>
-              <div onClick={(event) => handleClick(event)}>Withdraw</div>
-              <div
-                onClick={(event) => {
-                  handleClick(event);
-                }}
-              >
-                Transaction History
-              </div>
-              <div onClick={(event) => handleClick(event)}>Transer Money</div>
-              <div onClick={(event) => handleClick(event)}>Pay Bills</div>
-              <div onClick={(event) => handleClick(event)}>Loan</div>
-            </div>
-            <div id="about" onClick={(event) => handleClick(event)}>
-              About
-            </div>
-          </div>
-        </div>
-        <div className="content">
-          {renderThis === "About" && <About />}
-          {renderThis === "Deposit" && (
-            <Deposit apiPost={apiPost} />
-          )}
-          {renderThis === "Withdraw" && (
-            <Withdraw
-                apiPost={apiPost}
-              accounts={details.accountList}
-            />
-          )}
-          {renderThis === "Transer Money" && (
-            <Transfermoney
-              transferMoney={transferMoney}
-              accounts={details.accountList}
-            />
-          )}
-          {renderThis === "Pay Bills" && <Paybills />}
-          {renderThis === "Loan" && <Loan />}
-          {renderThis === "Transaction History" && (
-            <Transactionhistory accounts={details.accountList} />
-          )}
-          {renderThis === "Account Details" && (
-            <AccountDetails details={details} />
-          )}
-          {(renderThis === "El Grande Banco" || renderThis === "") && (
-            <Landing />
-          )}
-        </div>
-      </div>
-    </div>
-  );
+    <Routes>
+      <Route path="/" element={<Layout setClickedDetails={setClickedDetails}/>}>
+        <Route path="/" element={<Landing/>}/>
+        <Route path="/account-details" element={<AccountDetails details={details}/>}/>
+        <Route path="/deposit" element={<Deposit apiPost={apiPost}/>}/>
+        <Route path="/withdraw" element={<Withdraw apiPost={apiPost}
+                                                   accounts={details.accountList}/>}/>
+        <Route path="/history" element={<Transactionhistory accounts={details.accountList}/>}/>
+        <Route path="/transfer" element={<Transfermoney transferMoney={transferMoney}
+                                                        accounts={details.accountList}/>}/>
+        <Route path="/pay-bills" element={<Paybills/>}/>
+        <Route path="/loan" element={<Loan/>}/>
+        <Route path="/about" element={<About/>}/>
+      </Route>
+    </Routes>
+);
 }
 
 export default App;
