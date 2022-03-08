@@ -47,7 +47,7 @@ public class AccountService {
             if (amount.compareTo(zero) > 0 && amount.compareTo(sender.getBalance()) < 1) {
                 if(sender.withdrawMoney(amount)) {
                     CurrencyType targetCurrency = destination.getCurrency();
-                    BigDecimal depositedMoney = amount; //exchangeCurrency(amount, transaction.getCurrency(), targetCurrency);
+                    BigDecimal depositedMoney = exchangeCurrency(amount, transaction.getCurrency(), targetCurrency);
                     destination.depositMoney(depositedMoney);
                     transaction.setStatus(TransactionStatus.SUCCESSFUL);
                 } else {
