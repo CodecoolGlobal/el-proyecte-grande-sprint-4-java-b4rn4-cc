@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import {apiPost} from "../FetchApis";
+import {useLocation} from "react-router-dom";
 
 const Withdraw = ({ apiPost, accounts }) => {
+  const location = useLocation();
+  const data = location.state;
   const [amount, setAmount] = useState(0);
-  const [sender, setSender] = useState(accounts[0]);
-  const [currency, setCurrency] = useState(accounts[0].currency);
+  const [sender, setSender] = useState(data.accNum);
+  const [currency, setCurrency] = useState(data.currency);
   const [message, setMessage] = useState("");
 
   const submit = (e) => {

@@ -1,11 +1,13 @@
 package com.codecool.bankapp.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.util.Objects;
 
 @SuperBuilder
@@ -16,6 +18,9 @@ public class CheckingAccount extends Account {
     {
         super.canWithdraw = true;
     }
+    @Builder.Default
+    @Transient
+    private String type = CheckingAccount.class.getSimpleName();
 
     @Override
     public boolean equals(Object o) {
