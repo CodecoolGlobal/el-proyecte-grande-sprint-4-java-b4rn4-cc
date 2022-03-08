@@ -24,28 +24,36 @@ public class AccountService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public Transaction makeTransaction(Transaction transaction, CurrencyRates currencyRates) {
-        Account sender = transaction.getSender();
-        Account destination = transaction.getRecipient();
+        Account sender = accountRepository.findAccountByAccountNumberEquals(transaction.getSender().getAccountNumber()).orElse(null);
+        Account destination = accountRepository.findAccountByAccountNumberEquals(transaction.getRecipient().getAccountNumber()).orElse(null);
         BigDecimal amount = transaction.getAmount();
         BigDecimal zero = BigDecimal.ZERO;
 
-        if (amount.compareTo(zero) > 0 && amount.compareTo(sender.getBalance()) < 1) {
-            if(sender.withdrawMoney(amount)) {
-                CurrencyType targetCurrency = destination.getCurrency();
-                BigDecimal depositedMoney = exchangeCurrency(amount, transaction.getCurrency(), targetCurrency, currencyRates);
-                destination.depositMoney(depositedMoney);
-                transaction.setStatus(TransactionStatus.SUCCESSFUL);
+        if(sender != null && destination != null) {
+            if (amount.compareTo(zero) > 0 && amount.compareTo(sender.getBalance()) < 1) {
+                if(sender.withdrawMoney(amount)) {
+                    CurrencyType targetCurrency = destination.getCurrency();
+                    BigDecimal depositedMoney = exchangeCurrency(amount, transaction.getCurrency(), targetCurrency, currencyRates);
+                    destination.depositMoney(depositedMoney);
+                    transaction.setStatus(TransactionStatus.SUCCESSFUL);
+                } else {
+                    transaction.setStatus(TransactionStatus.REJECTED);
+                }
             } else {
                 transaction.setStatus(TransactionStatus.REJECTED);
             }
-        } else {
-            transaction.setStatus(TransactionStatus.REJECTED);
+            transaction.setSender(sender);
+            transaction.setRecipient(destination);
+            transactionRepository.save(transaction);
+            sender.addToHistory(transaction);
+            destination.addToHistory(transaction);
+            accountRepository.save(sender);
+            accountRepository.save(destination);
+            return transaction;
         }
-
-        accountDao.addToHistory(sender, transaction);
-        accountDao.addToHistory(destination, transaction);
-        return transaction;
+        return null;
     }
 
     public List<Transaction> getHistoryByAccount(UUID accountNumber) {
