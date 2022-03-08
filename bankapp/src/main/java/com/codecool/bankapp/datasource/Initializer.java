@@ -30,7 +30,7 @@ public class Initializer {
         User bank = User.builder().name("Banco Grande Incorporated").password("123")
                 .userID(UUID.fromString("99999999-9999-9999-9999-999999999999"))
                 .address("1234 Budapest, Hungary, Hal Street 99.").build();
-        Account bankFundAccount = Account.builder().accountNumber(UUID.fromString("00000000-0000-0000-0000-000000000000")).balance(new BigDecimal(900000000)).build();
+        Account bankFundAccount = CheckingAccount.builder().accountNumber(UUID.fromString("00000000-0000-0000-0000-000000000000")).balance(new BigDecimal(900000000)).build();
         accountRepository.save(bankFundAccount);
         bank.addAccountToList(bankFundAccount);
         userRepository.save(bank);
