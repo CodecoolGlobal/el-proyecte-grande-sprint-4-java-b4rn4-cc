@@ -54,13 +54,9 @@ public class AccountService {
     }
 
     private BigDecimal exchangeCurrency(BigDecimal amount, CurrencyType baseCurrency, CurrencyType targetCurrency, CurrencyRates currencyRates) {
-        BigDecimal rate = currencyRates.getRatesList()
-                .stream().filter(r -> r.getSymbol().equals(targetCurrency))
-                .toList().get(0).getValue();
+        BigDecimal rate = currencyRates.getRateBysymbol(targetCurrency);
         if(!baseCurrency.equals(CurrencyType.EUR)) {
-            rate = rate.divide(currencyRates.getRatesList()
-                    .stream().filter(r -> r.getSymbol().equals(baseCurrency))
-                    .toList().get(0).getValue(), 2, RoundingMode.HALF_UP);
+            rate = rate.divide(currencyRates.getRateBysymbol(baseCurrency), 2, RoundingMode.HALF_UP);
         }
         return amount.multiply(rate).setScale(2, RoundingMode.HALF_UP);
     }

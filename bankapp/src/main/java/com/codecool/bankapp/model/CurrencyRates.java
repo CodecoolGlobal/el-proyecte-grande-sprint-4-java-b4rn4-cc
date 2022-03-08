@@ -47,4 +47,10 @@ public class CurrencyRates {
     public int hashCode() {
         return getClass().hashCode();
     }
+
+    public BigDecimal getRateBysymbol(CurrencyType currencyType) {
+        return ratesList.stream()
+                .filter(r -> r.getSymbol().equals(currencyType))
+                .toList().get(0).getValue();
+    }
 }
