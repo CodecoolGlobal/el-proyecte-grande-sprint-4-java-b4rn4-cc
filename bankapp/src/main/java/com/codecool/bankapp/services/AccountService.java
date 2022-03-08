@@ -13,11 +13,15 @@ import java.util.UUID;
 @Service
 public class AccountService {
     AccountDao accountDao;
+    private final CurrencyRatesRepository ratesRepository;
+    private final RateRepository rateRepository;
 
 
     @Autowired
-    public AccountService(AccountDao accountDao) {
+    public AccountService(AccountDao accountDao, CurrencyRatesRepository ratesRepository, RateRepository rateRepository) {
         this.accountDao = accountDao;
+        this.ratesRepository = ratesRepository;
+        this.rateRepository = rateRepository;
     }
 
     public Transaction makeTransaction(Transaction transaction, CurrencyRates currencyRates) {
@@ -50,11 +54,11 @@ public class AccountService {
     }
 
     private BigDecimal exchangeCurrency(BigDecimal amount, CurrencyType baseCurrency, CurrencyType targetCurrency, CurrencyRates currencyRates) {
-        BigDecimal rate = currencyRates.getRates()
+        BigDecimal rate = currencyRates.getRatesList()
                 .stream().filter(r -> r.getSymbol().equals(targetCurrency))
                 .toList().get(0).getValue();
         if(!baseCurrency.equals(CurrencyType.EUR)) {
-            rate = rate.divide(currencyRates.getRates()
+            rate = rate.divide(currencyRates.getRatesList()
                     .stream().filter(r -> r.getSymbol().equals(baseCurrency))
                     .toList().get(0).getValue(), 2, RoundingMode.HALF_UP);
         }
@@ -67,5 +71,10 @@ public class AccountService {
 
     public void addCheckingAccount(CheckingAccount account) {
         accountDao.addCheckingAccount(account);
+    }
+
+    public void saveCurrencies(CurrencyRates rates) {
+        rateRepository.saveAll(rates.getRatesList());
+        ratesRepository.save(rates);
     }
 }
