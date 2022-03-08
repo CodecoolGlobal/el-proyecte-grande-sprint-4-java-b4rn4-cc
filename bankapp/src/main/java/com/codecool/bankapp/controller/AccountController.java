@@ -44,13 +44,12 @@ public class AccountController {
 
     @PostMapping("/transaction")
     public Transaction makeTransaction(@RequestBody Transaction transaction) {
-        return accountService.makeTransaction(transaction, currency);
+        return accountService.makeTransaction(transaction);
     }
 
-    @PostMapping("/ATM-deposit")
-    public Transaction makeDeposit(@RequestBody Transaction depositTransaction) {
-        accountService.makeTransaction(depositTransaction, currency);
-        return depositTransaction;
+    @PostMapping("/ATM-{type}")
+    public Transaction makeDeposit(@PathVariable("type") String type, @RequestBody Transaction transaction) {
+        return accountService.makeTransactionATM(transaction, type);
     }
 
     @GetMapping("/main")

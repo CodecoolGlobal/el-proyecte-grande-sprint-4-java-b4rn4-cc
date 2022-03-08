@@ -25,7 +25,7 @@ public class AccountService {
     }
 
     @Transactional
-    public Transaction makeTransaction(Transaction transaction, CurrencyRates currencyRates) {
+    public Transaction makeTransaction(Transaction transaction) {
         Account sender = accountRepository.findAccountByAccountNumberEquals(transaction.getSender().getAccountNumber()).orElse(null);
         Account destination = accountRepository.findAccountByAccountNumberEquals(transaction.getRecipient().getAccountNumber()).orElse(null);
         BigDecimal amount = transaction.getAmount();
@@ -35,7 +35,7 @@ public class AccountService {
             if (amount.compareTo(zero) > 0 && amount.compareTo(sender.getBalance()) < 1) {
                 if(sender.withdrawMoney(amount)) {
                     CurrencyType targetCurrency = destination.getCurrency();
-                    BigDecimal depositedMoney = exchangeCurrency(amount, transaction.getCurrency(), targetCurrency, currencyRates);
+                    BigDecimal depositedMoney = exchangeCurrency(amount, transaction.getCurrency(), targetCurrency);
                     destination.depositMoney(depositedMoney);
                     transaction.setStatus(TransactionStatus.SUCCESSFUL);
                 } else {
@@ -64,7 +64,8 @@ public class AccountService {
         return null;
     }
 
-    private BigDecimal exchangeCurrency(BigDecimal amount, CurrencyType baseCurrency, CurrencyType targetCurrency, CurrencyRates currencyRates) {
+    private BigDecimal exchangeCurrency(BigDecimal amount, CurrencyType baseCurrency, CurrencyType targetCurrency) {
+        CurrencyRates currencyRates = null; //TODO: get exchange rates here from db
         BigDecimal rate = currencyRates.getRateBysymbol(targetCurrency);
         if(!baseCurrency.equals(CurrencyType.EUR)) {
             rate = rate.divide(currencyRates.getRateBysymbol(baseCurrency), 2, RoundingMode.HALF_UP);
@@ -92,5 +93,17 @@ public class AccountService {
             user.addAccountToList(newAccount);
             userRepository.save(user);
         }
+    }
+
+    public Transaction makeTransactionATM(Transaction transaction, String type) {
+        Account bankAccount = Account.builder().accountNumber(UUID.fromString("00000000-0000-0000-0000-000000000000")).build();
+        if(type.equals("deposit")) {
+            transaction.setSender(bankAccount);
+        } else if(type.equals("withdraw")) {
+            transaction.setRecipient(bankAccount);
+        } else {
+            return null;
+        }
+        return makeTransaction(transaction);
     }
 }
