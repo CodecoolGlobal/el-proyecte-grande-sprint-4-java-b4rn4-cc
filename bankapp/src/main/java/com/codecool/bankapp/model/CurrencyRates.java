@@ -1,5 +1,6 @@
 package com.codecool.bankapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -21,9 +22,10 @@ public class CurrencyRates {
     private CurrencyType base = CurrencyType.EUR;
     @OneToMany
     @ToString.Exclude
+    @JsonIgnore
     private List<Rate> ratesList = new ArrayList<>();
     @Transient
-    private Map<CurrencyType, BigDecimal> rates;
+    private Map<CurrencyType, BigDecimal> rates = new HashMap<>();
 
 
     public void unpackRates(Map<CurrencyType, BigDecimal> rates) {
@@ -32,6 +34,12 @@ public class CurrencyRates {
             rate.setSymbol(currencyType);
             rate.setValue(rates.get(currencyType));
             this.ratesList.add(rate);
+        }
+    }
+
+    public void packRates(List<Rate> ratesList){
+        for (Rate rate : ratesList) {
+            rates.put(rate.getSymbol(), rate.getValue());
         }
     }
 
