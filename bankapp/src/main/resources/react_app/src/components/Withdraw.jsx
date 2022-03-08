@@ -1,15 +1,15 @@
 import React, { useState } from "react";
+import {apiPost} from "../FetchApis";
 
-const Withdraw = ({ transferMoney, accounts }) => {
+const Withdraw = ({ apiPost, accounts }) => {
   const [amount, setAmount] = useState(0);
   const [sender, setSender] = useState(accounts[0]);
   const [currency, setCurrency] = useState(accounts[0].currency);
   const [message, setMessage] = useState("");
-  const recipient = "00000000-0000-0000-0000-000000000000";
 
   const submit = (e) => {
     e.preventDefault();
-    transferMoney({ amount, currency, sender, recipient, message });
+    apiPost("/account/ATM-withdraw", { amount, currency, sender, message });
     setAmount(0);
     setMessage("");
   };

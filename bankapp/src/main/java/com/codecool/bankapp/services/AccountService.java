@@ -96,11 +96,12 @@ public class AccountService {
     }
 
     public Transaction makeTransactionATM(Transaction transaction, String type) {
-        Account bankAccount = Account.builder().accountNumber(UUID.fromString("00000000-0000-0000-0000-000000000000")).build();
+        UUID atmNumber = UUID.fromString("00000000-0000-0000-0000-000000000000");
+        Account bankFundAccount = accountRepository.findAccountByAccountNumberEquals(atmNumber).orElse(null);
         if(type.equals("deposit")) {
-            transaction.setSender(bankAccount);
+            transaction.setSender(bankFundAccount);
         } else if(type.equals("withdraw")) {
-            transaction.setRecipient(bankAccount);
+            transaction.setRecipient(bankFundAccount);
         } else {
             return null;
         }
