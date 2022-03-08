@@ -37,7 +37,7 @@ public class AccountController {
         return accountService.getAccountsByUserID(userID);
     }
 
-    @PutMapping("/user/{userID}/add-{type}")
+    @PostMapping("/user/{userID}/add-{type}")
     public void addAccount(@PathVariable("userID") UUID userID, @PathVariable("type") String type, @RequestBody CurrencyType currency) {
         accountService.addAccount(userID, type, currency);
     }
