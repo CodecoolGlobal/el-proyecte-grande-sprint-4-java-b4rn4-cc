@@ -65,7 +65,7 @@ public class AccountService {
     }
 
     public List<Account> getAccountsByUserID(UUID userID) {
-        return accountDao.getAccountsByUserID(userID);
+        return accountRepository.getAccountsByUserIDEquals(userID);
     }
 
     @Transactional
