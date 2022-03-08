@@ -3,10 +3,14 @@ package com.codecool.bankapp.services;
 import com.codecool.bankapp.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -115,5 +119,24 @@ public class AccountService {
     public void saveCurrencies(CurrencyRates rates) {
         rateRepository.saveAll(rates.getRatesList());
         ratesRepository.save(rates);
+    }
+
+    public CurrencyRates getCurrencyRates(String apiKey, RestTemplate template) {
+        LocalDate today = LocalDate.now();
+        CurrencyRates currencyRates = ratesRepository.findFirstByOrderByIdDesc();
+        Date lastRateDate = currencyRates.getDate();
+
+        if (today.compareTo(LocalDate.ofInstant(lastRateDate.toInstant(), ZoneId.systemDefault())) > 0) {
+            String url = "http://data.fixer.io/api/latest?access_key=" + apiKey + "&symbols=GBP,JPY,USD,HUF";
+            CurrencyRates currency = template.getForObject(url, CurrencyRates.class);
+            assert currency != null;
+            currency.unpackRates(currency.getRates());
+            saveCurrencies(currency);
+            System.out.println("fetching");
+            return currency;
+        }
+        System.out.println("NOT FETCHING");
+        currencyRates.packRates(currencyRates.getRatesList());
+        return currencyRates;
     }
 }
