@@ -4,10 +4,11 @@ import Header from "./Header";
 
 
 
-const Layout = ({setClickedDetails}) => {
+const Layout = () => {
     const [renderEvent, setRenderEvent] = useState(0);
     const navigate = useNavigate();
-    const handleclick = (page) => {
+
+    const handleClick = (page) => {
         navigate(page);
         setClickedDetails(s => !s);
         setRenderEvent(Date.now());
@@ -16,28 +17,28 @@ const Layout = ({setClickedDetails}) => {
 
     return (
         <>
-            <Header renderEvent={renderEvent} handleclick={handleclick}/>
+            <Header renderEvent={renderEvent} handleClick={handleClick}/>
             <div className="main">
                 <div className="nav">
-                    <div className="bankName" onClick={() => handleclick('/')}>
+                    <div className="bankName" onClick={() => handleClick('/')}>
                         <strong>El Grande Banco</strong>
                     </div>
                     <div className="navLinks">
-                        <div onClick={() => handleclick('/account-details')}>
+                        <div onClick={() => handleClick('/account-details')}>
                             Account Details
                         </div>
                         <div className="service">
                             Services
                         </div>
                         <div className="serviceLinks">
-                            <div onClick={() => handleclick("/deposit")}>Deposit</div>
-                            <div onClick={() => handleclick("/withdraw")}>Withdraw</div>
-                            <div onClick={() => handleclick("/deposit")}>Transaction History</div>
-                            <div onClick={() => handleclick("/transfer")}>Transer Money</div>
-                            <div onClick={() => handleclick("/pay-bills")}>Pay Bills</div>
-                            <div onClick={() => handleclick("/loan")}>Loan</div>
+                            <div onClick={() => handleClick("/deposit")}>Deposit</div>
+                            <div onClick={() => handleClick("/withdraw")}>Withdraw</div>
+                            <div onClick={() => handleClick("/deposit")}>Transaction History</div>
+                            <div onClick={() => handleClick("/transfer")}>Transer Money</div>
+                            <div onClick={() => handleClick("/pay-bills")}>Pay Bills</div>
+                            <div onClick={() => handleClick("/loan")}>Loan</div>
                         </div>
-                        <div id="about" onClick={() => handleclick("/about")}>About</div>
+                        <div id="about" onClick={() => handleClick("/about")}>About</div>
                     </div>
                 </div>
                 <div className="content">

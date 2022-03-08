@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-const Header = ({handleclick, renderEvent}) => {
+const Header = ({handleClick, renderEvent}) => {
     const [time, setTimeLeft] = useState(120);
 
     useEffect(() => {
@@ -13,7 +13,7 @@ const Header = ({handleclick, renderEvent}) => {
     }, [time]);
 
     useEffect(() => {
-        setTimeLeft(300)
+        setTimeLeft(120)
     }, [renderEvent]);
 
 
@@ -33,8 +33,8 @@ const Header = ({handleclick, renderEvent}) => {
     return (
         <ul className={"header"}>
             <li className={"noHover"}><a>{secondsToTime(time)} </a></li>
-            <li><a  onClick={() => {handleclick("/")}}>Log out</a></li>
-            <li><a onClick={() => {handleclick("/")}}>Home</a></li>
+            <li><a  onClick={() => {handleClick("/")}}>Log out</a></li>
+            <li><a onClick={() => {handleClick("/")}}>Home</a></li>
         </ul>
     );
 };
