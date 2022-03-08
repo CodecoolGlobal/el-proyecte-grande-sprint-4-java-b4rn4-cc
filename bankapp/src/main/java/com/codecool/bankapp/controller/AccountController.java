@@ -3,9 +3,11 @@ package com.codecool.bankapp.controller;
 import com.codecool.bankapp.datasource.Configuration;
 import com.codecool.bankapp.model.Account;
 import com.codecool.bankapp.model.CurrencyRates;
+import com.codecool.bankapp.model.CurrencyType;
 import com.codecool.bankapp.model.Transaction;
 import com.codecool.bankapp.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -35,6 +37,11 @@ public class AccountController {
         return accountService.getAccountsByUserID(userID);
     }
 
+    @PutMapping("/user/{userID}/add-checking")
+    public void getAccounts(@PathVariable("userID") UUID userID, @RequestBody CurrencyType currency) {
+        accountService.addCheckingAccount(userID, currency);
+    }
+
     @PostMapping("/transaction")
     public Transaction makeTransaction(@RequestBody Transaction transaction) {
         return accountService.makeTransaction(transaction, currency);
@@ -57,5 +64,10 @@ public class AccountController {
             currencyFetched = true;
         }
         return currency;
+    }
+
+    @ExceptionHandler({HttpMessageNotReadableException.class})
+    public void handleException() {
+        System.out.println("JSON parse error: Cannot deserialize value(s)");
     }
 }
