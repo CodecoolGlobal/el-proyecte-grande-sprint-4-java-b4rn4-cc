@@ -37,9 +37,9 @@ public class AccountController {
         return accountService.getAccountsByUserID(userID);
     }
 
-    @PutMapping("/user/{userID}/add-checking")
-    public void getAccounts(@PathVariable("userID") UUID userID, @RequestBody CurrencyType currency) {
-        accountService.addCheckingAccount(userID, currency);
+    @PutMapping("/user/{userID}/add-{type}")
+    public void addAccount(@PathVariable("userID") UUID userID, @PathVariable("type") String type, @RequestBody CurrencyType currency) {
+        accountService.addAccount(userID, type, currency);
     }
 
     @PostMapping("/transaction")

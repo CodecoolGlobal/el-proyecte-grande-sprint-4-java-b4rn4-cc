@@ -77,10 +77,17 @@ public class AccountService {
     }
 
     @Transactional
-    public void addCheckingAccount(UUID userID, CurrencyType currency) {
+    public void addAccount(UUID userID, String type, CurrencyType currency) {
         User user = userRepository.findUserByUserIDEquals(userID).orElse(null);
         if(user != null) {
-            CheckingAccount newAccount = CheckingAccount.builder().userID(userID).currency(currency).build();
+            Account newAccount;
+            if(type.equals("savings")) {
+                newAccount = SavingsAccount.builder().userID(userID).currency(currency).build();
+            } else if(type.equals("checking")) {
+                newAccount = CheckingAccount.builder().userID(userID).currency(currency).build();
+            } else {
+                return;
+            }
             accountRepository.save(newAccount);
             user.addAccountToList(newAccount);
             userRepository.save(user);
