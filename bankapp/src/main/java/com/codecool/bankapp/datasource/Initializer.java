@@ -22,8 +22,8 @@ public class Initializer {
         this.accountService = accountService;
         this.userRepository = userRepository;
         this.accountRepository = accountRepository;
-        init();
         Configuration.setupApp();
+        init();
     }
 
     private void init() {

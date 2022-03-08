@@ -1,5 +1,6 @@
 package com.codecool.bankapp.services;
 
+import com.codecool.bankapp.datasource.Configuration;
 import com.codecool.bankapp.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,8 +11,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.UUID;
 
 @Service
@@ -21,6 +22,9 @@ public class AccountService {
     UserRepository userRepository;
     private final CurrencyRatesRepository ratesRepository;
     private final RateRepository rateRepository;
+    private Properties props;
+    private String apiKey;
+    private final RestTemplate template = new RestTemplate();
 
 
     @Autowired
@@ -73,7 +77,7 @@ public class AccountService {
     }
 
     private BigDecimal exchangeCurrency(BigDecimal amount, CurrencyType baseCurrency, CurrencyType targetCurrency) {
-        CurrencyRates currencyRates = null; //TODO: get exchange rates here from db
+        CurrencyRates currencyRates = getCurrencyRates();
         BigDecimal rate = currencyRates.getRateBysymbol(targetCurrency);
         if(!baseCurrency.equals(CurrencyType.EUR)) {
             rate = rate.divide(currencyRates.getRateBysymbol(baseCurrency), 2, RoundingMode.HALF_UP);
@@ -121,12 +125,15 @@ public class AccountService {
         ratesRepository.save(rates);
     }
 
-    public CurrencyRates getCurrencyRates(String apiKey, RestTemplate template) {
+    public CurrencyRates getCurrencyRates() {
+        if (props == null) {
+            this.props = Configuration.getProps();
+            this.apiKey = props.getProperty("apikey");
+        }
         LocalDate today = LocalDate.now();
         CurrencyRates currencyRates = ratesRepository.findFirstByOrderByIdDesc();
-        Date lastRateDate = currencyRates.getDate();
 
-        if (today.compareTo(LocalDate.ofInstant(lastRateDate.toInstant(), ZoneId.systemDefault())) > 0) {
+        if (currencyRates == null || today.compareTo(LocalDate.ofInstant(currencyRates.getDate().toInstant(), ZoneId.systemDefault())) > 0) {
             String url = "http://data.fixer.io/api/latest?access_key=" + apiKey + "&symbols=GBP,JPY,USD,HUF";
             CurrencyRates currency = template.getForObject(url, CurrencyRates.class);
             assert currency != null;
