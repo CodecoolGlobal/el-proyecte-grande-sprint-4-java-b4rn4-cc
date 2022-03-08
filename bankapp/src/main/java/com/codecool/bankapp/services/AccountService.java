@@ -15,13 +15,17 @@ public class AccountService {
     AccountRepository accountRepository;
     TransactionRepository transactionRepository;
     UserRepository userRepository;
+    private final CurrencyRatesRepository ratesRepository;
+    private final RateRepository rateRepository;
 
 
     @Autowired
-    public AccountService(AccountRepository accountRepository, TransactionRepository transactionRepository, UserRepository userRepository) {
+    public AccountService(AccountRepository accountRepository, TransactionRepository transactionRepository, UserRepository userRepository, CurrencyRatesRepository ratesRepository, RateRepository rateRepository) {
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;
         this.userRepository = userRepository;
+        this.ratesRepository = ratesRepository;
+        this.rateRepository = rateRepository;
     }
 
     @Transactional
@@ -106,5 +110,10 @@ public class AccountService {
             return null;
         }
         return makeTransaction(transaction);
+    }
+
+    public void saveCurrencies(CurrencyRates rates) {
+        rateRepository.saveAll(rates.getRatesList());
+        ratesRepository.save(rates);
     }
 }
