@@ -11,9 +11,11 @@ const Withdraw = ({ accounts }) => {
 
   const submit = (e) => {
     e.preventDefault();
-    apiPost("/account/ATM-withdraw", { amount, currency, sender, message });
-    setAmount(0);
-    setMessage("");
+    apiPost("/account/ATM-withdraw", { amount, currency, sender:{accountNumber: sender}, message })
+        .then(() => {
+          setAmount(0);
+          setMessage("");
+        });
   };
 
   function getCurrency(accNumber) {
