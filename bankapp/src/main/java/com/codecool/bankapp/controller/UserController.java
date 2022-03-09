@@ -39,11 +39,6 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/test")
-    public List<Transaction> test() {
-        return null;
-    }
-
     @GetMapping("/news")
     public Object getNews() {
         Properties props = Configuration.getProps();

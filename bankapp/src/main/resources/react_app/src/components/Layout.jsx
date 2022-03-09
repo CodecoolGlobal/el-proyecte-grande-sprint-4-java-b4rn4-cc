@@ -4,7 +4,7 @@ import Header from "./Header";
 
 
 
-const Layout = () => {
+const Layout = ({ setClickedDetails }) => {
     const [renderEvent, setRenderEvent] = useState(0);
     const navigate = useNavigate();
 
