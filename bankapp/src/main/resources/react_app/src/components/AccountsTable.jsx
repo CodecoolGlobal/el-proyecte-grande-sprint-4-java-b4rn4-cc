@@ -14,14 +14,14 @@ const AccountsTable = ({accounts}) => {
             </tr>
             </thead>
             <tbody>
-            {accounts && accounts.length > 0 && accounts.map((account) => (
-                <tr key={account.accountNumber}>
-                    <td>{account.accountNumber}</td>
-                    <td>{account.type}</td>
-                    <td>{account.balance}</td>
-                    <td>{account.currency}</td>
-                    <td><Link to="/deposit" state={{accNum:account.accountNumber}}>Deposit</Link><br/>
-                        <Link to="/withdraw" state={{accNum:account.accountNumber, currency:account.currency}}>Withdraw</Link>
+            {accounts && accounts.length > 0 && accounts.map((acc) => (
+                <tr key={acc.accountNumber}>
+                    <td>{acc.accountNumber}</td>
+                    <td>{acc.type}</td>
+                    <td>{acc.balance}</td>
+                    <td>{acc.currency}</td>
+                    <td><Link to="/deposit" state={{accountNumber:acc.accountNumber}}>Deposit</Link><br/>
+                        <Link to="/withdraw" state={{accountNumber:acc.accountNumber, currency:acc.currency}}>Withdraw</Link>
                     </td>
                 </tr>
             ))}
