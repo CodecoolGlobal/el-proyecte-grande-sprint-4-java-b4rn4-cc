@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {apiPost} from "../FetchApis";
 import {loadProp} from "./ReloadMemory";
 
 const Transfermoney = ({ accounts }) => {
-  let accountMemory = loadProp(accounts, 'accounts', [{accountNumber: "", currency: "EUR"}]);
+  let loadedAccounts = loadProp(accounts, 'accounts', "");
 
   const [amount, setAmount] = useState(0);
-  const [currency, setCurrency] = useState(accountMemory[0].currency)
-  const [sender, setSender] = useState(accountMemory[0].accountNumber);
+  const [currency, setCurrency] = useState(loadedAccounts[0].currency)
+  const [sender, setSender] = useState(loadedAccounts[0].accountNumber);
   const [recipient, setRecipient] = useState("");
   const [message, setMessage] = useState("");
+
+    useEffect(() => {
+        localStorage.setItem('accounts', JSON.stringify(loadedAccounts));
+    }, []);
 
   const submit = (e) => {
     e.preventDefault();
@@ -25,7 +29,7 @@ const Transfermoney = ({ accounts }) => {
   };
 
   function getCurrency(accNumber) {
-    for(let acc of accountMemory) {
+    for(let acc of loadedAccounts) {
       if(acc.accountNumber === accNumber) {
         setCurrency(acc.currency)
       }
@@ -40,7 +44,7 @@ const Transfermoney = ({ accounts }) => {
         id="accNumber"
         onChange={(event) => {setSender(event.target.value); getCurrency(event.target.value)}}
       >
-        {accountMemory.map((acc) => (
+        {loadedAccounts.map((acc) => (
           <option key={acc.accountNumber} value={acc.accountNumber}>
             {acc.accountNumber}
           </option>

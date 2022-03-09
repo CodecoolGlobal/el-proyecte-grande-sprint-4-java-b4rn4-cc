@@ -5,8 +5,8 @@ import {loadProp} from "./ReloadMemory";
 
 const Withdraw = ({ accounts }) => {
   const preset = useLocation().state;
-  let accountMemory = loadProp(accounts, 'accounts', [{accountNumber: "", currency: "EUR"}]);
-  const form = loadProp(preset, 'form', accountMemory[0]);   //load first/default account when empty
+  let loadedAccounts = loadProp(accounts, 'accounts', [{accountNumber: "", currency: "EUR"}]);
+  const form = loadProp(preset, 'form', loadedAccounts[0]);   //load first/default account when empty
 
   const [amount, setAmount] = useState(0);
   let [sender, setSender] = useState(form.accountNumber);
@@ -15,7 +15,7 @@ const Withdraw = ({ accounts }) => {
 
 
   useEffect(() => {
-    localStorage.setItem('accounts', JSON.stringify(accountMemory))
+    localStorage.setItem('accounts', JSON.stringify(loadedAccounts))
     localStorage.setItem('form', JSON.stringify({currency: currency, accountNumber: sender}));
   }, []);
 
@@ -34,7 +34,7 @@ const Withdraw = ({ accounts }) => {
   };
 
   function getCurrency(accNumber) {
-    for (let acc of accountMemory) {
+    for (let acc of loadedAccounts) {
       if (acc.accountNumber === accNumber) {
         setCurrency(acc.currency);
       }
@@ -56,7 +56,7 @@ const Withdraw = ({ accounts }) => {
               getCurrency(event.target.value);
             }}
           >
-            {accountMemory.map((acc) => (
+            {loadedAccounts.map((acc) => (
               <option key={acc.accountNumber} value={acc.accountNumber}>
                 {acc.accountNumber}
               </option>
