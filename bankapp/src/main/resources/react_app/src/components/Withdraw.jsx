@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import {useLocation} from "react-router-dom";
+import {apiPost} from "../FetchApis";
 
-const Withdraw = ({ apiPost, accounts }) => {
-  const location = useLocation();
-  const data = location.state;
+const Withdraw = ({ accounts }) => {
+  const data = useLocation().state;
   const [amount, setAmount] = useState(0);
   const [sender, setSender] = useState(data.accNum);
   const [currency, setCurrency] = useState(data.currency);
@@ -31,9 +31,10 @@ const Withdraw = ({ apiPost, accounts }) => {
         <div>
           <label>Sender:</label>
           <select
-            name="accNumber"
-            id="accNumber"
-            onChange={(event) => {
+              defaultValue={sender ? String(sender) : ""}
+              name="accNumber"
+              id="accNumber"
+              onChange={(event) => {
               setSender(event.target.value);
               getCurrency(event.target.value);
             }}

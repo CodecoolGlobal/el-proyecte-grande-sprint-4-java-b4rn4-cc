@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import { useLocation } from 'react-router-dom';
+import {apiPost} from "../FetchApis";
 
-const Deposit = ({ apiPost }) => {
-  const location = useLocation();
-  const data = location.state;
+const Deposit = () => {
+  const data = useLocation().state;
   const [amount, setAmount] = useState(0);
   const [recipient, setRecipient] = useState(data.accNum);
   const [message, setMessage] = useState("");
@@ -11,11 +11,14 @@ const Deposit = ({ apiPost }) => {
 
   const submit = (e) => {
     e.preventDefault();
-    apiPost("/account/ATM-deposit", { amount, currency, recipient, message });
-    setAmount(0);
-    setMessage("");
-    setRecipient("");
+    apiPost("/account/ATM-deposit",{ amount, currency, recipient:{accountNumber: recipient}, message })
+        .then(() => {
+          setAmount(0);
+          setMessage("");
+          setRecipient("");
+        });
   }
+
   return <div className="transfer-container">
     <h1>Deposit</h1>
     <form className="transfer-form" onSubmit={submit}>

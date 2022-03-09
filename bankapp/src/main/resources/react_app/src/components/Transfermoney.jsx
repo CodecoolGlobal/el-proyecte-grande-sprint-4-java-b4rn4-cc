@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import {apiPost} from "../FetchApis";
 
-const Transfermoney = ({ transferMoney, accounts }) => {
+const Transfermoney = ({ accounts }) => {
   const [amount, setAmount] = useState(0);
   const [currency, setCurrency] = useState(accounts[0].currency)
   const [sender, setSender] = useState(accounts[0].accountNumber);
@@ -9,13 +10,15 @@ const Transfermoney = ({ transferMoney, accounts }) => {
 
   const submit = (e) => {
     e.preventDefault();
-    transferMoney({ amount, currency, sender, recipient, message });
-
-    setAmount(0);
-    setMessage("");
-    setRecipient("");
-    setSender("");
-    setCurrency("");
+    apiPost("/account/transaction",
+        { amount, currency, sender:{accountNumber: sender}, recipient:{accountNumber: recipient}, message })
+        .then(() => {
+          setAmount(0);
+          setMessage("");
+          setRecipient("");
+          setSender("");
+          setCurrency("");
+    });
   };
 
   function getCurrency(accNumber) {
