@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Getter
 @Setter
@@ -42,11 +43,15 @@ public class User {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         User user = (User) o;
-        return id != null && Objects.equals(id, user.id);
+        return userID != null && Objects.equals(userID, user.userID);
     }
 
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    public boolean areNullFields() {
+        return Stream.of(name, address, password, userID).anyMatch(Objects::isNull);
     }
 }
