@@ -12,17 +12,17 @@ import java.util.UUID;
 
 @Service
 public class UserService {
-    UserDao userDao;
-    AccountDao accountDao;
+    UserRepository userRepository;
+    AccountService accountService;
 
     @Autowired
-    public UserService(UserDao userDao, AccountDao accountDao) {
-        this.userDao = userDao;
-        this.accountDao = accountDao;
+    public UserService(UserRepository userRepository, AccountService accountService) {
+        this.userRepository = userRepository;
+        this.accountService = accountService;
     }
 
     public User getUser(UUID userID) {
-        return userDao.findUser(userID).orElse(null);
+        return userRepository.findUserByUserIDEquals(userID).orElse(null);
     }
 
     public void addUser(User newUser){
