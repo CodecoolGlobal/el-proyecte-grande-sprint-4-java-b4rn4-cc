@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ import java.util.UUID;
 public class UserService {
     UserRepository userRepository;
     AccountService accountService;
+    private LocalTime initTime = LocalTime.MIN;
 
     @Autowired
     public UserService(UserRepository userRepository, AccountService accountService) {
@@ -39,5 +41,14 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public boolean shouldFetchNews(){
+        LocalTime currentTime = LocalTime.now();
+        if (currentTime.getHour() > initTime.getHour()) {
+            initTime = currentTime;
+            return true;
+        }
+        return false;
     }
 }

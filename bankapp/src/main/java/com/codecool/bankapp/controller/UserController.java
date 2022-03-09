@@ -15,7 +15,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/")
 public class UserController {
-    private boolean newsFetched = false;
     private Object news;
     UserService userService;
 
@@ -45,10 +44,9 @@ public class UserController {
         Properties props = Configuration.getProps();
         String newsApiKey = props.getProperty("newsApiKey");
         RestTemplate template = new RestTemplate();
-        if (!newsFetched) {
+        if (userService.shouldFetchNews()) {
             String url = "https://newsdata.io/api/1/news?apikey="+ newsApiKey +"&language=en&category=business";
             news = template.getForObject(url, Object.class);
-            newsFetched = true;
             return news;
         }
         return news;
