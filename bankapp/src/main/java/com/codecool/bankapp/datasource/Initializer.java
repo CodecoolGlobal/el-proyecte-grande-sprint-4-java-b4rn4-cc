@@ -63,7 +63,7 @@ public class Initializer {
     }
 
     private void makeTransaction(BigDecimal amount, Account sender, Account recipient) {
-        Transaction transaction = Transaction.builder().amount(amount).sender(sender).currency(sender.getCurrency()).recipient(recipient).build();
+        Transaction transaction = Transaction.builder().amount(amount).sender((CheckingAccount) sender).currency(sender.getCurrency()).recipient(recipient).build();
         accountService.makeTransaction(transaction);
     }
 }
