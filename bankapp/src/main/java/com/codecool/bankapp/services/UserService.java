@@ -7,6 +7,7 @@ import com.codecool.bankapp.model.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ import java.util.UUID;
 public class UserService {
     UserDao userDao;
     AccountDao accountDao;
+    private LocalTime initTime = LocalTime.MIN;
 
     @Autowired
     public UserService(UserDao userDao, AccountDao accountDao) {
@@ -34,5 +36,14 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
+    }
+
+    public boolean shouldFetchNews(){
+        LocalTime currentTime = LocalTime.now();
+        if (currentTime.getHour() > initTime.getHour()) {
+            initTime = currentTime;
+            return true;
+        }
+        return false;
     }
 }
