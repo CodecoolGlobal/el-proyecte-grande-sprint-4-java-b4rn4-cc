@@ -1,5 +1,7 @@
-package com.codecool.bankapp.model;
+package com.codecool.bankapp.repository;
 
+import com.codecool.bankapp.model.Account;
+import com.codecool.bankapp.model.CheckingAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

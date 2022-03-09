@@ -2,6 +2,7 @@ package com.codecool.bankapp.services;
 
 import com.codecool.bankapp.datasource.Configuration;
 import com.codecool.bankapp.model.*;
+import com.codecool.bankapp.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -139,10 +140,8 @@ public class AccountService {
             assert currency != null;
             currency.unpackRates(currency.getRates());
             saveCurrencies(currency);
-            System.out.println("fetching");
             return currency;
         }
-        System.out.println("NOT FETCHING");
         currencyRates.packRates(currencyRates.getRatesList());
         return currencyRates;
     }

@@ -1,6 +1,8 @@
 package com.codecool.bankapp.datasource;
 
 import com.codecool.bankapp.model.*;
+import com.codecool.bankapp.repository.AccountRepository;
+import com.codecool.bankapp.repository.UserRepository;
 import com.codecool.bankapp.services.AccountService;
 import com.codecool.bankapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

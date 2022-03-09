@@ -2,7 +2,7 @@ package com.codecool.bankapp.services;
 
 import com.codecool.bankapp.model.CurrencyType;
 import com.codecool.bankapp.model.User;
-import com.codecool.bankapp.model.UserRepository;
+import com.codecool.bankapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
