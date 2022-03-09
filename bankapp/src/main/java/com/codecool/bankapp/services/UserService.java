@@ -1,11 +1,12 @@
 package com.codecool.bankapp.services;
 
-import com.codecool.bankapp.model.CheckingAccount;
+import com.codecool.bankapp.model.CurrencyType;
 import com.codecool.bankapp.model.User;
 import com.codecool.bankapp.model.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,11 +25,16 @@ public class UserService {
         return userRepository.findUserByUserIDEquals(userID).orElse(null);
     }
 
+    @Transactional
     public void addUser(User newUser){
-        userDao.addUser(newUser);
-        CheckingAccount checkingAccount = CheckingAccount.builder().userID(newUser.getUserID()).build();
-        userDao.addAccount(newUser.getUserID(), checkingAccount);
-        accountDao.addCheckingAccount(checkingAccount);
+        if(newUser.getUserID() == null) {
+            newUser.setUserID(UUID.randomUUID());
+        }
+        if(newUser.areNullFields()) {
+            return;
+        }
+        userRepository.save(newUser);
+        accountService.addAccount(newUser.getUserID(), "checking", CurrencyType.EUR);
     }
 
     public List<User> getAllUsers() {
