@@ -1,13 +1,28 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {useLocation} from "react-router-dom";
 import {apiPost} from "../FetchApis";
+import {loadProp} from "./ReloadMemory";
 
 const Withdraw = ({ accounts }) => {
-  const data = useLocation().state;
+  const preset = useLocation().state;
+  let accountMemory = loadProp(accounts, 'accounts', [{accountNumber: "", currency: "EUR"}]);
+  const form = loadProp(preset, 'form', accountMemory[0]);   //load first/default account when empty
+
   const [amount, setAmount] = useState(0);
-  const [sender, setSender] = useState(data.accNum);
-  const [currency, setCurrency] = useState(data.currency);
-  const [message, setMessage] = useState("");
+  let [sender, setSender] = useState(form.accountNumber);
+  let [currency, setCurrency] = useState(form.currency);
+  let [message, setMessage] = useState("");
+
+
+  useEffect(() => {
+    localStorage.setItem('accounts', JSON.stringify(accountMemory))
+    localStorage.setItem('form', JSON.stringify({currency: currency, accountNumber: sender}));
+  }, []);
+
+  // update form storage when selecting
+  useEffect(() => {
+    localStorage.setItem('form', JSON.stringify({currency: currency, accountNumber: sender}));
+  }, [sender]);
 
   const submit = (e) => {
     e.preventDefault();
@@ -19,7 +34,7 @@ const Withdraw = ({ accounts }) => {
   };
 
   function getCurrency(accNumber) {
-    for (let acc of accounts) {
+    for (let acc of accountMemory) {
       if (acc.accountNumber === accNumber) {
         setCurrency(acc.currency);
       }
@@ -41,7 +56,7 @@ const Withdraw = ({ accounts }) => {
               getCurrency(event.target.value);
             }}
           >
-            {accounts.map((acc) => (
+            {accountMemory.map((acc) => (
               <option key={acc.accountNumber} value={acc.accountNumber}>
                 {acc.accountNumber}
               </option>
