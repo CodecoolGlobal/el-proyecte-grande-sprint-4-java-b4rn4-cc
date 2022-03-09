@@ -2,8 +2,7 @@ package com.codecool.bankapp.services;
 
 import com.codecool.bankapp.model.CheckingAccount;
 import com.codecool.bankapp.model.User;
-import com.codecool.bankapp.model.dao.AccountDao;
-import com.codecool.bankapp.model.dao.UserDao;
+import com.codecool.bankapp.model.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +32,6 @@ public class UserService {
     }
 
     public List<User> getAllUsers() {
-        return userDao.getAllUsers();
+        return userRepository.findAll();
     }
 }
