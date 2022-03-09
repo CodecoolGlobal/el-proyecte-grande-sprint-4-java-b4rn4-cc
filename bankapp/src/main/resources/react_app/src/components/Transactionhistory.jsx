@@ -2,10 +2,16 @@ import React from "react";
 import Transaction from "./Transaction";
 import { apiGet } from "../FetchApis";
 import { useEffect, useState } from "react";
+import {loadProp} from "./ReloadMemory";
 
 const Transactionhistory = ({ accounts }) => {
+  let loadedAccounts = loadProp(accounts, 'accounts', "");
   const [transactions, setTransactions] = useState([]);
-  const [accToView, setAccToView] = useState(accounts[0].accountNumber);
+  const [accToView, setAccToView] = useState(loadedAccounts[0].accountNumber);
+
+  useEffect(() => {
+    localStorage.setItem('accounts', JSON.stringify(loadedAccounts));
+  }, []);
 
   useEffect(() => {
     const getTransactions = async () => {
@@ -25,7 +31,7 @@ const Transactionhistory = ({ accounts }) => {
           id="accNumber"
           onChange={(event) => setAccToView(event.target.value)}
         >
-          {accounts.map((acc) => (
+          {loadedAccounts.map((acc) => (
             <option key={acc.accountNumber} value={acc.accountNumber}>
               {acc.accountNumber}
             </option>

@@ -6,7 +6,7 @@ const Transaction = ({ transaction }) => {
       <tbody>
         <tr>
           <td>{new Date(transaction.transactionTime).toUTCString()}</td>
-          <td>{transaction.recipient}</td>
+          <td>{transaction.recipient.accountNumber}</td>
           <td>{transaction.amount} {transaction.currency}</td>
           <td
             className={

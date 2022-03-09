@@ -1,21 +1,30 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { useLocation } from 'react-router-dom';
+import {apiPost} from "../FetchApis";
+import {loadProp} from "./ReloadMemory";
 
-const Deposit = ({ apiPost }) => {
-  const location = useLocation();
-  const data = location.state;
+const Deposit = () => {
+  const preset = useLocation().state;
   const [amount, setAmount] = useState(0);
-  const [recipient, setRecipient] = useState(data.accNum);
+  const [recipient, setRecipient] = useState(loadProp(preset,'accNum', "").accountNumber);
   const [message, setMessage] = useState("");
   const currency = "EUR";
 
+  // store info when selecting (will run a lot when typing)
+  useEffect(() => {
+    localStorage.setItem('accNum', JSON.stringify({accountNumber: recipient}));
+  }, [recipient]);
+
   const submit = (e) => {
     e.preventDefault();
-    apiPost("/account/ATM-deposit", { amount, currency, recipient, message });
-    setAmount(0);
-    setMessage("");
-    setRecipient("");
+    apiPost("/account/ATM-deposit",{ amount, currency, recipient:{accountNumber: recipient}, message })
+        .then(() => {
+          setAmount(0);
+          setMessage("");
+          setRecipient("");
+        });
   }
+
   return <div className="transfer-container">
     <h1>Deposit</h1>
     <form className="transfer-form" onSubmit={submit}>

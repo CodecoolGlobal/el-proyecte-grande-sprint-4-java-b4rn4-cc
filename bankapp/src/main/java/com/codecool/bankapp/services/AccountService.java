@@ -2,6 +2,7 @@ package com.codecool.bankapp.services;
 
 import com.codecool.bankapp.datasource.Configuration;
 import com.codecool.bankapp.model.*;
+import com.codecool.bankapp.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -38,7 +39,7 @@ public class AccountService {
 
     @Transactional
     public Transaction makeTransaction(Transaction transaction) {
-        Account sender = accountRepository.findAccountByAccountNumberEquals(transaction.getSender().getAccountNumber()).orElse(null);
+        CheckingAccount sender = accountRepository.findCheckingAccountByAccountNumberEquals(transaction.getSender().getAccountNumber()).orElse(null);
         Account destination = accountRepository.findAccountByAccountNumberEquals(transaction.getRecipient().getAccountNumber()).orElse(null);
         BigDecimal amount = transaction.getAmount();
         BigDecimal zero = BigDecimal.ZERO;
@@ -109,7 +110,7 @@ public class AccountService {
 
     public Transaction makeTransactionATM(Transaction transaction, String type) {
         UUID atmNumber = UUID.fromString("00000000-0000-0000-0000-000000000000");
-        Account bankFundAccount = accountRepository.findAccountByAccountNumberEquals(atmNumber).orElse(null);
+        CheckingAccount bankFundAccount = accountRepository.findCheckingAccountByAccountNumberEquals(atmNumber).orElse(null);
         if(type.equals("deposit")) {
             transaction.setSender(bankFundAccount);
         } else if(type.equals("withdraw")) {
@@ -139,10 +140,8 @@ public class AccountService {
             assert currency != null;
             currency.unpackRates(currency.getRates());
             saveCurrencies(currency);
-            System.out.println("fetching");
             return currency;
         }
-        System.out.println("NOT FETCHING");
         currencyRates.packRates(currencyRates.getRatesList());
         return currencyRates;
     }

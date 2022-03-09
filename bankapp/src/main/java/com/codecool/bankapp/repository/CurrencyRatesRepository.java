@@ -1,5 +1,6 @@
-package com.codecool.bankapp.model;
+package com.codecool.bankapp.repository;
 
+import com.codecool.bankapp.model.CurrencyRates;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
