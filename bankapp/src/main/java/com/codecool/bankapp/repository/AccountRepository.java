@@ -16,5 +16,8 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     @Query("select a from CheckingAccount a where a.accountNumber = ?1")
     Optional<CheckingAccount> findCheckingAccountByAccountNumberEquals(UUID accountNumber);
-    List<Account> getAccountsByUserIDEquals(UUID userID);
+    Optional<List<Account>> getAccountsByUserIDEquals(UUID userID);
+
+    @Query("select a from CheckingAccount a where a.userID = ?1")
+    Optional<List<CheckingAccount>> getCheckingAccountsByUserIDEquals(UUID userID);
 }

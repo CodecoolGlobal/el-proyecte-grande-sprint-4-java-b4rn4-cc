@@ -24,18 +24,20 @@ public class AccountService {
     UserRepository userRepository;
     private final CurrencyRatesRepository ratesRepository;
     private final RateRepository rateRepository;
+    private final BillRepository billRepository;
     private Properties props;
     private String apiKey;
     private final RestTemplate template = new RestTemplate();
 
 
     @Autowired
-    public AccountService(AccountRepository accountRepository, TransactionRepository transactionRepository, UserRepository userRepository, CurrencyRatesRepository ratesRepository, RateRepository rateRepository) {
+    public AccountService(AccountRepository accountRepository, TransactionRepository transactionRepository, UserRepository userRepository, CurrencyRatesRepository ratesRepository, RateRepository rateRepository, BillRepository billRepository) {
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;
         this.userRepository = userRepository;
         this.ratesRepository = ratesRepository;
         this.rateRepository = rateRepository;
+        this.billRepository = billRepository;
     }
 
     @Transactional
@@ -78,15 +80,27 @@ public class AccountService {
 
     private BigDecimal exchangeCurrency(BigDecimal amount, CurrencyType baseCurrency, CurrencyType targetCurrency) {
         CurrencyRates currencyRates = getCurrencyRates();
-        BigDecimal rate = currencyRates.getRateBysymbol(targetCurrency);
+        if(baseCurrency.equals(targetCurrency)) {
+            return amount;
+        }
+        BigDecimal rate;
+        if(targetCurrency.equals(CurrencyType.EUR)) {
+            rate = BigDecimal.ONE;
+        } else {
+            rate = currencyRates.getRateBysymbol(targetCurrency);
+        }
         if(!baseCurrency.equals(CurrencyType.EUR)) {
             rate = rate.divide(currencyRates.getRateBysymbol(baseCurrency), 2, RoundingMode.HALF_UP);
         }
         return amount.multiply(rate).setScale(2, RoundingMode.HALF_UP);
     }
 
-    public List<Account> getAccountsByUserID(UUID userID) {
+    public Optional<List<Account>> getAccountsByUserID(UUID userID) {
         return accountRepository.getAccountsByUserIDEquals(userID);
+    }
+
+    public Optional<List<CheckingAccount>> getCheckingAccountsByUserID(UUID userID) {
+        return accountRepository.getCheckingAccountsByUserIDEquals(userID);
     }
 
     @Transactional
@@ -143,5 +157,36 @@ public class AccountService {
         }
         currencyRates.packRates(currencyRates.getRatesList());
         return currencyRates;
+    }
+
+    public Optional<List<Bill>> getBillsByUserID(UUID userID) {
+        return billRepository.findBillsByPayerUserIDEquals(userID);
+    }
+
+    public boolean payBillForUser(UUID accountNumber, Long billID) {
+        CheckingAccount sender = accountRepository.findCheckingAccountByAccountNumberEquals(accountNumber).orElse(null);
+        Bill bill = billRepository.findById(billID).orElse(null);
+
+        if(bill != null && sender != null) {
+            Transaction dueTransaction = bill.getTransaction();
+            Transaction cloneTransaction = new Transaction();
+            cloneTransaction.cloneBillTransaction(dueTransaction);
+
+            BigDecimal senderAmount = exchangeCurrency(dueTransaction.getAmount(), dueTransaction.getCurrency(), sender.getCurrency());
+            dueTransaction.setCurrency(sender.getCurrency());
+            dueTransaction.setAmount(senderAmount);
+            dueTransaction.setSender(sender);
+            makeTransaction(dueTransaction);
+
+            if(dueTransaction.getStatus() == TransactionStatus.SUCCESSFUL) {
+                bill.setPaid(true);
+            } else {
+                transactionRepository.save(cloneTransaction);
+                bill.setTransaction(cloneTransaction);
+            }
+            billRepository.save(bill);
+            return bill.isPaid();
+        }
+        return false;
     }
 }
