@@ -158,4 +158,68 @@ public class AccountServiceTests {
         assertEquals(BigDecimal.ZERO, recipient.getBalance());
     }
 
+    @Test
+    @DisplayName("Test transaction from EUR currency to GBP")
+    void testMakeTransactionFromEURToGBP() {
+        BigDecimal senderBalance = new BigDecimal("1000");
+        BigDecimal transactionAmount = new BigDecimal("500");
+        CheckingAccount sender = (CheckingAccount) buildCheckingAccount(senderBalance, CurrencyType.EUR);
+        CheckingAccount recipient = (CheckingAccount) buildCheckingAccount(BigDecimal.ZERO, CurrencyType.GBP);
+
+        Transaction transaction = Transaction.builder()
+                .currency(sender.getCurrency())
+                .amount(transactionAmount)
+                .sender(sender)
+                .recipient(recipient)
+                .build();
+
+        CurrencyRates rates = buildTestCurrencyRates();
+        rates.packRates(rates.getRatesList());
+
+        when(currencyRatesRepository.findFirstByOrderByIdDesc()).thenReturn(rates);
+        when(accountRepository.findAccountByAccountNumberEquals(sender.getAccountNumber())).thenReturn(Optional.of(sender));
+        when(accountRepository.findAccountByAccountNumberEquals(recipient.getAccountNumber())).thenReturn(Optional.of(recipient));
+        when(accountRepository.save(sender)).thenReturn(sender);
+        when(accountRepository.save(recipient)).thenReturn(recipient);
+        when(transactionRepository.save(transaction)).thenReturn(transaction);
+
+        Transaction returnedTransaction = service.makeTransaction(transaction);
+
+        assertEquals(TransactionStatus.SUCCESSFUL, returnedTransaction.getStatus());
+        assertEquals(new BigDecimal("500"), sender.getBalance());
+        assertEquals(new BigDecimal("250.00"), recipient.getBalance());
+
+    }
+
+    @Test
+    @DisplayName("Test transaction from EUR currency to JPY")
+    void testMakeTransactionFromEURToJPY() {
+        BigDecimal senderBalance = new BigDecimal("1000");
+        BigDecimal transactionAmount = new BigDecimal("500");
+        CheckingAccount sender = (CheckingAccount) buildCheckingAccount(senderBalance, CurrencyType.EUR);
+        CheckingAccount recipient = (CheckingAccount) buildCheckingAccount(BigDecimal.ZERO, CurrencyType.JPY);
+
+        Transaction transaction = Transaction.builder()
+                .currency(sender.getCurrency())
+                .amount(transactionAmount)
+                .sender(sender)
+                .recipient(recipient)
+                .build();
+
+        CurrencyRates rates = buildTestCurrencyRates();
+        rates.packRates(rates.getRatesList());
+
+        when(currencyRatesRepository.findFirstByOrderByIdDesc()).thenReturn(rates);
+        when(accountRepository.findAccountByAccountNumberEquals(sender.getAccountNumber())).thenReturn(Optional.of(sender));
+        when(accountRepository.findAccountByAccountNumberEquals(recipient.getAccountNumber())).thenReturn(Optional.of(recipient));
+        when(accountRepository.save(sender)).thenReturn(sender);
+        when(accountRepository.save(recipient)).thenReturn(recipient);
+        when(transactionRepository.save(transaction)).thenReturn(transaction);
+
+        Transaction returnedTransaction = service.makeTransaction(transaction);
+
+        assertEquals(TransactionStatus.SUCCESSFUL, returnedTransaction.getStatus());
+        assertEquals(new BigDecimal("500"), sender.getBalance());
+        assertEquals(new BigDecimal("1000.00"), recipient.getBalance());
+    }
 }
