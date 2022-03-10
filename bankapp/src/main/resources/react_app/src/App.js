@@ -22,10 +22,11 @@ const initialUserState = {
 function App() {
   const [details, setDetails] = useState(initialUserState);
   const [clickedDetails, setClickedDetails] = useState(false);
+  let userID = "11111111-2222-3333-4444-555555555555"
 
   useEffect(() => {
     const getDetails = async () => {
-      const data = await apiGet("/user/11111111-2222-3333-4444-555555555555");
+      const data = await apiGet(`/user/${userID}`);
       setDetails(data);
     };
     getDetails();
@@ -40,7 +41,7 @@ function App() {
         <Route path="/withdraw" element={<Withdraw accounts={details.accountList}/>}/>
         <Route path="/history" element={<Transactionhistory accounts={details.accountList}/>}/>
         <Route path="/transfer" element={<Transfermoney accounts={details.accountList}/>}/>
-        <Route path="/pay-bills" element={<Paybills/>}/>
+        <Route path="/pay-bills" element={<Paybills userID={userID}/>}/>
         <Route path="/loan" element={<Loan/>}/>
         <Route path="/about" element={<About/>}/>
       </Route>
