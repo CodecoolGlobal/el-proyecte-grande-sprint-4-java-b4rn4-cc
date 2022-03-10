@@ -44,7 +44,7 @@ public class AccountServiceTests {
     }
 
     @Test
-    @DisplayName("Test getHistoryByAccountNumber succes")
+    @DisplayName("Test getHistoryByAccountNumber success")
     void testGetHistoryByAccountNum() {
         // Setting up mock
         UUID accNumber = UUID.randomUUID();
