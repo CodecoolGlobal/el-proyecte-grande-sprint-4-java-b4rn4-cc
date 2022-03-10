@@ -47,4 +47,15 @@ public class Transaction {
     public int hashCode() {
         return getClass().hashCode();
     }
+
+    public void cloneBillTransaction(Transaction t) {
+        this.id = null;
+        this.transactionTime = null;
+        this.sender = null;
+        this.amount = t.getAmount();
+        this.recipient = t.getRecipient();
+        this.currency = t.getCurrency();
+        this.status = TransactionStatus.PROCESSING;
+        this.message = t.getMessage();
+    }
 }
