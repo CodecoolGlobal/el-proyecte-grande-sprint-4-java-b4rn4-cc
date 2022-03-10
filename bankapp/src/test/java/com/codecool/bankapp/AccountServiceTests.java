@@ -245,4 +245,33 @@ public class AccountServiceTests {
         assertEquals(1, testUser.getAccountList().size());
         assertEquals(CheckingAccount.class, testUser.getAccountList().get(0).getClass());
     }
+
+    @Test
+    @DisplayName("Test atm transaction deposit")
+    void testAtmDepositTransaction() {
+        UUID accNumber = UUID.randomUUID();
+        CheckingAccount sender = (CheckingAccount) buildCheckingAccount(new BigDecimal("1000000"), CurrencyType.EUR);
+        CheckingAccount recipient = (CheckingAccount) buildCheckingAccount(BigDecimal.ZERO, CurrencyType.EUR);
+
+        BigDecimal transactionAmount = new BigDecimal("100");
+        Transaction transaction = Transaction.builder()
+                .currency(CurrencyType.EUR)
+                .amount(transactionAmount)
+                .sender(sender)
+                .recipient(recipient)
+                .build();
+        CurrencyRates rates = buildTestCurrencyRates();
+
+        when(accountRepository.findAccountByAccountNumberEquals(accNumber)).thenReturn(Optional.of(sender));
+        when(currencyRatesRepository.findFirstByOrderByIdDesc()).thenReturn(rates);
+        when(accountRepository.findAccountByAccountNumberEquals(sender.getAccountNumber())).thenReturn(Optional.of(sender));
+        when(accountRepository.findAccountByAccountNumberEquals(recipient.getAccountNumber())).thenReturn(Optional.of(recipient));
+        when(accountRepository.save(sender)).thenReturn(sender);
+        when(accountRepository.save(recipient)).thenReturn(recipient);
+        when(transactionRepository.save(transaction)).thenReturn(transaction);
+
+        service.makeTransactionATM(transaction, "deposit");
+
+        assertEquals(transactionAmount, recipient.getBalance());
+    }
 }
