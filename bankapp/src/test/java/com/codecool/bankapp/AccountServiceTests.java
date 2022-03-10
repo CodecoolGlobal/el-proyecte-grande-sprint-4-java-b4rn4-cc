@@ -222,4 +222,27 @@ public class AccountServiceTests {
         assertEquals(new BigDecimal("500"), sender.getBalance());
         assertEquals(new BigDecimal("1000.00"), recipient.getBalance());
     }
+
+    @Test
+    @DisplayName("Test adding EUR checking account to user successfully")
+    void testAddAccount() {
+        UUID userId = UUID.randomUUID();
+        String accType = "checking";
+        CurrencyType currencyType = CurrencyType.EUR;
+
+        User testUser = User.builder()
+                .name("test User")
+                .address("test address")
+                .password("test password")
+                .build();
+
+        when(userRepository.findUserByUserIDEquals(userId)).thenReturn(Optional.of(testUser));
+        when(accountRepository.save(new CheckingAccount())).thenReturn(new CheckingAccount());
+        when(userRepository.save(testUser)).thenReturn(testUser);
+
+        service.addAccount(userId, accType, currencyType);
+
+        assertEquals(1, testUser.getAccountList().size());
+        assertEquals(CheckingAccount.class, testUser.getAccountList().get(0).getClass());
+    }
 }
