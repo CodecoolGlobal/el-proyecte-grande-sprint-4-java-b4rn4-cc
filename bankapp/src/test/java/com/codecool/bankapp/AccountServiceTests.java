@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -55,9 +55,22 @@ public class AccountServiceTests {
         when(accountRepository.findAccountByAccountNumberEquals(accNumber)).thenReturn(Optional.of(account));
 
         // Execute service call
-        List<Transaction> returnedTransactions = service.getHistoryByAccount(accNumber);
+        var returnedTransactions = service.getHistoryByAccount(accNumber);
 
-        assertSame(returnedTransactions, returnedTransactions);
+        assertEquals(Optional.of(List.of(transaction1)), returnedTransactions);
+    }
+
+    @Test
+    @DisplayName("Test getHistoryByAccountNumber couldn't find account return null")
+    void testGetHistoryByAccNumReturnsNull() {
+        // mock repository
+        UUID accNum = UUID.randomUUID();
+        when(accountRepository.findAccountByAccountNumberEquals(accNum)).thenReturn(Optional.empty());
+
+        // execute service call
+        var transactions = service.getHistoryByAccount(accNum);
+
+        assertEquals(Optional.of(transactions), Optional.of(Optional.empty()));
     }
 
 }
