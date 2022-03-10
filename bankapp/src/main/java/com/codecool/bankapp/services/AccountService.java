@@ -82,7 +82,15 @@ public class AccountService {
 
     private BigDecimal exchangeCurrency(BigDecimal amount, CurrencyType baseCurrency, CurrencyType targetCurrency) {
         CurrencyRates currencyRates = getCurrencyRates();
-        BigDecimal rate = currencyRates.getRateBysymbol(targetCurrency);
+        if(baseCurrency.equals(targetCurrency)) {
+            return amount;
+        }
+        BigDecimal rate;
+        if(targetCurrency.equals(CurrencyType.EUR)) {
+            rate = BigDecimal.ONE;
+        } else {
+            rate = currencyRates.getRateBysymbol(targetCurrency);
+        }
         if(!baseCurrency.equals(CurrencyType.EUR)) {
             rate = rate.divide(currencyRates.getRateBysymbol(baseCurrency), 2, RoundingMode.HALF_UP);
         }
