@@ -2,6 +2,7 @@ package com.codecool.bankapp;
 
 import com.codecool.bankapp.controller.AccountController;
 import com.codecool.bankapp.model.*;
+import com.codecool.bankapp.repository.*;
 import com.codecool.bankapp.services.AccountService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -98,7 +99,7 @@ public class AccountServiceTests {
     @DisplayName("Test makeTransaction successful between same currency accounts")
     void testMakeTransactionReturnsSuccessfulTransaction() {
         CheckingAccount sender = (CheckingAccount) buildCheckingAccount(new BigDecimal("100"), CurrencyType.EUR);
-        CheckingAccount recipient = (CheckingAccount) buildCheckingAccount(BigDecimal.ZERO, CurrencyType.EUR);
+        Account recipient = buildCheckingAccount(BigDecimal.ZERO, CurrencyType.EUR);
         BigDecimal transactionAmount = sender.getBalance();
 
         Transaction transaction = Transaction.builder()
@@ -112,7 +113,7 @@ public class AccountServiceTests {
         CurrencyRates rates = buildTestCurrencyRates();
 
         when(currencyRatesRepository.findFirstByOrderByIdDesc()).thenReturn(rates);
-        when(accountRepository.findAccountByAccountNumberEquals(sender.getAccountNumber())).thenReturn(Optional.of(sender));
+        when(accountRepository.findCheckingAccountByAccountNumberEquals(sender.getAccountNumber())).thenReturn(Optional.of(sender));
         when(accountRepository.findAccountByAccountNumberEquals(recipient.getAccountNumber())).thenReturn(Optional.of(recipient));
         when(accountRepository.save(sender)).thenReturn(sender);
         when(accountRepository.save(recipient)).thenReturn(recipient);
@@ -133,7 +134,7 @@ public class AccountServiceTests {
     @DisplayName("Test makeTransaction between two EUR currency accounts with bigger then sender balance should reject")
     void testMakeTransactionShouldTransactionStatusBeREJECTED() {
         CheckingAccount sender = (CheckingAccount) buildCheckingAccount(BigDecimal.ZERO, CurrencyType.EUR);
-        CheckingAccount recipient = (CheckingAccount) buildCheckingAccount(BigDecimal.ZERO, CurrencyType.EUR);
+        Account recipient = buildCheckingAccount(BigDecimal.ZERO, CurrencyType.EUR);
         BigDecimal transactionAmount = new BigDecimal("100");
 
         Transaction transaction = Transaction.builder()
@@ -145,7 +146,7 @@ public class AccountServiceTests {
         CurrencyRates rates = buildTestCurrencyRates();
 
         when(currencyRatesRepository.findFirstByOrderByIdDesc()).thenReturn(rates);
-        when(accountRepository.findAccountByAccountNumberEquals(sender.getAccountNumber())).thenReturn(Optional.of(sender));
+        when(accountRepository.findCheckingAccountByAccountNumberEquals(sender.getAccountNumber())).thenReturn(Optional.of(sender));
         when(accountRepository.findAccountByAccountNumberEquals(recipient.getAccountNumber())).thenReturn(Optional.of(recipient));
         when(accountRepository.save(sender)).thenReturn(sender);
         when(accountRepository.save(recipient)).thenReturn(recipient);
@@ -164,7 +165,7 @@ public class AccountServiceTests {
         BigDecimal senderBalance = new BigDecimal("1000");
         BigDecimal transactionAmount = new BigDecimal("500");
         CheckingAccount sender = (CheckingAccount) buildCheckingAccount(senderBalance, CurrencyType.EUR);
-        CheckingAccount recipient = (CheckingAccount) buildCheckingAccount(BigDecimal.ZERO, CurrencyType.GBP);
+        Account recipient = buildCheckingAccount(BigDecimal.ZERO, CurrencyType.GBP);
 
         Transaction transaction = Transaction.builder()
                 .currency(sender.getCurrency())
@@ -177,7 +178,7 @@ public class AccountServiceTests {
         rates.packRates(rates.getRatesList());
 
         when(currencyRatesRepository.findFirstByOrderByIdDesc()).thenReturn(rates);
-        when(accountRepository.findAccountByAccountNumberEquals(sender.getAccountNumber())).thenReturn(Optional.of(sender));
+        when(accountRepository.findCheckingAccountByAccountNumberEquals(sender.getAccountNumber())).thenReturn(Optional.of(sender));
         when(accountRepository.findAccountByAccountNumberEquals(recipient.getAccountNumber())).thenReturn(Optional.of(recipient));
         when(accountRepository.save(sender)).thenReturn(sender);
         when(accountRepository.save(recipient)).thenReturn(recipient);
@@ -197,7 +198,7 @@ public class AccountServiceTests {
         BigDecimal senderBalance = new BigDecimal("1000");
         BigDecimal transactionAmount = new BigDecimal("500");
         CheckingAccount sender = (CheckingAccount) buildCheckingAccount(senderBalance, CurrencyType.EUR);
-        CheckingAccount recipient = (CheckingAccount) buildCheckingAccount(BigDecimal.ZERO, CurrencyType.JPY);
+        Account recipient = buildCheckingAccount(BigDecimal.ZERO, CurrencyType.JPY);
 
         Transaction transaction = Transaction.builder()
                 .currency(sender.getCurrency())
@@ -210,7 +211,7 @@ public class AccountServiceTests {
         rates.packRates(rates.getRatesList());
 
         when(currencyRatesRepository.findFirstByOrderByIdDesc()).thenReturn(rates);
-        when(accountRepository.findAccountByAccountNumberEquals(sender.getAccountNumber())).thenReturn(Optional.of(sender));
+        when(accountRepository.findCheckingAccountByAccountNumberEquals(sender.getAccountNumber())).thenReturn(Optional.of(sender));
         when(accountRepository.findAccountByAccountNumberEquals(recipient.getAccountNumber())).thenReturn(Optional.of(recipient));
         when(accountRepository.save(sender)).thenReturn(sender);
         when(accountRepository.save(recipient)).thenReturn(recipient);
@@ -251,7 +252,7 @@ public class AccountServiceTests {
     void testAtmDepositTransaction() {
         UUID accNumber = UUID.randomUUID();
         CheckingAccount sender = (CheckingAccount) buildCheckingAccount(new BigDecimal("1000000"), CurrencyType.EUR);
-        CheckingAccount recipient = (CheckingAccount) buildCheckingAccount(BigDecimal.ZERO, CurrencyType.EUR);
+        Account recipient = buildCheckingAccount(BigDecimal.ZERO, CurrencyType.EUR);
 
         BigDecimal transactionAmount = new BigDecimal("100");
         Transaction transaction = Transaction.builder()
@@ -262,14 +263,15 @@ public class AccountServiceTests {
                 .build();
         CurrencyRates rates = buildTestCurrencyRates();
 
-        when(accountRepository.findAccountByAccountNumberEquals(accNumber)).thenReturn(Optional.of(sender));
+        when(accountRepository.findCheckingAccountByAccountNumberEquals(accNumber)).thenReturn(Optional.of(sender));
         when(currencyRatesRepository.findFirstByOrderByIdDesc()).thenReturn(rates);
-        when(accountRepository.findAccountByAccountNumberEquals(sender.getAccountNumber())).thenReturn(Optional.of(sender));
+        when(accountRepository.findCheckingAccountByAccountNumberEquals(sender.getAccountNumber())).thenReturn(Optional.of(sender));
         when(accountRepository.findAccountByAccountNumberEquals(recipient.getAccountNumber())).thenReturn(Optional.of(recipient));
         when(accountRepository.save(sender)).thenReturn(sender);
         when(accountRepository.save(recipient)).thenReturn(recipient);
         when(transactionRepository.save(transaction)).thenReturn(transaction);
 
+        // TODO: 2022. 03. 10. Ask mentor on review why cannot be mocked
         service.makeTransactionATM(transaction, "deposit");
 
         assertEquals(transactionAmount, recipient.getBalance());
