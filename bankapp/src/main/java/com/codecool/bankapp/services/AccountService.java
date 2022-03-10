@@ -23,18 +23,20 @@ public class AccountService {
     UserRepository userRepository;
     private final CurrencyRatesRepository ratesRepository;
     private final RateRepository rateRepository;
+    private final BillRepository billRepository;
     private Properties props;
     private String apiKey;
     private final RestTemplate template = new RestTemplate();
 
 
     @Autowired
-    public AccountService(AccountRepository accountRepository, TransactionRepository transactionRepository, UserRepository userRepository, CurrencyRatesRepository ratesRepository, RateRepository rateRepository) {
+    public AccountService(AccountRepository accountRepository, TransactionRepository transactionRepository, UserRepository userRepository, CurrencyRatesRepository ratesRepository, RateRepository rateRepository, BillRepository billRepository) {
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;
         this.userRepository = userRepository;
         this.ratesRepository = ratesRepository;
         this.rateRepository = rateRepository;
+        this.billRepository = billRepository;
     }
 
     @Transactional
