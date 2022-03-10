@@ -13,6 +13,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -69,12 +70,10 @@ public class AccountService {
         return null;
     }
 
-    public List<Transaction> getHistoryByAccount(UUID accountNumber) {
-        Account account = accountRepository.findAccountByAccountNumberEquals(accountNumber).orElse(null);
-        if(account != null) {
-            return account.getHistory();
-        }
-        return null;
+    public Optional<List<Transaction>> getHistoryByAccount(UUID accountNumber) {
+        var account = accountRepository.findAccountByAccountNumberEquals(accountNumber);
+
+        return account.map(Account::getHistory);
     }
 
     private BigDecimal exchangeCurrency(BigDecimal amount, CurrencyType baseCurrency, CurrencyType targetCurrency) {

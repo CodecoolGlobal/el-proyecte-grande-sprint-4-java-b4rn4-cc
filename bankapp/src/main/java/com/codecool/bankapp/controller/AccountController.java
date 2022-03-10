@@ -10,6 +10,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -23,7 +24,7 @@ public class AccountController {
     }
 
     @GetMapping("/{accountNumber}/history")
-    public List<Transaction> getHistory(@PathVariable UUID accountNumber) {
+    public Optional<List<Transaction>> getHistory(@PathVariable UUID accountNumber) {
         return accountService.getHistoryByAccount(accountNumber);
     }
 
