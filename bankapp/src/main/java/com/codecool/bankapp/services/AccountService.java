@@ -13,6 +13,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -88,7 +89,7 @@ public class AccountService {
         return amount.multiply(rate).setScale(2, RoundingMode.HALF_UP);
     }
 
-    public List<Account> getAccountsByUserID(UUID userID) {
+    public Optional<List<Account>> getAccountsByUserID(UUID userID) {
         return accountRepository.getAccountsByUserIDEquals(userID);
     }
 

@@ -1,15 +1,13 @@
 package com.codecool.bankapp.controller;
 
-import com.codecool.bankapp.model.Account;
-import com.codecool.bankapp.model.CurrencyRates;
-import com.codecool.bankapp.model.CurrencyType;
-import com.codecool.bankapp.model.Transaction;
+import com.codecool.bankapp.model.*;
 import com.codecool.bankapp.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -28,11 +26,16 @@ public class AccountController {
     }
 
     @GetMapping("/user/{userID}")
-    public List<Account> getAccounts(@PathVariable UUID userID) {
+    public Optional<List<Account>> getAccounts(@PathVariable UUID userID) {
         return accountService.getAccountsByUserID(userID);
     }
 
-    @PostMapping("/user/{userID}/add-{type}")
+    @GetMapping("/user/{userID}/checking")
+    public Optional<List<Account>> getCheckingAccounts(@PathVariable UUID userID) {
+        return accountService.getAccountsByUserID(userID);
+    }
+
+    @PostMapping("/account/{userID}/add-{type}")
     public void addAccount(@PathVariable("userID") UUID userID, @PathVariable("type") String type, @RequestBody CurrencyType currency) {
         accountService.addAccount(userID, type, currency);
     }
