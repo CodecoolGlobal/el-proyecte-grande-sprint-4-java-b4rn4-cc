@@ -129,4 +129,33 @@ public class AccountServiceTests {
 
     }
 
+    @Test
+    @DisplayName("Test makeTransaction between two EUR currency accounts with bigger then sender balance should reject")
+    void testMakeTransactionShouldTransactionStatusBeREJECTED() {
+        CheckingAccount sender = (CheckingAccount) buildCheckingAccount(BigDecimal.ZERO, CurrencyType.EUR);
+        CheckingAccount recipient = (CheckingAccount) buildCheckingAccount(BigDecimal.ZERO, CurrencyType.EUR);
+        BigDecimal transactionAmount = new BigDecimal("100");
+
+        Transaction transaction = Transaction.builder()
+                .sender(sender)
+                .recipient(recipient)
+                .amount(transactionAmount)
+                .currency(sender.getCurrency()).build();
+
+        CurrencyRates rates = buildTestCurrencyRates();
+
+        when(currencyRatesRepository.findFirstByOrderByIdDesc()).thenReturn(rates);
+        when(accountRepository.findAccountByAccountNumberEquals(sender.getAccountNumber())).thenReturn(Optional.of(sender));
+        when(accountRepository.findAccountByAccountNumberEquals(recipient.getAccountNumber())).thenReturn(Optional.of(recipient));
+        when(accountRepository.save(sender)).thenReturn(sender);
+        when(accountRepository.save(recipient)).thenReturn(recipient);
+        when(transactionRepository.save(transaction)).thenReturn(transaction);
+
+        Transaction returnedTransaction = service.makeTransaction(transaction);
+
+        assertEquals(TransactionStatus.REJECTED, returnedTransaction.getStatus());
+        assertEquals(BigDecimal.ZERO, sender.getBalance());
+        assertEquals(BigDecimal.ZERO, recipient.getBalance());
+    }
+
 }
