@@ -204,6 +204,7 @@
   width: 150px;
   margin-left: 50px;
   font-size: 18px;
+  border-radius: 10px;
 }
 
 .transfer-form button:hover {
