@@ -101,6 +101,10 @@ public class AccountService {
         return accountRepository.getAccountsByUserIDEquals(userID);
     }
 
+    public Optional<List<CheckingAccount>> getCheckingAccountsByUserID(UUID userID) {
+        return accountRepository.getCheckingAccountsByUserIDEquals(userID);
+    }
+
     @Transactional
     public void addAccount(UUID userID, String type, CurrencyType currency) {
         User user = userRepository.findUserByUserIDEquals(userID).orElse(null);
@@ -155,5 +159,36 @@ public class AccountService {
         }
         currencyRates.packRates(currencyRates.getRatesList());
         return currencyRates;
+    }
+
+    public Optional<List<Bill>> getBillsByUserID(UUID userID) {
+        return billRepository.findBillsByPayerUserIDEquals(userID);
+    }
+
+    public boolean payBillForUser(UUID accountNumber, Long billID) {
+        CheckingAccount sender = accountRepository.findCheckingAccountByAccountNumberEquals(accountNumber).orElse(null);
+        Bill bill = billRepository.findById(billID).orElse(null);
+
+        if(bill != null && sender != null) {
+            Transaction dueTransaction = bill.getTransaction();
+            Transaction cloneTransaction = new Transaction();
+            cloneTransaction.cloneBillTransaction(dueTransaction);
+
+            BigDecimal senderAmount = exchangeCurrency(dueTransaction.getAmount(), dueTransaction.getCurrency(), sender.getCurrency());
+            dueTransaction.setCurrency(sender.getCurrency());
+            dueTransaction.setAmount(senderAmount);
+            dueTransaction.setSender(sender);
+            makeTransaction(dueTransaction);
+
+            if(dueTransaction.getStatus() == TransactionStatus.SUCCESSFUL) {
+                bill.setPaid(true);
+            } else {
+                transactionRepository.save(cloneTransaction);
+                bill.setTransaction(cloneTransaction);
+            }
+            billRepository.save(bill);
+            return bill.isPaid();
+        }
+        return false;
     }
 }

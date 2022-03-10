@@ -50,6 +50,16 @@ public class AccountController {
         return accountService.makeTransactionATM(transaction, type);
     }
 
+    @GetMapping("/user/{userID}/bills")
+    public Optional<List<Bill>> getBills(@PathVariable UUID userID) {
+        return accountService.getBillsByUserID(userID);
+    }
+
+    @GetMapping("/{accountNumber}/pay-bill/{billID}")
+    public boolean payBill(@PathVariable UUID accountNumber, @PathVariable Long billID) {
+        return accountService.payBillForUser(accountNumber, billID);
+    }
+
     @GetMapping("/main")
     public CurrencyRates getCurrencies() {
         return accountService.getCurrencyRates();
