@@ -27,7 +27,7 @@ public class Transaction {
     private BigDecimal amount;
     private CurrencyType currency;
     @OneToOne
-    private Account sender;
+    private CheckingAccount sender;
     @OneToOne
     private Account recipient;
     @Builder.Default

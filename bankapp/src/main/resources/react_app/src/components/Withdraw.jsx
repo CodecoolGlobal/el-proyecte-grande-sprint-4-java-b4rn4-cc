@@ -1,23 +1,40 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {useLocation} from "react-router-dom";
+import {apiPost} from "../FetchApis";
+import {loadProp} from "./ReloadMemory";
 
-const Withdraw = ({ apiPost, accounts }) => {
-  const location = useLocation();
-  const data = location.state;
+const Withdraw = ({ accounts }) => {
+  const preset = useLocation().state;
+  let loadedAccounts = loadProp(accounts, 'accounts', [{accountNumber: "", currency: "EUR"}]);
+  const form = loadProp(preset, 'form', loadedAccounts[0]);   //load first/default account when empty
+
   const [amount, setAmount] = useState(0);
-  const [sender, setSender] = useState(data.accNum);
-  const [currency, setCurrency] = useState(data.currency);
-  const [message, setMessage] = useState("");
+  let [sender, setSender] = useState(form.accountNumber);
+  let [currency, setCurrency] = useState(form.currency);
+  let [message, setMessage] = useState("");
+
+
+  useEffect(() => {
+    localStorage.setItem('accounts', JSON.stringify(loadedAccounts))
+    localStorage.setItem('form', JSON.stringify({currency: currency, accountNumber: sender}));
+  }, []);
+
+  // update form storage when selecting
+  useEffect(() => {
+    localStorage.setItem('form', JSON.stringify({currency: currency, accountNumber: sender}));
+  }, [sender]);
 
   const submit = (e) => {
     e.preventDefault();
-    apiPost("/account/ATM-withdraw", { amount, currency, sender, message });
-    setAmount(0);
-    setMessage("");
+    apiPost("/account/ATM-withdraw", { amount, currency, sender:{accountNumber: sender}, message })
+        .then(() => {
+          setAmount(0);
+          setMessage("");
+        });
   };
 
   function getCurrency(accNumber) {
-    for (let acc of accounts) {
+    for (let acc of loadedAccounts) {
       if (acc.accountNumber === accNumber) {
         setCurrency(acc.currency);
       }
@@ -31,14 +48,15 @@ const Withdraw = ({ apiPost, accounts }) => {
         <div>
           <label>Sender:</label>
           <select
-            name="accNumber"
-            id="accNumber"
-            onChange={(event) => {
+              defaultValue={sender ? String(sender) : ""}
+              name="accNumber"
+              id="accNumber"
+              onChange={(event) => {
               setSender(event.target.value);
               getCurrency(event.target.value);
             }}
           >
-            {accounts.map((acc) => (
+            {loadedAccounts.map((acc) => (
               <option key={acc.accountNumber} value={acc.accountNumber}>
                 {acc.accountNumber}
               </option>

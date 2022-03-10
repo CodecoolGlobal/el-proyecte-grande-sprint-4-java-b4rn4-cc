@@ -12,6 +12,7 @@ const Layout = ({ setClickedDetails }) => {
         navigate(page);
         setClickedDetails(s => !s);
         setRenderEvent(Date.now());
+        localStorage.clear()
     }
 
 
@@ -33,7 +34,7 @@ const Layout = ({ setClickedDetails }) => {
                         <div className="serviceLinks">
                             <div onClick={() => handleClick("/deposit")}>Deposit</div>
                             <div onClick={() => handleClick("/withdraw")}>Withdraw</div>
-                            <div onClick={() => handleClick("/deposit")}>Transaction History</div>
+                            <div onClick={() => handleClick("/history")}>Transaction History</div>
                             <div onClick={() => handleClick("/transfer")}>Transer Money</div>
                             <div onClick={() => handleClick("/pay-bills")}>Pay Bills</div>
                             <div onClick={() => handleClick("/loan")}>Loan</div>

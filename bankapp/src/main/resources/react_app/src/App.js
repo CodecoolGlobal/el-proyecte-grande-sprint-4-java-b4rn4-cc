@@ -9,7 +9,7 @@ import Paybills from "./components/Paybills";
 import Transactionhistory from "./components/Transactionhistory";
 import Transfermoney from "./components/Transfermoney";
 import Withdraw from "./components/Withdraw";
-import { apiPost, apiGet } from "./FetchApis";
+import { apiGet } from "./FetchApis";
 import Landing from "./components/Landing";
 import Layout from "./components/Layout";
 
@@ -31,21 +31,15 @@ function App() {
     getDetails();
   }, [clickedDetails]);
 
-  const transferMoney = async (transaction) => {
-    await apiPost("/account/transaction", transaction);
-  };
-
   return (
     <Routes>
       <Route path="/" element={<Layout setClickedDetails={setClickedDetails}/>}>
         <Route path="/" element={<Landing/>}/>
         <Route path="/account-details" element={<AccountDetails details={details}/>}/>
-        <Route path="/deposit" element={<Deposit apiPost={apiPost}/>}/>
-        <Route path="/withdraw" element={<Withdraw apiPost={apiPost}
-                                                   accounts={details.accountList}/>}/>
+        <Route path="/deposit" element={<Deposit/>}/>
+        <Route path="/withdraw" element={<Withdraw accounts={details.accountList}/>}/>
         <Route path="/history" element={<Transactionhistory accounts={details.accountList}/>}/>
-        <Route path="/transfer" element={<Transfermoney transferMoney={transferMoney}
-                                                        accounts={details.accountList}/>}/>
+        <Route path="/transfer" element={<Transfermoney accounts={details.accountList}/>}/>
         <Route path="/pay-bills" element={<Paybills/>}/>
         <Route path="/loan" element={<Loan/>}/>
         <Route path="/about" element={<About/>}/>
