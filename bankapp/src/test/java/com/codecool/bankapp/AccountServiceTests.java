@@ -23,10 +23,10 @@ import static org.mockito.Mockito.when;
 public class AccountServiceTests {
 
     private CurrencyRates buildTestCurrencyRates() {
-        Rate rateGPB = new Rate(1L, CurrencyType.GBP, new BigDecimal("0.83"));
-        Rate rateJPY = new Rate(1L, CurrencyType.JPY, new BigDecimal("126.28"));
-        Rate rateUSD = new Rate(1L, CurrencyType.USD, new BigDecimal("1.09"));
-        Rate rateHUF = new Rate(1L, CurrencyType.HUF, new BigDecimal("384.08"));
+        Rate rateGPB = new Rate(1L, CurrencyType.GBP, new BigDecimal("0.5"));
+        Rate rateJPY = new Rate(1L, CurrencyType.JPY, new BigDecimal("2"));
+        Rate rateUSD = new Rate(1L, CurrencyType.USD, new BigDecimal("3"));
+        Rate rateHUF = new Rate(1L, CurrencyType.HUF, new BigDecimal("4"));
         CurrencyRates rates = new CurrencyRates();
         LocalDate date = LocalDate.now();
         rates.setDate(Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant()));
