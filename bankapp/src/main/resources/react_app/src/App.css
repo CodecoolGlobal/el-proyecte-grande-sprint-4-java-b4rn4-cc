@@ -1,0 +1,237 @@
+.main {
+  display: flex;
+  position: absolute;
+  top: 50px;
+  bottom: 0;
+  width: 100%;
+  height: fit-content;
+  min-height: 100%;
+}
+
+.nav {
+  display: block;
+  padding: 50px 15px 50px 25px;
+  background-color: #264653;
+  color: aliceblue;
+  width: 200px;
+  min-width: 100px;
+  font-size: large;
+}
+
+.content {
+  background: linear-gradient(#b4c7dc, #81aca6);
+  padding: 50px;
+  width: 100%;
+}
+
+.line {
+  display: flex;
+  justify-content: space-between;
+}
+
+.line :first-child {
+  font-weight: bold;
+}
+
+.CoDetails {
+  width: 65%;
+  padding-left: 30px;
+  margin-bottom: 30px;
+  font-size: x-large;
+}
+
+.header {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+.header li {
+  float: right;
+  display: inline;
+  list-style-type: none;
+  overflow: hidden;
+}
+
+.header a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 16px 20px;
+  text-decoration: none;
+}
+
+.header a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #04aa6d;
+}
+
+.noHover {
+  pointer-events: none;
+}
+
+.bankName {
+  font-size: larger;
+  font-weight: bolder;
+  padding: 15px;
+}
+
+.bankName:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.navLinks div {
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+.serviceLinks div:hover {
+  opacity: 0.5;
+}
+
+#accDetails:hover {
+  opacity: 0.5;
+}
+
+#about {
+  padding-top: 30px;
+}
+
+#about:hover {
+  opacity: 0.5;
+}
+
+.serviceLinks div {
+  padding-left: 15px;
+}
+
+#service {
+  cursor: default;
+}
+
+.transaction {
+  margin: 20px;
+}
+
+.transaction h2 {
+  font-size: 50px;
+}
+
+#accNumber {
+  display: block;
+  font-size: 22px;
+  padding: 10px;
+  border-radius: 15px;
+  background-color: aliceblue;
+}
+
+.historyTable {
+  width: 100%;
+}
+
+.historyTable thead {
+  text-align: center;
+}
+
+.historyTable tbody td {
+  font-size: 22px;
+  text-align: center;
+  padding-bottom: 8px;
+}
+
+.historyTable thead td {
+  padding: 15px;
+  font-weight: bolder;
+  font-size: 24px;
+  text-decoration: underline;
+}
+
+.transferOK {
+  text-decoration: underline;
+  color: green;
+}
+
+.transferFail {
+  text-decoration: underline;
+  color: red;
+}
+
+.accountNumberHistory {
+  display: flex;
+  margin: 50px auto 30px auto;
+  align-items: center;
+  font-size: 28px;
+}
+
+.accountNumberHistory :first-child {
+  padding-right: 40px;
+  font-weight: bolder;
+}
+
+.transfer-form {
+  width: 40%;
+  margin: auto;
+  font-size: 24px;
+}
+
+.transfer-form div {
+  padding: 25px 15px;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.transfer-form label {
+  align-self: center;
+}
+
+.transfer-form input {
+  border-radius: 15px;
+  padding: 8px;
+  font-size: 18px;
+  box-shadow: 5px 5px rgba(0, 0, 0, 0.356);
+}
+
+.transfer-form button {
+  background-color: #b4c7dc;
+  padding: 15px 5px;
+  width: 150px;
+  margin-left: 50px;
+  font-size: 18px;
+  border-radius: 10px;
+}
+
+.transfer-form button:hover {
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+#loading {
+  width: 2rem;
+  height: 2rem;
+  border: 5px solid #f3f3f3;
+  border-top: 6px solid #9c41f2;
+  border-radius: 100%;
+  margin: auto;
+  visibility: hidden;
+  animation: spin 1s infinite linear;
+}
+
+#loading.display {
+  visibility: visible;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
