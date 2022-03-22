@@ -9,7 +9,7 @@ const Deposit = ({ accounts }) => {
   const form = loadProp(preset, 'form', loadedAccounts[0]);   //load first/default account when empty
 
   const [amount, setAmount] = useState(0);
-  const [recipient, setRecipient] = useState(loadProp(preset,'accNum', "").accountNumber);
+  const [recipient, setRecipient] = useState(form.accountNumber);
   const [message, setMessage] = useState("");
   let [currency, setCurrency] = useState(form.currency);
 
