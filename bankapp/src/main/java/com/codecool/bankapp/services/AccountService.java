@@ -90,7 +90,7 @@ public class AccountService {
             rate = currencyRates.getRateBysymbol(targetCurrency);
         }
         if(!baseCurrency.equals(CurrencyType.EUR)) {
-            rate = rate.divide(currencyRates.getRateBysymbol(baseCurrency), 2, RoundingMode.HALF_UP);
+            rate = rate.divide(currencyRates.getRateBysymbol(baseCurrency), 4, RoundingMode.HALF_UP);
         }
         return amount.multiply(rate).setScale(2, RoundingMode.HALF_UP);
     }
@@ -123,8 +123,11 @@ public class AccountService {
 
     public Transaction makeTransactionATM(Transaction transaction, String type) {
         UUID atmNumber = UUID.fromString("00000000-0000-0000-0000-000000000000");
-        CheckingAccount bankFundAccount = accountRepository.findCheckingAccountByAccountNumberEquals(atmNumber).orElse(null);
+        CheckingAccount bankFundAccount = accountRepository.findCheckingAccountByAccountNumberEquals(atmNumber).orElseThrow(NullPointerException::new);
         if(type.equals("deposit")) {
+            BigDecimal sentAmount = exchangeCurrency(transaction.getAmount(), transaction.getCurrency(), bankFundAccount.getCurrency());
+            transaction.setAmount(sentAmount);
+            transaction.setCurrency(bankFundAccount.getCurrency());
             transaction.setSender(bankFundAccount);
         } else if(type.equals("withdraw")) {
             transaction.setRecipient(bankFundAccount);
