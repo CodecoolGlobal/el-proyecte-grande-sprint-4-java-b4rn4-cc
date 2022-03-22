@@ -90,7 +90,7 @@ public class AccountService {
             rate = currencyRates.getRateBysymbol(targetCurrency);
         }
         if(!baseCurrency.equals(CurrencyType.EUR)) {
-            rate = rate.divide(currencyRates.getRateBysymbol(baseCurrency), 2, RoundingMode.HALF_UP);
+            rate = rate.divide(currencyRates.getRateBysymbol(baseCurrency), 4, RoundingMode.HALF_UP);
         }
         return amount.multiply(rate).setScale(2, RoundingMode.HALF_UP);
     }
