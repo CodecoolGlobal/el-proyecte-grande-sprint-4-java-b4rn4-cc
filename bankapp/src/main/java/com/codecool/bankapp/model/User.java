@@ -29,7 +29,6 @@ public class User {
     private String name;
     private String address;
     private String password;
-    @Enumerated(EnumType.STRING)
     @ManyToMany
     @ToString.Exclude
     private List<Role> roles;
