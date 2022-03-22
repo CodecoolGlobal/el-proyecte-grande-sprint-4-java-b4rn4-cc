@@ -8,9 +8,11 @@ import com.codecool.bankapp.repository.UserRepository;
 import com.codecool.bankapp.services.AccountService;
 import com.codecool.bankapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -21,35 +23,38 @@ public class Initializer {
     AccountRepository accountRepository;
     TransactionRepository transactionRepository;
     BillRepository billRepository;
+    final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public Initializer(UserService userService, AccountService accountService, UserRepository userRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, BillRepository billRepository) {
+    public Initializer(UserService userService, AccountService accountService, UserRepository userRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, BillRepository billRepository, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.accountService = accountService;
         this.userRepository = userRepository;
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;
         this.billRepository = billRepository;
+        this.passwordEncoder = passwordEncoder;
         Configuration.setupApp();
         init();
     }
 
     private void init() {
-        User bank = User.builder().name("Banco Grande Incorporated").password("123")
+        User bank = User.builder().name("Banco Grande Incorporated").password(passwordEncoder.encode("123")).roles(List.of(Role.ADMIN, Role.USER))
                 .userID(UUID.fromString("99999999-9999-9999-9999-999999999999"))
                 .address("1234 Budapest, Hungary, Hal Street 99.").build();
         Account bankFundAccount = CheckingAccount.builder().accountNumber(UUID.fromString("00000000-0000-0000-0000-000000000000")).balance(new BigDecimal(900000000)).build();
         initAccount(bank, bankFundAccount);
 
-        User elmu = User.builder().name("ELMŰ-ÉMÁSZ Energiaszolgáltató ZRT.").password("123")
-                .address("1132 Budapest, Váci út 72-74.").build();
+        User elmu = User.builder().name("ELMŰ-ÉMÁSZ Energiaszolgáltató ZRT.").password(passwordEncoder.encode("123"))
+                .address("1132 Budapest, Váci út 72-74.")
+                .roles(List.of(Role.USER)).build();
         Account elmuAccount = CheckingAccount.builder().balance(new BigDecimal(10000)).build();
         initAccount(elmu, elmuAccount);
 
         BigDecimal money = new BigDecimal(100000);
 
         UUID user1ID = UUID.fromString("11111111-2222-3333-4444-555555555555");
-        User user1 = User.builder().name("Bandi").password("12")
+        User user1 = User.builder().name("Bandi").password(passwordEncoder.encode("12")).roles(List.of(Role.USER))
                 .userID(user1ID)
                 .address("City of Westminster, Downing Street 10.").build();
         Account account1 = CheckingAccount.builder().balance(money).currency(CurrencyType.EUR).userID(user1ID).build();
@@ -59,8 +64,9 @@ public class Initializer {
         initAccount(user1, account2);
 
         UUID user2ID = UUID.fromString("99999999-2222-3333-4444-555555555555");
-        User user2 = User.builder().name("Adam").password("123")
+        User user2 = User.builder().name("Adam").password(passwordEncoder.encode("123"))
                 .address("1111 Budapest, Csirke utca 7.")
+                .roles(List.of(Role.USER))
                 .userID(user2ID).build();
         Account account3 = CheckingAccount.builder().balance(money).currency(CurrencyType.HUF).userID(user2ID).build();
         initAccount(user2, account3);
