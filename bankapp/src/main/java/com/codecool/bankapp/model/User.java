@@ -3,6 +3,7 @@ package com.codecool.bankapp.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class User {
     private String name;
     private String address;
     private String password;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
     private List<Role> roles;
     @OneToMany
