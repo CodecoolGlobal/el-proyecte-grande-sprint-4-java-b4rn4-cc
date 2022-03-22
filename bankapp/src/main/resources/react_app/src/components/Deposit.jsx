@@ -3,12 +3,21 @@ import { useLocation } from 'react-router-dom';
 import {apiPost} from "../FetchApis";
 import {loadProp} from "./ReloadMemory";
 
-const Deposit = () => {
+const Deposit = ({ accounts }) => {
   const preset = useLocation().state;
+  let loadedAccounts = loadProp(accounts, 'accounts', [{accountNumber: "", currency: "EUR"}]);
+  const form = loadProp(preset, 'form', loadedAccounts[0]);   //load first/default account when empty
+
   const [amount, setAmount] = useState(0);
   const [recipient, setRecipient] = useState(loadProp(preset,'accNum', "").accountNumber);
   const [message, setMessage] = useState("");
-  const currency = "EUR";
+  let [currency, setCurrency] = useState(form.currency);
+
+
+  useEffect(() => {
+    localStorage.setItem('accounts', JSON.stringify(loadedAccounts));
+    localStorage.setItem('form', JSON.stringify({currency: currency, accountNumber: recipient}));
+  }, []);
 
   // store info when selecting (will run a lot when typing)
   useEffect(() => {
@@ -21,8 +30,15 @@ const Deposit = () => {
         .then(() => {
           setAmount(0);
           setMessage("");
-          setRecipient("");
         });
+  }
+
+  function getCurrency(accNumber) {
+    for (let acc of loadedAccounts) {
+      if (acc.accountNumber === accNumber) {
+        setCurrency(acc.currency);
+      }
+    }
   }
 
   return <div className="transfer-container">
@@ -30,14 +46,21 @@ const Deposit = () => {
     <form className="transfer-form" onSubmit={submit}>
       <div>
         <label htmlFor="recipientAccNumber">Recipient:</label>
-        <input
-            type="text"
-            id="recipientAccNumber"
-            name="recipient"
-            placeholder="Account Number"
-            value={recipient}
-            onChange={(e) => setRecipient(e.target.value)}
-        />
+        <select
+            defaultValue={recipient ? String(recipient) : ""}
+            name="accNumber"
+            id="accNumber"
+            onChange={(event) => {
+              setRecipient(event.target.value);
+              getCurrency(event.target.value);
+            }}
+        >
+          {loadedAccounts.map((acc) => (
+              <option key={acc.accountNumber} value={acc.accountNumber}>
+                {acc.accountNumber}
+              </option>
+          ))}
+        </select>
       </div>
       <div>
         <label htmlFor="amount">Amount:</label>
