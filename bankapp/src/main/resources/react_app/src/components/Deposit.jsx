@@ -21,7 +21,7 @@ const Deposit = ({ accounts }) => {
 
   // store info when selecting (will run a lot when typing)
   useEffect(() => {
-    localStorage.setItem('accNum', JSON.stringify({accountNumber: recipient}));
+    localStorage.setItem('form', JSON.stringify({currency: currency, accountNumber: recipient}));
   }, [recipient]);
 
   const submit = (e) => {
