@@ -4,6 +4,9 @@ import com.codecool.bankapp.model.CurrencyType;
 import com.codecool.bankapp.model.User;
 import com.codecool.bankapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     UserRepository userRepository;
     AccountService accountService;
     private LocalTime initTime = LocalTime.MIN;
@@ -50,5 +53,18 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByName(username);
+
+        UserDetails userDetails = org.springframework.security.core.userdetails.User
+                .withUsername(user.getName())
+                .password(user.getPassword())
+                .roles(user.getRole().toString())
+                .build();
+
+        return null;
     }
 }
