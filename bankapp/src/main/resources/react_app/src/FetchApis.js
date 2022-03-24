@@ -3,8 +3,7 @@ export async function apiGet(url) {
     method: "GET",
   });
   if (response.status === 200) {
-    let data = await response.json();
-    return data;
+    return await response.json();
   }
 }
 
