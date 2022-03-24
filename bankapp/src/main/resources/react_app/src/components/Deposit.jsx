@@ -5,24 +5,19 @@ import {loadProp} from "./ReloadMemory";
 
 const Deposit = ({ accounts }) => {
   const preset = useLocation().state;
-  let loadedAccounts = loadProp(accounts, 'accounts', [{accountNumber: "", currency: "EUR"}]);
-  const form = loadProp(preset, 'form', loadedAccounts[0]);   //load first/default account when empty
+  let selected = loadProp(preset, 'selected', {accountNumber: null});
 
   const [amount, setAmount] = useState(0);
-  const [recipient, setRecipient] = useState(form.accountNumber);
+  const [recipient, setRecipient] = useState(selected.accountNumber);
+  let [currency, setCurrency] = useState("");
   const [message, setMessage] = useState("");
-  let [currency, setCurrency] = useState(form.currency);
 
-
+  // load currency when accounts are fetched
   useEffect(() => {
-    localStorage.setItem('accounts', JSON.stringify(loadedAccounts));
-    localStorage.setItem('form', JSON.stringify({currency: currency, accountNumber: recipient}));
-  }, []);
-
-  // store info when selecting (will run a lot when typing)
-  useEffect(() => {
-    localStorage.setItem('form', JSON.stringify({currency: currency, accountNumber: recipient}));
-  }, [recipient]);
+    if(accounts !== undefined && accounts.length !== 0) {
+      updateForm(selected.accountNumber)
+    }
+  }, [accounts]);
 
   const submit = (e) => {
     e.preventDefault();
@@ -33,12 +28,20 @@ const Deposit = ({ accounts }) => {
         });
   }
 
-  function getCurrency(accNumber) {
-    for (let acc of loadedAccounts) {
-      if (acc.accountNumber === accNumber) {
-        setCurrency(acc.currency);
+  function updateForm(accNumber) {
+    if(accNumber !== null) {
+      for (let acc of accounts) {
+        if (acc.accountNumber === accNumber) {
+          setCurrency(acc.currency);
+          localStorage.setItem('selected', JSON.stringify({accountNumber: accNumber}));
+        }
       }
+      setRecipient(accNumber);
+    } else {
+      setRecipient(accounts[0].accountNumber)
+      setCurrency(accounts[0].currency);
     }
+
   }
 
   return <div className="transfer-container">
@@ -47,15 +50,15 @@ const Deposit = ({ accounts }) => {
       <div>
         <label htmlFor="recipientAccNumber">Recipient:</label>
         <select
-            defaultValue={recipient ? String(recipient) : ""}
+            // defaultValue={recipient ? String(recipient) : ""}
+            value = {recipient ? String(recipient) : ""}
             name="accNumber"
             id="accNumber"
-            onChange={(event) => {
-              setRecipient(event.target.value);
-              getCurrency(event.target.value);
-            }}
+            onChange={(event) =>
+              updateForm(event.target.value)
+            }
         >
-          {loadedAccounts.map((acc) => (
+          {accounts.map((acc) => (
               <option key={acc.accountNumber} value={acc.accountNumber}>
                 {acc.accountNumber}
               </option>
