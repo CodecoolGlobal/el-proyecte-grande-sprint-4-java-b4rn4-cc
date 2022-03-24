@@ -4,13 +4,12 @@ import Header from "./Header";
 
 
 
-const Layout = ({ setClickedDetails }) => {
+const Layout = () => {
     const [renderEvent, setRenderEvent] = useState(0);
     const navigate = useNavigate();
 
     const handleClick = (page) => {
         navigate(page);
-        setClickedDetails(s => !s);
         setRenderEvent(Date.now());
         localStorage.clear()
     }

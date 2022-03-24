@@ -12,6 +12,7 @@ import Withdraw from "./components/Withdraw";
 import { apiGet } from "./FetchApis";
 import Landing from "./components/Landing";
 import Layout from "./components/Layout";
+import {useLocation} from "react-router";
 
 const initialUserState = {
   name: "",
@@ -21,8 +22,8 @@ const initialUserState = {
 
 function App() {
   const [details, setDetails] = useState(initialUserState);
-  const [clickedDetails, setClickedDetails] = useState(false);
-  let userID = "11111111-2222-3333-4444-555555555555"
+  let userID = "11111111-2222-3333-4444-555555555555";
+  const location = useLocation();
 
   useEffect(() => {
     const getDetails = async () => {
@@ -30,11 +31,11 @@ function App() {
       setDetails(data);
     };
     getDetails();
-  }, [clickedDetails]);
+  }, [location.pathname]);
 
   return (
     <Routes>
-      <Route path="/" element={<Layout setClickedDetails={setClickedDetails}/>}>
+      <Route path="/" element={<Layout/>}>
         <Route path="/" element={<Landing/>}/>
         <Route path="/account-details" element={<AccountDetails details={details}/>}/>
         <Route path="/deposit" element={<Deposit accounts={details.accountList}/>}/>
