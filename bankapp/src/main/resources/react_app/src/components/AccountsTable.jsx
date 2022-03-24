@@ -37,10 +37,7 @@ const AccountsTable = ({ accounts }) => {
                       fontSize: "18px",
                     }}
                     to="/deposit"
-                    state={{
-                        accountNumber: acc.accountNumber,
-                        currency: acc.currency,
-                    }}
+                    state={{accountNumber: acc.accountNumber}}
                   >
                     Deposit
                   </Link>
@@ -60,10 +57,7 @@ const AccountsTable = ({ accounts }) => {
                       fontSize: "18px",
                     }}
                     to="/withdraw"
-                    state={{
-                      accountNumber: acc.accountNumber,
-                      currency: acc.currency,
-                    }}
+                    state={{accountNumber: acc.accountNumber}}
                   >
                     Withdraw
                   </Link>
