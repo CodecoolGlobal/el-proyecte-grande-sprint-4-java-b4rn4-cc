@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 
 const Bill = ({ bill, accountNumber }) => {
   const transaction = bill.transaction;
-  const submit = () => {
-    apiGet(`/account/${accountNumber}/pay-bill/${bill.id}`).then();
+  const submit = async () => {
+      await apiGet(`/account/${accountNumber}/pay-bill/${bill.id}`)
   };
 
   const button = (
@@ -19,6 +19,7 @@ const Bill = ({ bill, accountNumber }) => {
       <Link
         style={{ textDecoration: "none", color: "black", fontSize: "18px" }}
         to="/history"
+        state={{accountNumber: accountNumber}}
         onClick={submit}
       >
         Pay Bill
