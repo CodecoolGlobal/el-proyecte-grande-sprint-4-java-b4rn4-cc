@@ -11,7 +11,7 @@ const Layout = () => {
     const handleClick = (page) => {
         navigate(page);
         setRenderEvent(Date.now());
-        localStorage.clear()
+        localStorage.removeItem('selected');
     }
 
 
