@@ -5,24 +5,19 @@ import {loadProp} from "./ReloadMemory";
 
 const Withdraw = ({ accounts }) => {
   const preset = useLocation().state;
-  let loadedAccounts = loadProp(accounts, 'accounts', [{accountNumber: "", currency: "EUR"}]);
-  const form = loadProp(preset, 'form', loadedAccounts[0]);   //load first/default account when empty
+  const selected = loadProp(preset, 'selected', {accountNumber: null});   //load first/default account when empty
 
   const [amount, setAmount] = useState(0);
-  let [sender, setSender] = useState(form.accountNumber);
-  let [currency, setCurrency] = useState(form.currency);
+  let [sender, setSender] = useState(selected.accountNumber);
+  let [currency, setCurrency] = useState("");
   let [message, setMessage] = useState("");
 
 
   useEffect(() => {
-    localStorage.setItem('accounts', JSON.stringify(loadedAccounts))
-    localStorage.setItem('form', JSON.stringify({currency: currency, accountNumber: sender}));
-  }, []);
-
-  // update form storage when selecting
-  useEffect(() => {
-    localStorage.setItem('form', JSON.stringify({currency: currency, accountNumber: sender}));
-  }, [sender]);
+    if(accounts !== undefined && accounts.length !== 0) {
+      updateForm(selected.accountNumber)
+    }
+  }, [accounts]);
 
   const submit = (e) => {
     e.preventDefault();
@@ -33,11 +28,18 @@ const Withdraw = ({ accounts }) => {
         });
   };
 
-  function getCurrency(accNumber) {
-    for (let acc of loadedAccounts) {
-      if (acc.accountNumber === accNumber) {
-        setCurrency(acc.currency);
+  function updateForm(accNumber) {
+    if (accNumber !== null) {
+      for (let acc of accounts) {
+        if (acc.accountNumber === accNumber) {
+          setCurrency(acc.currency);
+          localStorage.setItem('selected', JSON.stringify({accountNumber: accNumber}));
+        }
       }
+      setSender(accNumber);
+    } else {
+      setSender(accounts[0].accountNumber)
+      setCurrency(accounts[0].currency);
     }
   }
 
@@ -48,15 +50,14 @@ const Withdraw = ({ accounts }) => {
         <div>
           <label>Sender:</label>
           <select
-              defaultValue={sender ? String(sender) : ""}
+              value={sender ? String(sender) : ""}
               name="accNumber"
               id="accNumber"
-              onChange={(event) => {
-              setSender(event.target.value);
-              getCurrency(event.target.value);
-            }}
+              onChange={(event) =>
+              updateForm(event.target.value)
+            }
           >
-            {loadedAccounts.map((acc) => (
+            {accounts.map((acc) => (
               <option key={acc.accountNumber} value={acc.accountNumber}>
                 {acc.accountNumber}
               </option>
@@ -101,6 +102,6 @@ const Withdraw = ({ accounts }) => {
       </form>
     </div>
   );
-};
+}
 
 export default Withdraw;
