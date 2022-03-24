@@ -3,22 +3,29 @@ import Transaction from "./Transaction";
 import { apiGet } from "../FetchApis";
 import { useEffect, useState } from "react";
 import {loadProp} from "./ReloadMemory";
+import {useLocation} from "react-router-dom";
 
 const Transactionhistory = ({ accounts }) => {
-  let loadedAccounts = loadProp(accounts, 'accounts', "");
+  const preset = useLocation().state;
+  const selected = loadProp(preset, 'selected', {accountNumber: ""});
   const [transactions, setTransactions] = useState([]);
-  const [accToView, setAccToView] = useState(loadedAccounts[0].accountNumber);
+  const [accToView, setAccToView] = useState("");
 
   useEffect(() => {
-    localStorage.setItem('accounts', JSON.stringify(loadedAccounts));
-  }, []);
+    if(accounts !== undefined && accounts.length !== 0) {
+      setAccToView(selected.accountNumber)
+    }
+  }, [accounts]);
 
   useEffect(() => {
     const getTransactions = async () => {
       const data = await apiGet("/account/" + accToView + "/history");
       setTransactions(data);
     };
-    getTransactions();
+    if(accToView !== "") {
+      localStorage.setItem('selected', JSON.stringify({accountNumber: accToView}));
+      getTransactions();
+    }
   }, [accToView]);
 
   return (
@@ -29,9 +36,10 @@ const Transactionhistory = ({ accounts }) => {
         <select
           name="accNumber"
           id="accNumber"
+          value={accToView ? String(accToView) : ""}
           onChange={(event) => setAccToView(event.target.value)}
         >
-          {loadedAccounts.map((acc) => (
+          {accounts.map((acc) => (
             <option key={acc.accountNumber} value={acc.accountNumber}>
               {acc.accountNumber}
             </option>
