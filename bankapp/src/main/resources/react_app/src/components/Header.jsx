@@ -1,7 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from "react";
+import {apiGet} from "../FetchApis";
 
 const Header = ({handleClick, renderEvent}) => {
     const [time, setTimeLeft] = useState(120);
+
+    const logout = async () => {
+        await apiGet("/logout");
+        setUserId(false);
+    };
 
     useEffect(() => {
         if (time > 0) {
