@@ -1,5 +1,5 @@
 import {Outlet, useNavigate} from "react-router";
-import React, {useState} from 'react';
+import React, {useState} from "react";
 import Header from "./Header";
 
 const Layout = ({setClickedDetails, setUserId}) => {
@@ -8,27 +8,21 @@ const Layout = ({setClickedDetails, setUserId}) => {
 
     const handleClick = (page) => {
         navigate(page);
-        setClickedDetails(s => !s);
+        setClickedDetails((s) => !s);
         setRenderEvent(Date.now());
-        localStorage.clear()
-    }
-
+    };
 
     return (
         <>
             <Header renderEvent={renderEvent} handleClick={handleClick} setUserId={setUserId}/>
             <div className="main">
                 <div className="nav">
-                    <div className="bankName" onClick={() => handleClick('/')}>
+                    <div className="bankName" onClick={() => handleClick("/")}>
                         <strong>El Grande Banco</strong>
                     </div>
                     <div className="navLinks">
-                        <div onClick={() => handleClick('/account-details')}>
-                            Account Details
-                        </div>
-                        <div className="service">
-                            Services
-                        </div>
+                        <div onClick={() => handleClick("/account-details")}>Account Details</div>
+                        <div className="service">Services</div>
                         <div className="serviceLinks">
                             <div onClick={() => handleClick("/deposit")}>Deposit</div>
                             <div onClick={() => handleClick("/withdraw")}>Withdraw</div>
@@ -37,7 +31,9 @@ const Layout = ({setClickedDetails, setUserId}) => {
                             <div onClick={() => handleClick("/pay-bills")}>Pay Bills</div>
                             <div onClick={() => handleClick("/loan")}>Loan</div>
                         </div>
-                        <div id="about" onClick={() => handleClick("/about")}>About</div>
+                        <div id="about" onClick={() => handleClick("/about")}>
+                            About
+                        </div>
                     </div>
                 </div>
                 <div className="content">
