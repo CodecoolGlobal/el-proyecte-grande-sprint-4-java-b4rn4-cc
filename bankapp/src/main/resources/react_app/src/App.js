@@ -44,7 +44,7 @@ function App() {
         <Route path="/:username" element={<Landing setLoggedIn={setLoggedIn} setUserId={setUserId} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/account-details" element={<AccountDetails details={details} />} />
-        <Route path="/deposit" element={<Deposit />} />
+        <Route path="/deposit" element={<Deposit accounts={details.accountList}/>} />
         <Route path="/withdraw" element={<Withdraw accounts={details.accountList} />} />
         <Route path="/history" element={<Transactionhistory accounts={details.accountList} />} />
         <Route path="/transfer" element={<Transfermoney accounts={details.accountList} />} />

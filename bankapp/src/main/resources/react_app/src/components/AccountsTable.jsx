@@ -37,7 +37,10 @@ const AccountsTable = ({ accounts }) => {
                       fontSize: "18px",
                     }}
                     to="/deposit"
-                    state={{ accountNumber: acc.accountNumber }}
+                    state={{
+                        accountNumber: acc.accountNumber,
+                        currency: acc.currency,
+                    }}
                   >
                     Deposit
                   </Link>
