@@ -2,6 +2,8 @@ package com.codecool.bankapp.security;
 
 import com.codecool.bankapp.services.UserService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -19,6 +21,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
+    @Value("${frontend}")
+    private String frontend;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
