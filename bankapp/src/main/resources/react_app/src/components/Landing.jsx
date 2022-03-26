@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import { apiGet } from "../FetchApis";
 import "../Main.css";
 import News from "./News";
@@ -24,10 +25,23 @@ const initialNewsState = {
   ],
 };
 
-const Landing = () => {
+const Landing = ({ setLoggedIn, setUserId }) => {
   const [currencies, setCurrencies] = useState(initialCurrencyState);
   const [news, setNews] = useState(initialNewsState);
   const [isLoading, setIsLoading] = useState(false);
+
+  let { username } = useParams();
+
+  useEffect(() => {
+    const getUser = async () => {
+      if (username) {
+        const user = await apiGet("/user?username=" + username);
+        setUserId(user.userID);
+        setLoggedIn(true);
+      }
+    };
+    getUser();
+  }, [username]);
 
   useEffect(() => {
     const getCurrencies = async () => {
@@ -51,7 +65,7 @@ const Landing = () => {
 
   return (
     <>
-      <h1>Welcome</h1>
+      <h1>Welcome {username}</h1>
       {isLoading ? (
         <div id="loading" className="display"></div>
       ) : (
