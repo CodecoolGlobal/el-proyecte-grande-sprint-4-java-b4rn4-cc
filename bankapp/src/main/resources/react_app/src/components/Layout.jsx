@@ -2,9 +2,7 @@ import {Outlet, useNavigate} from "react-router";
 import React, {useState} from 'react';
 import Header from "./Header";
 
-
-
-const Layout = ({ setClickedDetails }) => {
+const Layout = ({setClickedDetails, setUserId}) => {
     const [renderEvent, setRenderEvent] = useState(0);
     const navigate = useNavigate();
 
@@ -18,7 +16,7 @@ const Layout = ({ setClickedDetails }) => {
 
     return (
         <>
-            <Header renderEvent={renderEvent} handleClick={handleClick}/>
+            <Header renderEvent={renderEvent} handleClick={handleClick} setUserId={setUserId}/>
             <div className="main">
                 <div className="nav">
                     <div className="bankName" onClick={() => handleClick('/')}>
